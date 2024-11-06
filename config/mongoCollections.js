@@ -14,6 +14,6 @@ const getCollectionFn = (collection) => {
 };
 
 // List collections here:
-export const images = getCollectionFn('photos');
+export const photos = getCollectionFn('photos');
 
 
