@@ -1,12 +1,21 @@
 // import routes here
 import imagesRoutes from './images.js'
+import fileUpload from 'express-fileupload'
 
 const constructorMethod = app => {
-
   // This might be our landing page, but is used for testing purposes
   app.get('/', (req, res) => {
     res.json({ message: 'Hello World!' })
   })
+
+  // Middleware to handle file uploads and limit photo size to 16MB
+  app.use(
+    fileUpload({
+      limits: { fileSize: 16 * 1024 * 1024 },
+      abortOnLimit: true,
+      responseOnLimit: 'Photo size must be less than 16MB'
+    })
+  )
 
   // add routes here
   app.use('/images', imagesRoutes) // GET all images
