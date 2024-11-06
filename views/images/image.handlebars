@@ -14,7 +14,7 @@
         });
         if (response.ok) {
             console.log('Image deleted successfully'); // Debugging line
-            window.location.href = '/'; // Refresh page after deletion
+            window.location.href = '/images'; // Refresh page after deletion
         } else {
             console.error('Error deleting image:', response.statusText); // Debugging line
             alert('Error deleting image');
