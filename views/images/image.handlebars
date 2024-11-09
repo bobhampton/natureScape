@@ -1,11 +1,20 @@
-<div class="image-details" id="image-details">
-    <img class="responsive-img" src="data:image/{{photo.img.contentType}};base64,{{photo.img.data}}" alt="{{photo.name}}" />
-    <div class="image-text">
-        <h5 class="image-name">NAME: {{photo.name}}</h5>
-        <p class="image-desc">DESCRIPTION: {{photo.desc}}</p>
-        <button onclick="deleteImage('{{photo._id}}')">Delete</button>
+<!-- Display single image from database -->
+<h1>{{photo.name}}</h1>
+<hr />
+<div>
+
+    <img
+      class="responsive-img"
+      src="data:image/{{photo.img.contentType}};base64,{{photo.img.data}}"
+      alt="{{photo.name}}"
+    />
+    <div class="image-details">
+      <p>{{photo.desc}}</p>
+      <button onclick="deleteImage('{{photo._id}}')">Delete</button>
     </div>
+
 </div>
+
 <script>
     async function deleteImage(id) {
         console.log(`Attempting to delete image with id: ${id}`); // Debugging line

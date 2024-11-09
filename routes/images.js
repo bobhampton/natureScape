@@ -41,13 +41,25 @@ router.get('/photo/:id', async (req, res) => {
       return res.status(404).send('Photo not found')
     }
     const base64Image = photoData.img.data.toString('base64')
-    res.render('images/image', {
+    /* res.render('images/image', {
       photo: {
         ...photoData,
         img: {
           contentType: photoData.img.contentType,
           data: base64Image
         }
+      }
+    }) */
+    res.render('images/image', {
+      photo: {
+        _id: photoData._id,
+        name: photoData.name,
+        desc: photoData.desc,
+        img: {
+          contentType: photoData.img.contentType,
+          data: base64Image
+        },
+        metadata: photoData.metadata
       }
     })
   } catch (err) {

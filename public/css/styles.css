@@ -62,7 +62,25 @@ form div {
 
 .responsive-img {
     max-width: 100%;
+    max-height: 100vh;
     height: auto;
+    width: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1 1 calc(33.333% - 10px);
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.single-image {
+    height: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    padding: 20px;
+    border: 20px outset black;
 }
 
 .image-container {
@@ -77,13 +95,12 @@ form div {
     flex: 1 1 calc(33.333% - 10px);
     box-sizing: border-box;
     text-align: center;
+    border: 2px outset black;
+    border-radius: 5px;
     margin-bottom: 20px; /* Add margin to the bottom of each image item */
 }
 
-.image-details {
-    max-width: 100%;
-    padding: 10px;
-}
+
 
 .image-details h5 {
     margin-bottom: 10px; /* Adjust space below the name */
@@ -102,6 +119,7 @@ form div {
 }
 
 .image-details div {
+    flex: 1 1 calc(33.333% - 10px);
     margin-top: 10px;
 }
 
@@ -109,14 +127,5 @@ form div {
     margin-bottom: 10px; /* Add margin to the bottom of the delete button */
 }
 
-.image-text {
-    max-width: 100%;
-    padding: 10px;
-}
 
-.image-name, .image-desc {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-    max-width: 100%;
-}
+
