@@ -1,0 +1,31 @@
+{
+  "name": "nature_scape",
+  "version": "1.0.0",
+  "description": "CS 546 Final Project",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "seed": "node tasks/seed.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BobbyBoy101/natureScape.git"
+  },
+  "author": "Bob_Hampton_20026625, Mark_Lewis_20026055, Sameer_Dharsee_20026611, Vraj_Patel_20026532, Pavan_gandi_10446603",
+  "license": "ISC",
+  "homepage": "https://github.com/BobbyBoy101/NatureScape#readme",
+  "dependencies": {
+    "exif-reader": "^2.0.1",
+    "express": "^4.21.1",
+    "express-fileupload": "^1.5.1",
+    "express-handlebars": "^8.0.1",
+    "fs": "^0.0.1-security",
+    "mongodb": "^6.10.0",
+    "nodemon": "^3.1.7",
+    "path": "^0.12.7",
+    "sharp": "^0.33.5",
+    "url": "^0.11.4"
+  }
+}
