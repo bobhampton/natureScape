@@ -15,5 +15,6 @@ const getCollectionFn = (collection) => {
 
 // List collections here:
 export const photos = getCollectionFn('photos');
+export const users = getCollectionFn ('users');
 
 
