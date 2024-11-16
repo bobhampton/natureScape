@@ -120,3 +120,29 @@ form div {
     white-space: normal;
     max-width: 100%;
 }
+
+/* VRAJ CSS */
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+.location-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 0;
+    list-style-type: none;
+}
+
+.location-list li {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+.location-list li:hover {
+    background-color: #e0e0e0;
+}
