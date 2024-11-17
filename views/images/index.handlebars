@@ -1,7 +1,7 @@
 <h1>Upload image to mongoDB</h1>
 <hr />
 <div>
-    <form action="/images/upload" method="POST" enctype="multipart/form-data">
+    <form id="uploadForm" action="/images/upload" method="POST" enctype="multipart/form-data">
         <div>
             <label for="name">Image Title</label>
             <input type="text" id="name" placeholder="Name" value="" name="name" required />
@@ -27,23 +27,9 @@
         <div class="image-details">
             <h5>{{this.name}}</h5>
             <p>{{this.desc}}</p>
-            <button onclick="deleteImage('{{this._id}}')">Delete</button>
+            <button onclick="deleteImageFromList('{{this._id}}')">Delete</button>
         </div>
     </div>
     {{/each}}
 </div>
-<script>
-    async function deleteImage(id) {
-        console.log(`Attempting to delete image with id: ${id}`);
-        const response = await fetch(`/images/${id}`, {
-            method: 'DELETE'
-        });
-        if (response.ok) {
-            console.log('Image deleted successfully');
-            location.reload(); // Refresh the page after deletion
-        } else {
-            console.error('Error deleting image:', response.statusText);
-            alert('Error deleting image');
-        }
-    }
-</script>
+<script src="/public/js/main.js"></script>
