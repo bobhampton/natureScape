@@ -42,3 +42,12 @@ async function deleteImageSingleView(id) {
         alert('Error deleting image');
     }
 }
+
+function darkMode () {
+    var element = document.body
+    element.classList.toggle('dark-mode')
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
