@@ -12,7 +12,7 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
         }
     }
 });
-
+//TODO: Check if dark mode is enabled, and if so, refresh page with DM enabled
 // Delete an image from the images list page
 async function deleteImageFromList(id) {
     console.log(`Attempting to delete image with id: ${id}`);
@@ -28,6 +28,7 @@ async function deleteImageFromList(id) {
     }
 }
 
+//TODO: Check if dark mode is enabled, and if so, refresh page with DM enabled
 // Delete an image while viewing that image. Redirects back to the images list page
 async function deleteImageSingleView(id) {
     console.log(`Attempting to delete image with id: ${id}`);
