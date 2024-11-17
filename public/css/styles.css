@@ -233,6 +233,45 @@ body.dark-mode textarea#desc {
     color: white;
   }
 
+  /* Style for the header and navigation menu */
+  header {
+    position: relative;
+    width: 100%;
+    background-color: #f8f8f8;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between; /* Distribute space between nav and toggle */
+    align-items: center; /* Align items vertically */
+}
+
+nav {
+  display: flex;
+  justify-content: flex-start; 
+  padding-left: 20px; 
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 20px; 
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  color: #007BFF; 
+}
+
 /* VRAJ CSS */
 #map {
     height: 400px;
