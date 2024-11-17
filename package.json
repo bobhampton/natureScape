@@ -23,9 +23,11 @@
     "express-handlebars": "^8.0.1",
     "fs": "^0.0.1-security",
     "mongodb": "^6.10.0",
-    "nodemon": "^3.1.7",
     "path": "^0.12.7",
     "sharp": "^0.33.5",
     "url": "^0.11.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
