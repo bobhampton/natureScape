@@ -27,30 +27,24 @@ const seedImages = async () => {
 
     Let's keep it simple and just add 3 degrees to the lat to make the
     second location ~200 miles away from the first.
-  */
-  
-  /* 
-    crUT1/2 are Capitol Reef National Park, Utah
-    cSC1/2 are Congaree National Park, South Carolina
-    ogND1/2 are Orchard Glen, North Dakota
-    rrCA1/2 are Red Rock Canyon State Park, California
-    sUT1/2 are Steinaker State Park, Utah
+
+    crUT1/2 is Capitol Reef National Park, Utah
+    cSC1/2 is Congaree National Park, South Carolina
+    ogND1/2 is Orchard Glen, North Dakota
+    rrCA1/2 is Red Rock Canyon State Park, California
+    sUT1/2 is Steinaker State Park, Utah
   */
   const manualLatLon = {
-    crUT1: { latitude: 38.3665, longitude: -111.2615 },
-    //crUT2: { latitude: crUT1.latitude + 3, longitude: crUT1.longitude },
-    ccSC1: { latitude: 33.8361, longitude: -116.5453 },
-    //ccSC2: { latitude: ccSC1.latitude + 3, longitude: ccSC1.longitude },
-    ogND1: { latitude: 48.7596, longitude: -101.4883 },
-    //ogND2: { latitude: ogND1.latitude + 3, longitude: ogND1.longitude },
-    rrCA1: { latitude: 34.0556, longitude: -116.1784 },
-    //rrCA2: { latitude: rrCA1.latitude + 3, longitude: rrCA1.longitude },
-    ssUT1: { latitude: 37.2982, longitude: -113.0263 },
-    //ssUT2: { latitude: ssUT1.latitude + 3, longitude: ssUT1.longitude }
+    ccSC1: { latitude: 33.83037368257592, longitude: -80.82370672901854 },
+    crUT1: { latitude: 38.18535, longitude: -111.17850 },
+    ogND1: { latitude: 46.775901224709, longitude: -96.787450748989 },
+    rrCA1: { latitude: 35.373601, longitude: -117.993204 },
+    ssUT1: { latitude: 40.51582, longitude: -109.53892 }
   }
 
-  manualLatLon.crUT2 = { latitude: manualLatLon.crUT1.latitude + 3, longitude: manualLatLon.crUT1.longitude }
+  // Add 3 degrees to the latitude and add second location to the object
   manualLatLon.ccSC2 = { latitude: manualLatLon.ccSC1.latitude + 3, longitude: manualLatLon.ccSC1.longitude }
+  manualLatLon.crUT2 = { latitude: manualLatLon.crUT1.latitude + 3, longitude: manualLatLon.crUT1.longitude }
   manualLatLon.ogND2 = { latitude: manualLatLon.ogND1.latitude + 3, longitude: manualLatLon.ogND1.longitude }
   manualLatLon.rrCA2 = { latitude: manualLatLon.rrCA1.latitude + 3, longitude: manualLatLon.rrCA1.longitude }
   manualLatLon.ssUT2 = { latitude: manualLatLon.ssUT1.latitude + 3, longitude: manualLatLon.ssUT1.longitude }
@@ -80,18 +74,18 @@ const seedImages = async () => {
         metadata.exif = exifReader(metadata.exif)
       }
 
-      // Convert GPS coordinates to decimal format
       const gpsKeys = [
         'GPSLatitude',
         'GPSLongitude',
         'GPSLatitudeRef',
         'GPSLongitudeRef'
       ]
+
+      // See if we got dem keys we need
       const gpsData = findKeys(metadata, gpsKeys)
 
+      // Convert GPS coordinates to decimal format
       if (Object.keys(gpsData).length !== 0) {
-        console.log(`keys: ${Object.keys(gpsData)}`)
-        console.log(`keys length: ${Object.keys(gpsData).length}`)
         if (
           gpsData.GPSLatitude &&
           gpsData.GPSLongitude &&
@@ -113,20 +107,21 @@ const seedImages = async () => {
           metadata.longitudeDecimal = longitude
         }
       } else {
-        console.log(`No GPS metadata found for ${file}`)
+        // Add manual lat/lon to photos that don't have GPS metadata
         let fileName = file.slice(0, 5)
-        console.log(`fileName: ${fileName}`)
         if (fileName in manualLatLon) {
           metadata.latitudeDecimal = manualLatLon[fileName].latitude
           metadata.longitudeDecimal = manualLatLon[fileName].longitude
         }
-        console.log(`metadata: ${metadata}`)
       }
     } catch (err) {
       console.error('Error extracting metadata:', err)
     }
 
+    // Get the current time in UTC
     const uploadTimeStampUTC = Date.now()
+
+    // Create a new image document
     const newImage = {
       name: path.basename(file, fileExtension),
       desc: 'Seed image',
