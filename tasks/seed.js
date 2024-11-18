@@ -6,8 +6,6 @@ import { photos, locations } from '../config/mongoCollections.js'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
 import { findKeys, latLonToDecimal } from '../routes/helpers.js'
-import { get } from 'http'
-import { ObjectId } from 'mongodb'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -33,7 +31,6 @@ const findLocationId = async (area, state) => {
 
 // Function to add location to database
 const addLocation = async (state, city, area) => {
-
   const newLocation = {
     state,
     city,
@@ -46,7 +43,9 @@ const addLocation = async (state, city, area) => {
   if (insertInfo.insertedCount === 0) {
     throw 'Could not add location'
   } else {
-    console.log(`Location ${area}, ${state} added to the DB with id ${insertInfo.insertedId}`)
+    console.log(
+      `Location ${area}, ${state} added to the DB with id ${insertInfo.insertedId}`
+    )
   }
 
   return insertInfo.insertedId
@@ -75,19 +74,79 @@ const seedImages = async () => {
   */
   let heading = 254.52317809400603
   const manualLatLon = {
-    ccSC1: { area: "Congaree National Park", state: "SC", latitude: 33.83037368257592, longitude: -80.82370672901854, heading },
-    crUT1: { area: "Capitol Reef National Park", state: "UT", latitude: 38.18535, longitude: -111.17850, heading },
-    ogND1: { area: "Orchard Glen", state: "ND", latitude: 46.775901224709, longitude: -96.787450748989, heading },
-    rrCA1: { area: "Red Rock Canyon State Park", state: "CA", latitude: 35.373601, longitude: -117.993204, heading },
-    ssUT1: { area: "Steinaker State Park", state: "UT", latitude: 40.51582, longitude: -109.53892, heading }
+    ccSC1: {
+      area: 'Congaree National Park',
+      state: 'SC',
+      latitude: 33.83037368257592,
+      longitude: -80.82370672901854,
+      heading
+    },
+    crUT1: {
+      area: 'Capitol Reef National Park',
+      state: 'UT',
+      latitude: 38.18535,
+      longitude: -111.1785,
+      heading
+    },
+    ogND1: {
+      area: 'Orchard Glen',
+      state: 'ND',
+      latitude: 46.775901224709,
+      longitude: -96.787450748989,
+      heading
+    },
+    rrCA1: {
+      area: 'Red Rock Canyon State Park',
+      state: 'CA',
+      latitude: 35.373601,
+      longitude: -117.993204,
+      heading
+    },
+    ssUT1: {
+      area: 'Steinaker State Park',
+      state: 'UT',
+      latitude: 40.51582,
+      longitude: -109.53892,
+      heading
+    }
   }
 
   // Add 3 degrees to the latitude and add second location to the object
-  manualLatLon.ccSC2 = { area: manualLatLon.ccSC1.area, state: manualLatLon.ccSC1.state, latitude: manualLatLon.ccSC1.latitude + 3, longitude: manualLatLon.ccSC1.longitude, heading }
-  manualLatLon.crUT2 = { area: manualLatLon.crUT1.area, state: manualLatLon.crUT1.state, latitude: manualLatLon.crUT1.latitude + 3, longitude: manualLatLon.crUT1.longitude, heading }
-  manualLatLon.ogND2 = { area: manualLatLon.ogND1.area, state: manualLatLon.ogND1.state, latitude: manualLatLon.ogND1.latitude + 3, longitude: manualLatLon.ogND1.longitude, heading }
-  manualLatLon.rrCA2 = { area: manualLatLon.rrCA1.area, state: manualLatLon.rrCA1.state, latitude: manualLatLon.rrCA1.latitude + 3, longitude: manualLatLon.rrCA1.longitude, heading }
-  manualLatLon.ssUT2 = { area: manualLatLon.ssUT1.area, state: manualLatLon.ssUT1.state, latitude: manualLatLon.ssUT1.latitude + 3, longitude: manualLatLon.ssUT1.longitude, heading }
+  manualLatLon.ccSC2 = {
+    area: manualLatLon.ccSC1.area,
+    state: manualLatLon.ccSC1.state,
+    latitude: manualLatLon.ccSC1.latitude + 3,
+    longitude: manualLatLon.ccSC1.longitude,
+    heading
+  }
+  manualLatLon.crUT2 = {
+    area: manualLatLon.crUT1.area,
+    state: manualLatLon.crUT1.state,
+    latitude: manualLatLon.crUT1.latitude + 3,
+    longitude: manualLatLon.crUT1.longitude,
+    heading
+  }
+  manualLatLon.ogND2 = {
+    area: manualLatLon.ogND1.area,
+    state: manualLatLon.ogND1.state,
+    latitude: manualLatLon.ogND1.latitude + 3,
+    longitude: manualLatLon.ogND1.longitude,
+    heading
+  }
+  manualLatLon.rrCA2 = {
+    area: manualLatLon.rrCA1.area,
+    state: manualLatLon.rrCA1.state,
+    latitude: manualLatLon.rrCA1.latitude + 3,
+    longitude: manualLatLon.rrCA1.longitude,
+    heading
+  }
+  manualLatLon.ssUT2 = {
+    area: manualLatLon.ssUT1.area,
+    state: manualLatLon.ssUT1.state,
+    latitude: manualLatLon.ssUT1.latitude + 3,
+    longitude: manualLatLon.ssUT1.longitude,
+    heading
+  }
 
   for (const file of imageFiles) {
     const filePath = path.join(imageFolder, file)
@@ -143,13 +202,12 @@ const seedImages = async () => {
         'GPSImgDirection',
         'DateTimeOriginal'
       ]
-        /* 
+      /* 
         we might need these later?
         'GPSImgDirectionRef',
         'GPSAltitude',
         'GPSTimeStamp,
          */
-      
 
       // See if we got dem keys we need
       const photoData = findKeys(metadata, searchKeys)
@@ -178,7 +236,7 @@ const seedImages = async () => {
             latRef,
             lonRef
           )
-  
+
           /*
           TODO:
           - Will need to implement a locationId lookup/creation 
@@ -195,13 +253,19 @@ const seedImages = async () => {
         let fileName = file.slice(0, 5)
 
         if (fileName in manualLatLon) {
-
           // Check if location exists in database
-          let location = await findLocationId(manualLatLon[fileName].area, manualLatLon[fileName].state)
-          
+          let location = await findLocationId(
+            manualLatLon[fileName].area,
+            manualLatLon[fileName].state
+          )
+
           // Add location to database if it doesn't exist
           if (location === null) {
-            location = await addLocation(manualLatLon[fileName].state, null, manualLatLon[fileName].area)
+            location = await addLocation(
+              manualLatLon[fileName].state,
+              null,
+              manualLatLon[fileName].area
+            )
           }
           newPhoto.location.location_id = location
           newPhoto.location.latitude = manualLatLon[fileName].latitude
@@ -218,15 +282,16 @@ const seedImages = async () => {
     const uploadTimeStampUTC = new Date(temp)
 
     // Set the new photo object properties
-      newPhoto.photo_name = path.basename(file, fileExtension),
-      newPhoto.photo_description = 'Seed image',
-      newPhoto.date_time_uploaded = uploadTimeStampUTC,
-      newPhoto.img = {
+    ;(newPhoto.photo_name = path.basename(file, fileExtension)),
+      (newPhoto.photo_description =
+        'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum'),
+      (newPhoto.date_time_uploaded = uploadTimeStampUTC),
+      (newPhoto.img = {
         data: Buffer.from(fileData),
         contentType: contentType
-      }
-      newPhoto.metadata = metadata // All captured metadata - Keeping this for now
-      
+      })
+    newPhoto.metadata = metadata // All captured metadata - Keeping this for now
+
     try {
       const imageCollection = await photos()
       await imageCollection.insertOne(newPhoto)
