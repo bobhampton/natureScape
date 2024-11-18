@@ -4,9 +4,34 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
-    <link rel="stylesheet" type="text/css" href="../public/css/styles.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
+
+    <!-- Leaflet Javascript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
+<header>
+        <nav>
+          <ul>
+            <li><a href="./">Home Page and Login</a></li>
+            <li><a href="./images">Images List Page</a></li>
+            <li><a href="./locationlist">Location List Page</a></li>
+          </ul>
+        </nav>
+      </header>
 <body>
+    <div class="toggle-container">
+        <label for="darkModeSwitch">Dark Mode</label>
+        <label class="switch">
+            <input type="checkbox" id="darkModeSwitch" onclick="toggleDarkMode()" />
+            <span class="slider round"></span>
+        </label>
+    </div>
     {{{body}}}
+    <script src="/public/js/main.js"></script>
 </body>
 </html>

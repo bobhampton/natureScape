@@ -21,8 +21,7 @@ router.get('/', async (req, res) => {
         contentType: image.img.contentType
       }
     }))
-    //res.json(formattedImages);
-    res.render('images/index', { images: formattedImages })
+    res.render('images/index', { layout: 'main', images: formattedImages })
   } catch (err) {
     console.log(err)
     res.status(500).send('Error retrieving images')
@@ -43,11 +42,14 @@ router.get('/photo/:id', async (req, res) => {
     const base64Image = photoData.img.data.toString('base64')
     res.render('images/image', {
       photo: {
-        ...photoData,
+        _id: photoData._id,
+        name: photoData.name,
+        desc: photoData.desc,
         img: {
           contentType: photoData.img.contentType,
           data: base64Image
-        }
+        },
+        metadata: photoData.metadata
       }
     })
   } catch (err) {
@@ -57,7 +59,6 @@ router.get('/photo/:id', async (req, res) => {
 })
 
 // Route to upload an image
-//router.post('/upload', async (req, res) => {
 router.post('/upload', async (req, res) => {
   const maxUploadSize = 16 * 1024 * 1024 // 16MB
 
@@ -74,6 +75,7 @@ router.post('/upload', async (req, res) => {
   const imageFile = req.files.image
 
   let metadata = {}
+
   try {
     // Extract metadata from the image using sharp
     const image = sharp(imageFile.data).withMetadata().toFormat('jpeg')
@@ -91,46 +93,56 @@ router.post('/upload', async (req, res) => {
       'GPSLatitudeRef',
       'GPSLongitudeRef'
     ]
+
     const gpsData = findKeys(metadata, gpsKeys)
 
-    if (
-      gpsData.GPSLatitude &&
-      gpsData.GPSLongitude &&
-      gpsData.GPSLatitudeRef &&
-      gpsData.GPSLongitudeRef
-    ) {
-      const lat = gpsData.GPSLatitude
-      const lon = gpsData.GPSLongitude
-      const latRef = gpsData.GPSLatitudeRef
-      const lonRef = gpsData.GPSLongitudeRef
+    if (Object.keys(gpsData) !== 0) {
+      if (
+        gpsData.GPSLatitude &&
+        gpsData.GPSLongitude &&
+        gpsData.GPSLatitudeRef &&
+        gpsData.GPSLongitudeRef
+      ) {
+        const lat = gpsData.GPSLatitude
+        const lon = gpsData.GPSLongitude
+        const latRef = gpsData.GPSLatitudeRef
+        const lonRef = gpsData.GPSLongitudeRef
+        const { latitude, longitude } = latLonToDecimal(
+          lat,
+          lon,
+          latRef,
+          lonRef
+        )
 
-      const { latitude, longitude } = latLonToDecimal(lat, lon, latRef, lonRef)
-      metadata.latitudeDecimal = latitude
-      metadata.longitudeDecimal = longitude
+        metadata.latitudeDecimal = latitude
+        metadata.longitudeDecimal = longitude
+      }
     }
   } catch (err) {
     console.error('Error extracting metadata:', err)
   }
 
   /* 
-        TODO: 
-        -Add check for lat/lon metadata and prompt user to enter manually if not found
-        -Add a photo download option (res.download(file.ext))
+    TODO: 
+    -Add check for lat/lon metadata and prompt user to enter manually if not found
+    -Add a photo download option (res.download(file.ext))
+  */
 
-    */
-  const timeStampUTC = Date.now()
+  const uploadTimeStampUTC = Date.now()
+
   // Create a new image document
   const newImage = {
     name: name,
     desc: desc,
-    timeStampUTC,
+    uploadTimeStampUTC,
     img: {
-      //data: modifiedImageBuffer,
+      //data: modifiedImageBuffer, // Will need this for adding custom metadata
       data: imageFile.data,
       contentType: imageFile.mimetype
     },
     metadata: metadata
   }
+
   try {
     const imageCollection = await photos()
     await imageCollection.insertOne(newImage)
