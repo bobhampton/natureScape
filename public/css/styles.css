@@ -100,7 +100,7 @@ form div {
 }
 
 .image-details h5 {
-  margin-bottom: 10px; /* Adjust space below the name */
+  margin-bottom: 10px;
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -108,7 +108,7 @@ form div {
 }
 
 .image-details p {
-  margin-bottom: 10px; /* Adjust space below the description */
+  margin-bottom: 10px;
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -121,7 +121,11 @@ form div {
 }
 
 .image-details button {
-  margin-bottom: 10px; /* Add margin to the bottom of the delete button */
+  margin-bottom: 10px;
+}
+
+#single-image-delete {
+  margin-bottom: 20px;
 }
 
 .image-text {
@@ -134,6 +138,37 @@ form div {
   overflow-wrap: break-word;
   white-space: normal;
   max-width: 100%;
+}
+
+#image-list-description {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+  display: -webkit-box; /* Use flexbox for multi-line ellipsis */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-height: 3.6em;
+  line-height: 1.1em;
+}
+
+.single-photo-description {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.all-image-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: left;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 /* Button Styles */
@@ -169,6 +204,10 @@ header {
   display: flex;
   justify-content: center; 
   align-items: center; 
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 3px outset #464646;
 }
 
 nav {
@@ -184,6 +223,11 @@ nav {
   justify-content: flex-start;
   align-self: center;
   flex: 1;
+  text-align: left;
+}
+
+#navLinks li {
+  padding: 3px;
 }
 
 .nav-link {
@@ -200,7 +244,7 @@ nav a:hover {
 }
 
 #navWebName {
-  flex: 1; /* Center the web name */
+  flex: 1;
   text-align: center;
   font-size: 25px;
   color: #000000;
@@ -213,7 +257,18 @@ body.dark-mode {
 }
 
 body.dark-mode input#name,
-body.dark-mode textarea#desc,
+body.dark-mode textarea#desc {
+  color: white;
+  background-color: #797979;
+  border: 3px inset #464646;
+  border-radius: 5px;
+}
+
+body.dark-mode input#name::placeholder,
+body.dark-mode textarea#desc::placeholder {
+  color: rgb(221, 221, 221);
+}
+
 body.dark-mode label,
 body.dark-mode li,
 body.dark-mode .passwd,
@@ -226,6 +281,8 @@ body.dark-mode input#image {
 body.dark-mode header,
 body.dark-mode .location-list li {
   background-color: #333; 
+  border: 3px outset #464646;
+  border-radius: 5px;
   color: white;
 }
 
@@ -234,7 +291,7 @@ body.dark-mode .location-list li:hover {
 }
 
 body.dark-mode .nav-link:hover {
-  color: #3300ff;
+  color: #7957ff;
 }
 
 /* Toggle Switch Styles */

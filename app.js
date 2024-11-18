@@ -11,7 +11,17 @@ app.use(express.urlencoded({ extended: true })) // Parse URL-encoded requests
 app.use(express.json()) // Parse JSON requests (lets you use 'req.body')
 
 // Set up default layout and view engine for handlebars
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }))
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main',
+  // Define custom helpers for handlebars
+  helpers: {
+    printObj: function(obj) {
+      return JSON.stringify(obj, null, 2)
+    },
+    checkNull: function(value) {
+      return value === null ? 'null' : value;
+    }
+  }
+ }))
 app.set('view engine', 'handlebars')
 
 // Set up routes
