@@ -4,6 +4,7 @@ import express from 'express'
 import exifReader from 'exif-reader'
 import sharp from 'sharp'
 import { findKeys, latLonToDecimal } from './helpers.js'
+import { addImage } from '../data/photos.js'
 
 const router = express.Router()
 
@@ -68,13 +69,14 @@ router.post('/upload', async (req, res) => {
     return res.status(400).send('No files were uploaded.')
   }
   if (req.files.image.size > maxUploadSize) {
-    return res.status(400).send(`Photo size must be less than ${maxUploadSize}`)
+    console.log('req.files.image.size:', req.files.image.size)
+    return res.status(400).send(`22222Photo size must be less than ${maxUploadSize}`)
   }
 
   const { name, desc } = req.body
   const imageFile = req.files.image
 
-  let metadata = {}
+  /* let metadata = {}
 
   try {
     // Extract metadata from the image using sharp
@@ -126,7 +128,7 @@ router.post('/upload', async (req, res) => {
     TODO: 
     -Add check for lat/lon metadata and prompt user to enter manually if not found
     -Add a photo download option (res.download(file.ext))
-  */
+  
 
   const uploadTimeStampUTC = Date.now()
 
@@ -151,7 +153,14 @@ router.post('/upload', async (req, res) => {
   } catch (err) {
     console.error('Error saving image:', err)
     res.status(500).send('Server error')
-  }
+  } */
+ try {
+  addImage(name, desc, imageFile)
+  res.status(200).redirect('/images')
+ } catch (err) {
+  console.error(err)
+  res.status(500).send('Error uploading image')
+ }
 })
 
 // Route to delete an image by ID

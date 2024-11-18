@@ -214,8 +214,8 @@ const seedImages = async () => {
     }
 
     // Get the current time in UTC
-    const uploadTimeStampUTC2 = Date.now()
-    const uploadTimeStampUTC = new Date(uploadTimeStampUTC2)
+    const temp = Date.now()
+    const uploadTimeStampUTC = new Date(temp)
 
     // Set the new photo object properties
       newPhoto.photo_name = path.basename(file, fileExtension),

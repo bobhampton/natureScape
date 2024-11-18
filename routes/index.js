@@ -15,7 +15,7 @@ const constructorMethod = app => {
     fileUpload({
       limits: { fileSize: 16 * 1024 * 1024 },
       abortOnLimit: true,
-      responseOnLimit: 'Photo size must be less than 16MB'
+      responseOnLimit: '111Photo size must be less than 16MB'
     })
   )
 
