@@ -15,14 +15,29 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
-    <div class="toggle-container">
-        <label for="darkModeSwitch">Dark Mode</label>
-        <label class="switch">
-            <input type="checkbox" id="darkModeSwitch" onclick="toggleDarkMode()" />
-            <span class="slider round"></span>
-        </label>
+    <div class="container">
+        <header>
+            <nav>
+                <div id="navLinks">
+                    <ul>
+                        <li><a href="/" class="nav-link">Home Page and Login</a></li>
+                        <li><a href="/images" class="nav-link">Images List Page</a></li>
+                        <li><a href="/locationlist" class="nav-link">Location List Page</a></li>
+                    </ul>
+                </div>
+                <div id="navWebName">
+                    <h1>NatureScape</h1>
+                </div>
+                <div class="toggle-container">
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeSwitch" onclick="toggleDarkMode()" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </nav>
+        </header>
+        {{{body}}}
     </div>
-    {{{body}}}
     <script src="/public/js/main.js"></script>
 </body>
 </html>

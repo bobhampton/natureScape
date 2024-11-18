@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
         contentType: image.img.contentType
       }
     }))
-    res.render('images/index', { images: formattedImages })
+    res.render('images/index', { layout: 'main', images: formattedImages })
   } catch (err) {
     console.log(err)
     res.status(500).send('Error retrieving images')

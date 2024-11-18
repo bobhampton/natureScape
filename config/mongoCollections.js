@@ -18,6 +18,3 @@ export const photos = getCollectionFn('photos');
 export const users = getCollectionFn('users');
 export const comments = getCollectionFn('comments');
 export const locations = getCollectionFn('locations');
-
-
-
