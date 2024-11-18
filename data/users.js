@@ -1,5 +1,6 @@
 import { users } from "../config/mongoCollections";
 import {ObjectId} from 'mongodb';
+import bcrypt from 'bcryptjs';
 import validation from './helpers.js';
 
 const exportedMethods = {
@@ -10,14 +11,22 @@ const exportedMethods = {
          password_hash,
          ){
             // Validate inputs
-    const newTeam = validation.checkUser(first_name, last_name, email, username, password_hash);
+    const newUser = validation.checkUser(first_name, last_name, email, username, password_hash);
+
+    const theCurrentDate = new Date();
+    const year = theCurrentDate.getFullYear();
+    const month = theCurrentDate.getMonth() + 1;
+    const day = theCurrentDate.getDate();
+
+    const creationDate = month + "/" + day + "/" + year;
 
     // Set additional fields for the new user
     const userData = {
       ...newUser,
+      creationDate: creationDate,
       profile: {
         //FIX WHAT A profile subdocument means 
-        bio: bio,
+        bio: ' ',
         profile_picture: profile_picture
       },
     };
@@ -26,16 +35,16 @@ const exportedMethods = {
     const userCollection = await users();
     //Inserting the new data.
     const insertInfo = await userCollection.insertOne(userData);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add the new team";
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add the new user";
 
-    // Return the newly added team
+    // Return the newly added user
     return await this.getuserById(insertInfo.insertedId.toString());
 },
 
-async getAllTeams() {
+async getAllUsers() {
     const userCollection = await users();
-    const userList = await userCollection.find({}).project({ _id: 1, name: 1 }).toArray();
-    if (!userList) throw "Couldn't get all the teams";
+    const userList = await userCollection.find({}).project({ _id: 1, first_name: 1, last_name: 1 }).toArray();
+    if (!userList) throw "Couldn't get all users";
     return userList;
 },
 
@@ -57,7 +66,47 @@ async removeUser(id) {
     return deletionInfo;
   },
 
-  async updateTeam(id, first_name, last_name, email, userName, password_hash) {
+  // Update User
+  async updateUser(id, first_name, last_name, email, username, password) {
+    // Validate the user ID
+    id = validation.checkId(id);
+
+    // Validate the input fields (ensuring they are correct and well-formed)
+    validation.checkString(first_name, 'First Name');
+    validation.checkString(last_name, 'Last Name');
+    validation.checkString(email, 'Email');
+    validation.checkString(username, 'Username');
+    
+    // Prepare updated data
+    const updatedUser = {};
+
+    if (first_name) updatedUser.first_name = first_name.trim();
+    if (last_name) updatedUser.last_name = last_name.trim();
+    if (email) updatedUser.email = email.trim();
+    if (username) updatedUser.username = username.trim();
+
+    // If password is provided, hash it
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updatedUser.password_hash = hashedPassword;
+    }
+
+    // Get the users collection and update the user
+    const userCollection = await users();
+    const updatedInfo = await userCollection.findOneAndUpdate(
+      { _id: ObjectId.createFromHexString(id) },
+      { $set: updatedUser },
+      { returnDocument: 'after' }
+    );
+
+    if (!updatedInfo.value) throw "Could not update the user successfully";
+    
+    return updatedInfo.value;  // Return the updated user
+  }
+
+
+
+  /*async updateTeam(id, first_name, last_name, email, userName, password_hash) {
     validation.checkId(id);
     validation.checkString(first_name);
     validation.checkString(last_name);
@@ -134,7 +183,5 @@ console.log("7")
     
     console.log("updatedInfo._id", updatedInfo._id)
     console.log("test", test)
-    return test;
+    return test;*/
   }
-
-}
