@@ -17,6 +17,7 @@
   "license": "ISC",
   "homepage": "https://github.com/BobbyBoy101/NatureScape#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "exif-reader": "^2.0.1",
     "express": "^4.21.1",
     "express-fileupload": "^1.5.1",
