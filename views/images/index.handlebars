@@ -1,8 +1,8 @@
-<header>
-  <div class="header-container">
-    <h1>Upload image to mongoDB</h1>
-  </div>
-</header>
+<hr />
+<div class="header-container">
+  <h1>Upload image to mongoDB</h1>
+</div>
+
 <hr />
 <div>
   <form
@@ -34,7 +34,7 @@
       ></textarea>
     </div>
     <div class="file-upload-container">
-      <!-- Add 'multiple' attribute to 'file' to allow multiple file uploads -->
+      <!-- Add 'multiple' attribute to 'file' to allow multiple file uploads? -->
       <input
         type="file"
         id="image"
@@ -59,11 +59,10 @@
         />
       </a>
       <div class="image-details">
-        <h5>{{this.name}}</h5>
-        <p>{{this.desc}}</p>
+        <h5>{{this.photo_name}}</h5>
+        <p id="image-list-description">{{this.photo_description}}</p>
         <button onclick="deleteImageFromList('{{this._id}}')">Delete</button>
       </div>
     </div>
   {{/each}}
 </div>
-<script src="/public/js/main.js"></script>
