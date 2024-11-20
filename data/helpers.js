@@ -105,6 +105,16 @@ const exportedMethods = {
               .match(
                 /^(([^<>()[]\.,;:\s@"]+(.[^<>()[]\.,;:\s@"]+)*)|.(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/
               );
+        },
+
+        buildUpdateString(updateFields) {
+            const updateObject = { $set: {} };
+            for (const field in updateFields) {
+              let tempString = "profile.$." + field;
+              updateObject.$set[tempString] = updateFields[field];
+            }
+          
+            return updateObject;
         }
 
 }
