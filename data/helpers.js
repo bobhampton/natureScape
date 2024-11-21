@@ -115,6 +115,24 @@ const exportedMethods = {
             }
           
             return updateObject;
-        }
+        },
+
+        profileCheckInputs(
+            userIds,
+            bios
+          ){
+            let returnstuff = {};
+            this.checkId(userIds, "userId");
+            //ADD functionality to checkID to make sure the user Id is found in the data base
+                //Added in line of function due to await. 
+            
+            this.checkString(bios, "bio ");
+        
+            returnstuff = {userId: userIds,
+            bio: bios, 
+            }
+        
+            return returnstuff;
+          }
 
 }
