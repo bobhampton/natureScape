@@ -2,6 +2,7 @@ import imagesRoutes from './images.js'
 import loginRoutes from './login.js'
 import fileUpload from 'express-fileupload'
 import locationRoutes from './locationlist.js'
+import userRoutes from './users.js'
 
 const constructorMethod = app => {
   // Middleware to handle file uploads and limit photo size to 16MB
