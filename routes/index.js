@@ -2,6 +2,8 @@ import imagesRoutes from './images.js'
 import loginRoutes from './login.js'
 import fileUpload from 'express-fileupload'
 import locationRoutes from './locationlist.js'
+import userRoutes from './users.js'
+import profileRoutes from './profile.js'
 
 const constructorMethod = app => {
   // Middleware to handle file uploads and limit photo size to 16MB
@@ -20,7 +22,10 @@ const constructorMethod = app => {
   app.use('/images/upload', imagesRoutes) // POST upload an image
   app.use('/images/photo/:id', imagesRoutes) // GET a specific image
   app.use('/locationlist', locationRoutes)
-
+  app.use('/users', userRoutes);
+  app.use('/users/:userId', userRoutes)
+  app.use('/profile/:userId', profileRoutes);
+  app.use('/profile/profile/:profileId', profileRoutes);
   app.use('*', (req, res) => {
     res.status(404).json({ error: 'Route Not found' })
   })
