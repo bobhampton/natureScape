@@ -3,7 +3,7 @@
 import userData from "./users.js"; //No {} for export default
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from "mongodb";
-import validation from '../helpers.js';
+import validation from './helpers.js';
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'

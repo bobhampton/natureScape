@@ -3,7 +3,7 @@ import {Router} from 'express'; //{What is inside is something specific being im
 const router = Router();
 import userData from '../data/users.js'
 import profileData from '../data/profile.js';
-import validation from '../helpers.js';
+import validation from '../data/helpers.js';
 
 router
   .route('/:userId')//get me all profiles for a team id
