@@ -1,4 +1,4 @@
-import { users } from "../config/mongoCollections";
+import { users } from "../config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
 import validation from './helpers.js';
 
@@ -11,7 +11,7 @@ const exportedMethods = {
          password_hash,
          ){
             // Validate inputs
-    const newTeam = validation.checkUser(first_name, last_name, email, username, password_hash, bio);
+    const newUser = validation.checkUser(first_name, last_name, email, username, password_hash, bio);
 
     const theCurrentDate = new Date();
     //console.log(theCurrentDate);
@@ -29,7 +29,6 @@ const exportedMethods = {
       profile: {
         
         bio: "",
-        profile_picture: null
       },
     };
 
@@ -43,10 +42,10 @@ const exportedMethods = {
     return await this.getuserById(insertInfo.insertedId.toString());
 },
 
-async getAllTeams() {
+async getAllUsers() {
     const userCollection = await users();
     const userList = await userCollection.find({}).project({ _id: 1, name: 1 }).toArray();
-    if (!userList) throw "Couldn't get all the teams";
+    if (!userList) throw "Couldn't get all the users";
     return userList;
 },
 
@@ -68,7 +67,7 @@ async getUserById(id) {
     return deletionInfo;
   },
 
-  async updateuser(id, userInfo) {//Works like a patch
+  async updateUser(id, userInfo) {//Works like a patch
     id = validation.checkId(id, 'user id');
     
     if(userInfo.first_name){
@@ -99,7 +98,8 @@ async getUserById(id) {
       userInfo.password_hash = validation.checkString(
         userInfo.password_hash, 'user password'
       );
-      userInfo.password_hash = await bcrypt.hash(userInfo.password_hash, 10);
+      //Don't want 103 if prior hash
+      //userInfo.password_hash = await bcrypt.hash(userInfo.password_hash, 10);
     };
   
     //Establish connection to the database
