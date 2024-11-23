@@ -84,7 +84,7 @@ const exportedMethods = {
             };
 
             if(!passwordHash){
-                throw "You must provide an email";
+                throw "You must provide an password";
             };
             if(typeof passwordHash !== 'string'){
                 throw "The password must be a string"
@@ -93,10 +93,6 @@ const exportedMethods = {
             if(passwordHash.length === 0){
                 throw "The password cannot be empty of just spaces";
             };
-
-            if(userName.toLowerCase() === passwordHash.toLowerCase()){
-                throw "The userName cannot be the same as your password"
-            }
         },
 
         validateEmail (email){
@@ -136,3 +132,5 @@ const exportedMethods = {
           }
 
 }
+
+export default exportedMethods;
