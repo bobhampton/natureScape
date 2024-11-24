@@ -83,7 +83,7 @@ const exportedMethods = {
             };
 
             if(!passwordHash){
-                throw "You must provide an email";
+                throw "You must provide an password";
             };
             if(typeof passwordHash !== 'string'){
                 throw "The password must be a string"
@@ -92,10 +92,6 @@ const exportedMethods = {
             if(passwordHash.length === 0){
                 throw "The password cannot be empty of just spaces";
             };
-
-            if(userName.toLowerCase() === passwordHash.toLowerCase()){
-                throw "The userName cannot be the same as your password"
-            }
         },
 
         validateEmail (email){
@@ -104,6 +100,36 @@ const exportedMethods = {
               .match(
                 /^(([^<>()[]\.,;:\s@"]+(.[^<>()[]\.,;:\s@"]+)*)|.(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/
               );
-        }
+        },
+
+        buildUpdateString(updateFields) {
+            const updateObject = { $set: {} };
+            for (const field in updateFields) {
+              let tempString = "profile.$." + field;
+              updateObject.$set[tempString] = updateFields[field];
+            }
+          
+            return updateObject;
+        },
+
+        profileCheckInputs(
+            userIds,
+            bios
+          ){
+            let returnstuff = {};
+            this.checkId(userIds, "userId");
+            //ADD functionality to checkID to make sure the user Id is found in the data base
+                //Added in line of function due to await. 
+            
+            this.checkString(bios, "bio ");
+        
+            returnstuff = {userId: userIds,
+            bio: bios, 
+            }
+        
+            return returnstuff;
+          }
 
 }
+
+export default exportedMethods;

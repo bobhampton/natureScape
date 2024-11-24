@@ -1,0 +1,43 @@
+<h1>NatureScape Location List</h1>
+<div>
+    <h2>Locations:</h2>
+    <ul class="location-list" id="location-list"></ul>
+</div>
+<div>
+    <h2>Map</h2>
+    <div id="map"></div>
+</div>
+<script>
+    // Array of Location Objects
+    const locations = [
+        {name: "Central Park", lat: 40.785091, lng: -73.968285},
+        {name: "Statue of Liberty", lat: 40.689247, lng: -74.044502},
+        {name: "Times Square", lat: 40.758896, lng: -73.985130},
+        {name: "Empire State Building", lat: 40.748817, lng: -73.985428}
+    ];
+
+    // Initialize the map
+    const map = L.map('map').setView([40.785091, -73.968285], 13);
+
+    // Add a tile layer to the map
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add markers and populate the location list
+    const locationListElement = document.getElementById('location-list');
+    locations.forEach( (location) => {
+        // Add marker to the map
+        const marker = L.marker([location.lat, location.lng]).addTo(map).bindPopup(location.name);
+
+        // Add item to the location list
+        const listItem = document.createElement('li');
+        listItem.textContent = location.name;
+        listItem.onClick = () => {
+            map.setView([location.lat, location.lng], 15);
+            marker.openPopup();
+        };
+        locationListElement.appendChild(listItem);
+    });
+</script>

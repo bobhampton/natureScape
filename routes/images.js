@@ -1,9 +1,7 @@
 import { photos } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
 import express from 'express'
-import exifReader from 'exif-reader'
-import sharp from 'sharp'
-import { findKeys, latLonToDecimal } from './helpers.js'
+import { addImage } from '../data/photos.js'
 
 const router = express.Router()
 
@@ -14,15 +12,14 @@ router.get('/', async (req, res) => {
     const images = await imageCollection.find({}).toArray()
     const formattedImages = images.map(image => ({
       _id: image._id,
-      name: image.name,
-      desc: image.desc,
+      photo_name: image.photo_name,
+      photo_description: image.photo_description,
       img: {
         data: image.img.data.toString('base64'),
         contentType: image.img.contentType
       }
     }))
-    //res.json(formattedImages);
-    res.render('images/index', { images: formattedImages })
+    res.render('images/index', { layout: 'main', images: formattedImages })
   } catch (err) {
     console.log(err)
     res.status(500).send('Error retrieving images')
@@ -43,11 +40,20 @@ router.get('/photo/:id', async (req, res) => {
     const base64Image = photoData.img.data.toString('base64')
     res.render('images/image', {
       photo: {
-        ...photoData,
+        _id: photoData._id,
+        photo_name: photoData.photo_name,
+        photo_description: photoData.photo_description,
+        user_id: photoData.user_id,
+        date_time_taken: photoData.date_time_taken,
+        date_time_uploaded: photoData.date_time_uploaded,
+        likes: photoData.likes,
+        verification_rating: photoData.verification_rating,
+        location: photoData.location,
         img: {
           contentType: photoData.img.contentType,
           data: base64Image
-        }
+        },
+        metadata: photoData.metadata
       }
     })
   } catch (err) {
@@ -57,11 +63,8 @@ router.get('/photo/:id', async (req, res) => {
 })
 
 // Route to upload an image
-//router.post('/upload', async (req, res) => {
 router.post('/upload', async (req, res) => {
   const maxUploadSize = 16 * 1024 * 1024 // 16MB
-
-  // console.log('req.files:', req.files); // Debugging line
 
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.')
@@ -73,72 +76,12 @@ router.post('/upload', async (req, res) => {
   const { name, desc } = req.body
   const imageFile = req.files.image
 
-  let metadata = {}
   try {
-    // Extract metadata from the image using sharp
-    const image = sharp(imageFile.data).withMetadata().toFormat('jpeg')
-    metadata = await image.metadata()
-
-    // Convert EXIF to display in Compass
-    if (metadata.exif) {
-      metadata.exif = exifReader(metadata.exif)
-    }
-
-    // Convert GPS coordinates to decimal format
-    const gpsKeys = [
-      'GPSLatitude',
-      'GPSLongitude',
-      'GPSLatitudeRef',
-      'GPSLongitudeRef'
-    ]
-    const gpsData = findKeys(metadata, gpsKeys)
-
-    if (
-      gpsData.GPSLatitude &&
-      gpsData.GPSLongitude &&
-      gpsData.GPSLatitudeRef &&
-      gpsData.GPSLongitudeRef
-    ) {
-      const lat = gpsData.GPSLatitude
-      const lon = gpsData.GPSLongitude
-      const latRef = gpsData.GPSLatitudeRef
-      const lonRef = gpsData.GPSLongitudeRef
-
-      const { latitude, longitude } = latLonToDecimal(lat, lon, latRef, lonRef)
-      metadata.latitudeDecimal = latitude
-      metadata.longitudeDecimal = longitude
-    }
+    addImage(name, desc, imageFile)
+    res.status(200).redirect('/images')
   } catch (err) {
-    console.error('Error extracting metadata:', err)
-  }
-
-  /* 
-        TODO: 
-        -Add check for lat/lon metadata and prompt user to enter manually if not found
-        -Add a photo download option (res.download(file.ext))
-
-    */
-  const timeStampUTC = Date.now()
-  // Create a new image document
-  const newImage = {
-    name: name,
-    desc: desc,
-    timeStampUTC,
-    img: {
-      //data: modifiedImageBuffer,
-      data: imageFile.data,
-      contentType: imageFile.mimetype
-    },
-    metadata: metadata
-  }
-  try {
-    const imageCollection = await photos()
-    await imageCollection.insertOne(newImage)
-    console.log('Image uploaded successfully!')
-    res.redirect('/images')
-  } catch (err) {
-    console.error('Error saving image:', err)
-    res.status(500).send('Server error')
+    console.error(err)
+    res.status(500).send('Error uploading image')
   }
 })
 

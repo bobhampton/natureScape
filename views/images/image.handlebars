@@ -1,23 +1,41 @@
-<div class="image-details" id="image-details">
-    <img class="responsive-img" src="data:image/{{photo.img.contentType}};base64,{{photo.img.data}}" alt="{{photo.name}}" />
-    <div class="image-text">
-        <h5 class="image-name">NAME: {{photo.name}}</h5>
-        <p class="image-desc">DESCRIPTION: {{photo.desc}}</p>
-        <button onclick="deleteImage('{{photo._id}}')">Delete</button>
+<!-- Display single image from database -->
+<h1>Photo name: {{photo.photo_name}}</h1>
+<hr />
+<div>
+    <img
+      class="responsive-img"
+      src="data:image/{{photo.img.contentType}};base64,{{photo.img.data}}"
+      alt="{{photo.photo_name}}"
+    />
+    <hr />
+    <div class="single-photo-description">
+      <p>Photo description: </p>
+        <p>{{photo.photo_description}}</p>
     </div>
+    <hr />
+    <div class="all-image-details">
+      <ul>
+        <li>Uploaded by (user_id): 
+          {{#checkNull photo.user_id}}
+          {{/checkNull}}
+        </li>
+        <li>Taken on (date_time_taken): 
+          {{#checkNull photo.date_time_taken}}
+          {{/checkNull}}
+        </li>
+        <li>Uploaded on (date_time_uploaded): 
+          {{#checkNull photo.date_time_uploaded}}
+          {{/checkNull}}
+        </li>
+        <li>Likes (likes): {{photo.likes}}</li>
+        <li>Verification rating (verification_rating): {{photo.verification_rating}}</li>
+        <li>Location (location): 
+          <pre>{{#printObj photo.location}} 
+            {{/printObj}}
+          </pre>
+        </li>
+        <li>Content type (img.contentType): {{photo.img.contentType}}</li>
+    </div>
+    <button id="single-image-delete" onclick="deleteImageSingleView('{{photo._id}}')">Delete</button>
 </div>
-<script>
-    async function deleteImage(id) {
-        console.log(`Attempting to delete image with id: ${id}`); // Debugging line
-        const response = await fetch(`/images/${id}`, {
-            method: 'DELETE'
-        });
-        if (response.ok) {
-            console.log('Image deleted successfully'); // Debugging line
-            window.location.href = '/images'; // Refresh page after deletion
-        } else {
-            console.error('Error deleting image:', response.statusText); // Debugging line
-            alert('Error deleting image');
-        }
-    }
-</script>
+
