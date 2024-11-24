@@ -1,5 +1,6 @@
 import { users } from "../config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
+import bcrypt from 'bcryptjs';
 import validation from './helpers.js';
 
 const exportedMethods = {
@@ -36,9 +37,9 @@ const exportedMethods = {
     const userCollection = await users();
     //Inserting the new data.
     const insertInfo = await userCollection.insertOne(userData);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add the new team";
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add the new user";
 
-    // Return the newly added team
+    // Return the newly added user
     return await this.getuserById(insertInfo.insertedId.toString());
 },
 
