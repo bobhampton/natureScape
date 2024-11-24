@@ -57,7 +57,7 @@ router
     }
 
     try{
-      let user = await userData.getUserById(req.params.teamId);
+      let user = await userData.getUserById(req.params.userId);
 
       return res.status(200).json(user);
     }catch(e){
