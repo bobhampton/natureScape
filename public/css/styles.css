@@ -2,7 +2,7 @@
 
 /* Bob CSS */
 /* General Styles */
-body {
+/* body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -14,10 +14,10 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
-}
+} */
 
 /* Form Styles */
-input#name {
+/* input#name {
   width: 900px;
   height: 30px;
   text-align: left;
@@ -66,10 +66,10 @@ form div {
 
 .file-upload-container input[type="file"] {
   flex: 1;
-}
+} */
 
 /* Image Styles */
-.responsive-img {
+/* .responsive-img {
   max-width: 100%;
   max-height: 100vh;
   height: auto;
@@ -146,7 +146,7 @@ form div {
   margin-left: 10px;
   margin-right: 10px;
   text-align: center;
-  display: -webkit-box; /* Use flexbox for multi-line ellipsis */
+  display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
@@ -169,10 +169,10 @@ form div {
   justify-content: left;
   margin-bottom: 20px;
   text-align: left;
-}
+} */
 
 /* Button Styles */
-.submit-button {
+/* .submit-button {
   font-weight: bold;
   justify-content: center;
   align-items: center;
@@ -193,10 +193,10 @@ form div {
   background-color: rgb(48, 120, 192);
   box-shadow: 0 5px #878787;
   transform: translateY(2px);
-}
+} */
 
 /* Header and Navigation Styles */
-header {
+/* header {
   width: 100%;
   background-color: #f8f8f8;
   padding: 10px 0;
@@ -248,10 +248,10 @@ nav a:hover {
   text-align: center;
   font-size: 25px;
   color: #000000;
-}
+} */
 
 /* Dark Mode Styles */
-body.dark-mode {
+/* body.dark-mode {
   background-color: #121212;
   color: white;
 }
@@ -292,10 +292,10 @@ body.dark-mode .location-list li:hover {
 
 body.dark-mode .nav-link:hover {
   color: #7957ff;
-}
+} */
 
 /* Toggle Switch Styles */
-.toggle-container {
+/* .toggle-container {
   display: flex;
   align-items: center;
   margin-right: 2px; 
@@ -356,30 +356,30 @@ input:checked + .slider:before {
   transform: translateX(26px);
   background-color: #cbcbcb;
   border: double rgb(112, 171, 230);
+}  */
+
+/* LOCATION LIST CSS ----------------------------------------------------------------------------------------------------------------------------------------- */
+/* #location-list {
+  width: 30%;
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+  padding: 10px;
 }
 
-/* VRAJ CSS */
 #map {
-    height: 400px;
-    width: 100%;
+  width: 70%;
+  height: 100%;
 }
 
-.location-list {
-    max-height: 400px;
-    overflow-y: auto;
-    margin-bottom: 20px;
-    padding: 0;
-    list-style-type: none;
+.location-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.location-list li {
-    padding: 10px;
-    border: 1px solid #ccc;
-    margin-bottom: 5px;
-    cursor: pointer;
-    background-color: #f9f9f9;
-}
-
-.location-list li:hover {
-    background-color: #e0e0e0;
-}
+.location-item:hover {
+  background-color: #f0f0f0;
+} */
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------- */

@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+}
+
+#location-list {
+    width: 30%;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+}
+
+#map {
+    width: 70%;
+    height: 100%;
+}
+
+.location-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.location-item:hover {
+    background-color: #f0f0f0;
+}
