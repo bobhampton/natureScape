@@ -1,40 +1,43 @@
-    <div class="user-form-container">
-        <h2>Create an Account</h2>
+<div class="user-form-container">
+    <h2>Create an Account</h2>
 
-        <form action="/users" method="POST">
-            <!-- First Name -->
-            <label for="firstname"><b>First Name</b></label>
-            <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+    <form action="/users" method="POST">
+        <!-- First Name -->
+        <label for="firstname"><b>First Name</b></label>
+        <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
 
-            <!-- Last Name -->
-            <label for="lastname"><b>Last Name</b></label>
-            <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
+        <!-- Last Name -->
+        <label for="lastname"><b>Last Name</b></label>
+        <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
 
-            <!-- Email -->
-            <label for="email"><b>Email</b></label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <!-- Email -->
+        <label for="email"><b>Email</b></label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-            <!-- Username -->
-            <label for="username"><b>Username</b></label>
-            <input type="text" id="username" name="username" placeholder="Enter a username" required>
+        <!-- Username -->
+        <label for="username"><b>Username</b></label>
+        <input type="text" id="username" name="username" placeholder="Enter a username" required>
 
-            <!-- Password -->
-            <label for="password"><b>Password</b></label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <!-- Password -->
+        <label for="password"><b>Password</b></label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-            <!-- Terms and Conditions Checkbox -->
+        <!-- Terms and Conditions Checkbox -->
+        <div class="terms-container">
             <label for="terms">
                 <input type="checkbox" id="terms" name="terms" required>
-                <span>I agree to the <a href="/terms" target="_blank">Terms & Conditions</a></span>
+                I agree to the <a href="/terms" target="_blank">Terms & Conditions</a>
             </label>
+        </div>
 
-            <!-- Submit Button -->
-            <button type="submit">Create Account</button>
-        </form>
+        <!-- Submit Button -->
+        <button type="submit">Create Account</button>
+    </form>
 
         <div class="login-link">
             <p>Already have an account? <a href="../home/home">Log in here</a></p>
             <p>Visit your <a href="/profile">profile page</a> (coming soon!)</p>
         </div>
-    </div>
 
+    </div>
+</div>
