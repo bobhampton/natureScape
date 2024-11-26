@@ -2,5 +2,8 @@
 node_modules/
 package-lock.json
 
+# ignore env file
+.env
+
 # macOS .DS_Store files
 .DS_Store

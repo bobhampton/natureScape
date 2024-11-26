@@ -5,17 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- Reset Style Sheet -->
+    <link rel="stylesheet" type="text/css" href="/public/css/reset.css">
 
-    <!-- Our CSS -->
+    <!-- Mapbox CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
+
+    <!-- Static CSS -->
     <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
 
-    <!-- Leaflet Javascript -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href={{css}}>
+
+    <!-- Mapbox Javascript -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
 </head>
 <body>
-    <div class="container">
+
+    <!-- NAV BAR -->
+    <nav>
+        <div class="nav-bar">
+            <i class='bx bx-menu sidebarOpen'></i>
+            <span class="logo navLogo"><a href="#">NatureScape</a></span>
+
+            <div class="menu">
+
+                <div class="logo-toggle">
+                    <span class="logo"><a href="#">NatureScape</a></span>
+                    <i class='bx bx-x-circle sidebarClose'></i>
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/locationlist">Locations</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="#">Profile</a></li>
+                </ul>
+            </div>
+            <div class="darkLight-searchBox">
+                <div class="dark-light">
+                    <i class='bx bx-moon moon' ></i>
+                    <i class='bx bx-sun sun' ></i>
+                </div>
+
+                <div class="searchBox">
+                    <div class="searchToggle">
+                        <i class='bx bx-x-circle cancel'></i>
+                        <i class='bx bx-search search'></i>
+                    </div>
+
+                    <div class="search-field">
+                        <input type="text" placeholder="Search...">
+                        <i class='bx bx-search'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- NAV BAR -->
+
+    {{!-- <div class="container">
         <header>
             <nav>
                 <div id="navLinks">
@@ -36,8 +88,9 @@
                 </div>
             </nav>
         </header>
-        {{{body}}}
-    </div>
+    </div> --}}
+    {{{body}}}
     <script src="/public/js/main.js"></script>
+    <script src={{js}}></script>
 </body>
 </html>
