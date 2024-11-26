@@ -1,0 +1,67 @@
+body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .terms-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .terms-container h1 {
+            text-align: center;
+        }
+        .terms-container .checkbox-container {
+            margin: 20px 0;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="terms-container">
+        <h1>Terms and Agreement</h1>
+        <p>
+            By clicking the "Submit" button, you agree to the following terms:
+        </p>
+        <ul>
+            <li>All published work will be available for other users, including non-authenticated users, to view, comment on, and potentially modify.</li>
+            <li>You grant NatureScape permission to use any published work for purposes deemed beneficial to the website, including but not limited to promotional or analytical purposes.</li>
+            <li>Any saved or non-published work may be changed or modified by NatureScape at its discretion, and you agree not to hold NatureScape liable for these actions.</li>
+            <li>Personal information shared with NatureScape may be used for purposes beyond what is directly published by the user, including data analytics, presenting suggested items, or other related uses.</li>
+        </ul>
+        <div class="checkbox-container">
+            <input type="checkbox" id="agree" name="agree" required>
+            <label for="agree">I have read and agree to the Terms and Agreement.</label>
+        </div>
+        <button type="submit" onclick="handleSubmit()">Submit</button>
+    </div>
+
+    <script>
+        function handleSubmit() {
+            const checkbox = document.getElementById('agree');
+            if (checkbox.checked) {
+                alert("Thank you for agreeing to the Terms and Agreement. Your submission is being processed.");
+                // Submit form or perform related actions
+            } else {
+                alert("You must agree to the Terms and Agreement before submitting.");
+            }
+        }
+    </script>
+</body>
+</html>

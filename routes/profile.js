@@ -9,7 +9,7 @@ router
   .route('/:userId')//get me all profiles for a team id
   //localhost:3000/profile/507f1f77bcf86cd799439011
   .get(async (req, res) => {
-     //code here for GET  get allgames for the team
+     //code here for GET  get all profile for the team
      const Goo = req.params.userId;
      try{
        validation.checkId(Goo, "User ID");//gets teamID from line 9
