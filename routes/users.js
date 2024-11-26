@@ -4,9 +4,6 @@ import validation from '../data/helpers.js'
 
 const router = Router();
 
-
-
-
 router
 .route('/')//Localhost:3000/users/   --Gets all users--
   .get(async (req, res) => {

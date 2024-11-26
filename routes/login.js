@@ -1,5 +1,6 @@
 import { users } from "../config/mongoCollections.js"
 import { ObjectId } from "mongodb"
+import * as login from "/data/login.js"
 import express from "express"
 
 const router = express.Router();
@@ -15,8 +16,13 @@ router.get('/', async (req, res) => {
 });
 
 //POST for login logic
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
     //Handle login logic and redirect
+
+    let match = bcrypt.compare(password, 'HASHED_PW_FROM_DB');
+    //Phony username
+    req.session.user = {firstName: 'John', lastName: 'Doe', userId: '123'};
+    res.redirect('/private');
 });
 
 export default router

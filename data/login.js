@@ -1,38 +1,42 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-const saltRounds = 16;
 
-const plainTextPassword = 'my_password';
-const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
+//Test password
+let testPassword = "myTestPassword";
+let saltRounds = 16;
+let testPasswordHash = bcrypt.hash(testPassword, saltRounds);
 
-function loginMiddleware(req, res, next) {
+const userCollection = await users();
 
-}
+async function checkUser(username) {
+    let userFound = await userCollection.findOne(
+        { 'username': username}
+    )
+    if (userFound === null) {
+        throw "User not found";
+    }
+    
+    return userFound;
 
-let compareToSherlock = false;
+};
 
-try {
-    compareToSherlock = await bcrypt.compare('elementarymydearwatson', hashedPassword);
-} catch (error) {
-    //no op
-}
+const checkPassword = async (username, password) => {
+    //let userFound = await checkUser(username);
+    //let storedPasswordHash = userFound.password_hash;
+    let storedPasswordHash = testPasswordHash;
+    
+    let compareToMatch = false;
+    
+    try {
+        compareToMatch = bcrypt.compare(password, storedPasswordHash);
+    } catch (error) {
+        //no op
+    }
+    
+    return compareToMatch;
+};
 
-if (compareToSherlock) {
-    console.log("The passwords match... This should not be");
-} else {
-    console.log('The passwords do not match');
-}
-
-let compareToMatch = false;
-
-try {
-    compareToMatch = await bcrypt.compare('my_password', hash);
-} catch (error) {
-    //no op
-}
-
-if (compareToMatch) {
-    console.log("THe passwords match... This is good");
-} else {
-    console.log('The passwords do not match, this is not good, they should match');
-}
+export {
+    checkUser,
+    checkPassword
+};
