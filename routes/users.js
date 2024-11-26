@@ -23,24 +23,34 @@ router
   })
   .post(async (req, res) => {
     //code here for POST
+    // const {firstname, lastname, email, username, password_hash} = req.body;
+    // if(!firstname || !lastname || !email || !username || !password_hash){
+    //   return res.status(400).render('users/user', {error : "Missing fields"});
+    // }
     let userinfo = req.body;
     if(!userinfo || Object.keys(userinfo).length === 0){
       return res
         .status(400)
-        .json({error: "There are no fields in the request body"});
+        .render("users/user",{error: "There are no fields in the request body"});
     }
 
   try{
-    //teaminfo is the information in the request body
+    firstname = userinfo.firstname;
+    lastname = userinfo.lastname;
+    email = userinfo.email;
+    username = userinfo.username;
+    password_hash = userinfo.password_hash;
+
+    //userInfo is the information in the request body
     validation.checkUser(firstname, lastname, email, username, password_hash);
   }catch(e){
-      return res.status(400).json({error: e});
+      return res.status(400).render('users/user',{error: e});
   };
 
   try{
     const newUser = await userData.createUser(firstname, lastname, email, username, password_hash);
 
-      res.status(200).json(newUser);
+    res.redirect(`../profilePage/${newUser._id}`);
   }catch(e){
       res.sendStatus(400).json({error: e});
   }
