@@ -10,9 +10,12 @@ const exportedMethods = {
          email,
          username,
          password_hash,
+         agreement, 
+         bio
          ){
             // Validate inputs
-    const newUser = validation.checkUser(first_name, last_name, email, username, password_hash, bio);
+            //Add validation for agreement and bio
+    const newUser = validation.checkUser(first_name, last_name, email, username, password_hash, agreement, bio);
 
     const theCurrentDate = new Date();
     //console.log(theCurrentDate);
@@ -25,11 +28,15 @@ const exportedMethods = {
 
     // Set additional fields for the new user
     const userData = {
-      ...newUser,
+      //Add the bio and terms 
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      username:username,
+      password_hash: password_hash,
       creationDate: creationDate,
       profile: {
-        
-        bio: "",
+        bio: bio,
       },
     };
 
@@ -40,12 +47,13 @@ const exportedMethods = {
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add the new user";
 
     // Return the newly added user
-    return await this.getuserById(insertInfo.insertedId.toString());
+    return await this.getUserById(insertInfo.insertedId.toString());
 },
 
 async getAllUsers() {
     const userCollection = await users();
-    const userList = await userCollection.find({}).project({ _id: 1, name: 1 }).toArray();
+    const userList = await userCollection.find({}).toArray();
+    //const userList = await userCollection.find({}).project({ _id: 1, name: 1 }).toArray();
     if (!userList) throw "Couldn't get all the users";
     return userList;
 },
