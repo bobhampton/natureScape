@@ -6,12 +6,73 @@ import { photos, locations } from '../config/mongoCollections.js'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
 import { findKeys, latLonToDecimal } from '../routes/helpers.js'
+import userData from '../data/users.js'
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const db = await dbConnection()
 await db.dropDatabase()
+
+//Seeding users
+let user1;
+let user2;
+let user3;
+let user4;
+let user5;
+
+try {
+  // Create Users
+  user1 = await usersData.createUser(
+      "John",
+      "Doe",
+      "johndoe@gmail.com",
+      "johndoe",
+      "hashed_password_123"
+  );
+
+  user2 = await usersData.createUser(
+      "Jane",
+      "Smith",
+      "janesmith@hotmail.com",
+      "janesmith",
+      "hashed_password_456"
+  );
+
+  user3 = await usersData.createUser(
+      "Alice",
+      "Johnson",
+      "alicejohnson@yahoo.com",
+      "alicejohnson",
+      "hashed_password_789"
+  );
+
+  user4 = await usersData.createUser(
+    "Donald",
+    "Trump",
+    "Donny@yahoo.com",
+    "DJT",
+    "hashed_password_012"
+  );
+
+  user5 = await usersData.createUser(
+    "Scott",
+    "Mescudi",
+    "KidCudi@gmail.com",
+    "KidCudi",
+    "hashed_password_90210"
+  );
+
+  console.log("Users created successfully!");
+  //console.log("User 1:", user1);
+  //console.log("User 2:", user2);
+  //console.log("User 3:", user3);
+  //console.log("User 4:", user3);
+  //console.log("User 5:", user3);
+} catch (error) {
+  console.error("Error while creating users:", error);
+}
 
 // Function to find location id by area and state
 const findLocationId = async (area, state) => {
