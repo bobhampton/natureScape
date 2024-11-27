@@ -24,42 +24,42 @@ let user5;
 
 try {
   // Create Users
-  user1 = await usersData.createUser(
+  user1 = await userData.createUser(
       "John",
       "Doe",
-      "johndoe@gmail.com",
+      "example.user123@domain-name.com",
       "johndoe",
       "hashed_password_123"
   );
 
-  user2 = await usersData.createUser(
+  user2 = await userData.createUser(
       "Jane",
       "Smith",
-      "janesmith@hotmail.com",
+      "example.user123@domain-name.com",
       "janesmith",
       "hashed_password_456"
   );
 
-  user3 = await usersData.createUser(
+  user3 = await userData.createUser(
       "Alice",
       "Johnson",
-      "alicejohnson@yahoo.com",
+      "example.user123@domain-name.com",
       "alicejohnson",
       "hashed_password_789"
   );
 
-  user4 = await usersData.createUser(
+  user4 = await userData.createUser(
     "Donald",
     "Trump",
-    "Donny@yahoo.com",
+    "example.user123@domain-name.com",
     "DJT",
     "hashed_password_012"
   );
 
-  user5 = await usersData.createUser(
+  user5 = await userData.createUser(
     "Scott",
     "Mescudi",
-    "KidCudi@gmail.com",
+    "example.user123@domain-name.com",
     "KidCudi",
     "hashed_password_90210"
   );

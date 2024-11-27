@@ -69,7 +69,14 @@ router
     try{
       let user = await userData.getUserById(req.params.userId);
 
-      return res.status(200).json(user);
+      return res.status(200).render('profilePage/userProfile', {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        username: user.username,
+        bio: user.profile.bio
+
+      });
     }catch(e){
       return res.status(404).json({error: "User not found"});
     }
