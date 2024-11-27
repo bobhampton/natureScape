@@ -10,9 +10,12 @@ const exportedMethods = {
          email,
          username,
          password_hash,
+         agreement, 
+         bio
          ){
             // Validate inputs
-    const newUser = validation.checkUser(first_name, last_name, email, username, password_hash);
+            //Add validation for agreement and bio
+    const newUser = validation.checkUser(first_name, last_name, email, username, password_hash, agreement, bio);
 
     const theCurrentDate = new Date();
     //console.log(theCurrentDate);
@@ -25,6 +28,7 @@ const exportedMethods = {
 
     // Set additional fields for the new user
     const userData = {
+      //Add the bio and terms 
       first_name: first_name,
       last_name: last_name,
       email: email,
@@ -32,7 +36,7 @@ const exportedMethods = {
       password_hash: password_hash,
       creationDate: creationDate,
       profile: {
-        bio: "",
+        bio: bio,
       },
     };
 

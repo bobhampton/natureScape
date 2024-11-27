@@ -6,7 +6,7 @@ body {
     height: 100vh;
 }
 
-.user-dashboard-container{
+.user-form-container{
     margin-top: 75px;
     display: flex;
     flex: 1;

@@ -92,6 +92,15 @@ const exportedMethods = {
             if(passwordHash.length === 0){
                 throw "The password cannot be empty of just spaces";
             };
+
+            if(typeof agreement !== 'boolean'){
+              throw "The agreement must be a boolean"
+            }
+            //If false
+            if(!agreement){
+              throw "You must check the box to agree to Terms And Conditions"
+            }
+
         },
 
         validateEmail (email){
