@@ -14,12 +14,17 @@ router.get('/', async (req, res) => {
       _id: image._id,
       photo_name: image.photo_name,
       photo_description: image.photo_description,
+      likes: image.likes,
       img: {
         data: image.img.data.toString('base64'),
         contentType: image.img.contentType
       }
     }))
-    res.render('images/index', { layout: 'main', images: formattedImages })
+
+    res.render('images/index', {
+      css: '/public/css/image_index.css',
+      images: formattedImages
+    })
   } catch (err) {
     console.log(err)
     res.status(500).send('Error retrieving images')
@@ -29,16 +34,19 @@ router.get('/', async (req, res) => {
 // Route to display a specific photo
 router.get('/photo/:id', async (req, res) => {
   const photoId = req.params.id
+
   try {
     const imageCollection = await photos()
     const photoData = await imageCollection.findOne({
       _id: new ObjectId(photoId)
     })
+
     if (!photoData) {
       return res.status(404).send('Photo not found')
     }
-    const base64Image = photoData.img.data.toString('base64')
+
     res.render('images/image', {
+      css: '/public/css/image.css',
       photo: {
         _id: photoData._id,
         photo_name: photoData.photo_name,
@@ -51,7 +59,7 @@ router.get('/photo/:id', async (req, res) => {
         location: photoData.location,
         img: {
           contentType: photoData.img.contentType,
-          data: base64Image
+          data: photoData.img.data.toString('base64')
         },
         metadata: photoData.metadata
       }
@@ -99,6 +107,41 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     console.log(err)
     res.status(500).send('Error deleting image')
+  }
+})
+
+// Route to like an image
+router.post('/like/:id', async (req, res) => {
+  try {
+    // Double check that image exists in DB
+    const imageCollection = await photos()
+    const imageId = new ObjectId(req.params.id)
+    const image = await imageCollection.findOne({ _id: imageId })
+
+    if (!image) {
+      return res.status(404).send(`Image with id ${req.params.id} not found`)
+    }
+
+    // Increment the number of likes
+    const result = await imageCollection.findOneAndUpdate(
+      { _id: imageId },
+      { $inc: { likes: 1 } },
+      { returnDocument: 'after' }
+    )
+
+    // Make sure the number of likes were updated correctly
+    if (image.likes === result.likes) {
+      return res
+        .status(500)
+        .send(`Failed to update likes for imageId: ${req.params.id}`)
+    }
+
+    // Return the updated likes count
+    //console.log(`Successfully updated likes for imageId: ${req.params.id}`); // Debugging
+    res.status(200).json({ likes: result.likes })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('Error liking image')
   }
 })
 

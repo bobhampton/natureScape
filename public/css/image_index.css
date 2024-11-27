@@ -1,0 +1,116 @@
+.responsive-img {
+  max-width: 100%;
+  max-height: 100vh;
+  height: auto;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1 1 calc(33.333% - 10px);
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.image-item {
+  position: relative; /* Add this to position the heart icon */
+  flex: 1 1 calc(33.333% - 10px);
+  box-sizing: border-box;
+  text-align: center;
+  border: 2px outset black;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.like-heart {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.heart-icon {
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.like-count {
+  font-size: 14px;
+}
+
+.like-heart:hover {
+  cursor: pointer;
+}
+
+#image-list-description {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-height: 3.6em;
+  line-height: 1.1em;
+}
+
+#image-index-header {
+  text-align: center;
+  margin-top: 90px;
+  margin-bottom: 20px;
+}
+
+.image-upload {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#image-index-upload-form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+textarea#desc {
+  width: 900px;
+  height: 120px;
+}
+
+input#name {
+  width: 900px;
+  height: 30px;
+}
+
+#image-index-display-name {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#image-index-delete-button {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#image-index-file-upload-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

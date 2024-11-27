@@ -1,0 +1,39 @@
+#single-image {
+  text-align: center;
+  margin-top: 90px;
+  margin-bottom: 20px;
+}
+
+#single-image-delete {
+  margin-bottom: 20px;
+}
+
+.all-image-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: left;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  text-align: left;
+}
+
+.single-photo-description {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  text-align: left;
+}
+
+.responsive-img {
+  max-width: 100%;
+  max-height: 100vh;
+  height: auto;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1 1 calc(33.333% - 10px);
+  object-fit: contain;
+  margin: 0 auto;
+}

@@ -16,18 +16,42 @@ document
     }
     console.log('Form submitted successfully')
   })
-//TODO: Check if dark mode is enabled, and if so, refresh page with DM enabled
-// Delete an image from the images list page
+
 async function deleteImageFromList (id) {
-    console.log(`Attempting to delete image with id: ${id}`)
-    const response = await fetch(`/images/${id}`, {
-      method: 'DELETE'
-    })
-    if (response.ok) {
-      console.log('Image deleted successfully')
-      location.reload() // Refresh the page after deletion
-    } else {
-      console.error('Error deleting image:', response.statusText)
-      alert('Error deleting image')
+  console.log(`Attempting to delete image with id: ${id}`)
+  const response = await fetch(`/images/${id}`, {
+    method: 'DELETE'
+  })
+  if (response.ok) {
+    console.log('Image deleted successfully')
+    //location.reload() // Refresh the page after deletion
+    const image = document.getElementById(`image-${id}`)
+    if (image) {
+      image.remove()
     }
+  } else {
+    console.error('Error deleting image:', response.statusText)
+    alert('Error deleting image')
   }
+}
+
+// Function to like an image
+async function likeImage (id) {
+  //console.log(`Attempting to like image with id: ${id}`); // Debugging
+  const response = await fetch(`/images/like/${id}`, {
+    method: 'POST'
+  })
+  if (response.ok) {
+    const data = await response.json()
+    //console.log('Image liked successfully'); // Debugging
+
+    // Update the number of likes in the DOM
+    const likesElement = document.getElementById(`likes-${id}`)
+    if (likesElement) {
+      likesElement.textContent = data.likes
+    }
+  } else {
+    console.error('Error liking image:', response.statusText)
+    alert('Error liking image')
+  }
+}
