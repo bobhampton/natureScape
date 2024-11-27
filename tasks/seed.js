@@ -1,4 +1,5 @@
 import { dbConnection, closeConnection } from '../config/mongoConnection.js'
+import bcrypt from 'bcryptjs'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -21,47 +22,52 @@ let user2;
 let user3;
 let user4;
 let user5;
+let saltRounds = 16;
 
 try {
   // Create Users
-  user1 = await usersData.createUser(
+  let userpassword = await bcrypt.hash("hashed_password_123", saltRounds);
+  user1 = await userData.createUser(
       "John",
       "Doe",
       "johndoe@gmail.com",
       "johndoe",
-      "hashed_password_123"
+      userpassword
   );
-
-  user2 = await usersData.createUser(
+  userpassword = await bcrypt.hash("hashed_password_456", saltRounds);
+  user2 = await userData.createUser(
       "Jane",
       "Smith",
       "janesmith@hotmail.com",
       "janesmith",
-      "hashed_password_456"
+      userpassword
   );
 
-  user3 = await usersData.createUser(
+  userpassword = await bcrypt.hash("hashed_password_789", saltRounds);
+  user3 = await userData.createUser(
       "Alice",
       "Johnson",
       "alicejohnson@yahoo.com",
       "alicejohnson",
-      "hashed_password_789"
+      userpassword
   );
 
-  user4 = await usersData.createUser(
+  userpassword = await bcrypt.hash("hashed_password_012", saltRounds);
+  user4 = await userData.createUser(
     "Donald",
     "Trump",
     "Donny@yahoo.com",
     "DJT",
-    "hashed_password_012"
+    userpassword
   );
 
-  user5 = await usersData.createUser(
+  userpassword = await bcrypt.hash("hashed_password_90210", saltRounds);
+  user5 = await userData.createUser(
     "Scott",
     "Mescudi",
     "KidCudi@gmail.com",
     "KidCudi",
-    "hashed_password_90210"
+    userpassword
   );
 
   console.log("Users created successfully!");
