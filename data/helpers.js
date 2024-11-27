@@ -60,9 +60,9 @@ const exportedMethods = {
                 throw "The last name cannot be empty of just spaces";
             };
 
-            if(!this.validateEmail(userEmail)){
-                throw "You must provide a valid email";
-            };
+            //if(!this.validateEmail(userEmail)){
+            //    throw "You must provide a valid email";
+            //};
             if(typeof userEmail !== 'string'){
                 throw "The email must be a string"
             };
