@@ -69,6 +69,7 @@ router
     }
   })
 
+router
   .route('/newUser')
   //How to get to the newUser form
   .get(async(req, res)=>{
@@ -108,10 +109,6 @@ router
         });
     }    
   });
-
-
-
-
 
 router
   .route('/:userId') //localhost:3000/teams/507f1f77bcf86cd799439011  --teamID is 507f1f77bcf86cd799439011--
