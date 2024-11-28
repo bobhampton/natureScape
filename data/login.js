@@ -19,12 +19,11 @@ async function checkUser(username) {
 const checkPassword = async (username, password) => {
   let userFound = await checkUser(username);
   let storedPasswordHash = userFound.password_hash;
-  //let storedPasswordHash = testPasswordHash;
   
   let compareToMatch = false;
   
   try {
-    compareToMatch = bcrypt.compare(password, storedPasswordHash);
+    compareToMatch = await bcrypt.compare(password, storedPasswordHash);
   } catch (error) {
     //no op
   }

@@ -1,6 +1,4 @@
-import { users } from "../config/mongoCollections.js"
-import { ObjectId } from "mongodb"
-import * as login from "../data/login.js"
+import { checkUser, checkPassword } from "../data/login.js"
 import express from "express"
 
 const router = express.Router();
@@ -19,11 +17,17 @@ router.get('/', async (req, res) => {
 router.post('/login', async (req, res) => {
     //Get username and password from req.body
     const {username, password} = req.body;
+    const user = await checkUser(username);
 
-    let match = bcrypt.compare(password, 'HASHED_PW_FROM_DB');
-    //Phony username
-    req.session.user = {firstName: 'John', lastName: 'Doe', userId: '123'};
-    res.redirect(`profilePage/userProfile/${}`);
+    let match = await checkPassword(username, password);
+    
+    if (match) {
+      req.session.user = user;
+      res.redirect(`profilePage/userProfile/${user._id}`);
+    } else {
+      res.render('home/home', {title: "NatureScape", css: "/public/css/home.css", js: "/public/js/login.js", loginMessage: "Incorrect credentials" });
+    }
+    
 });
 
 export default router
