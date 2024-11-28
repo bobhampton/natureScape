@@ -4,7 +4,6 @@ import validation from '../data/helpers.js'
 import { users } from '../config/mongoCollections.js'
 
 const router = Router()
-const router = Router();
 
 router
 // .route('/')//Localhost:3000/users/   --Gets all users--
@@ -68,6 +67,8 @@ router
     } catch (e) {
       return res.sendStatus(404).send(e)
     }
+  })
+
   .route('/newUser')
   //How to get to the newUser form
   .get(async(req, res)=>{
@@ -149,19 +150,6 @@ router
       })
     } catch (e) {
       return res.status(404).json({ error: 'User not found' })
-    try{
-      let user = await userData.getUserById(req.params.userId);
-
-      return res.status(200).render('profilePage/userProfile', {
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-        username: user.username,
-        bio: user.profile.bio,
-        css: "/public/css/userProfile.css"
-      });
-    }catch(e){
-      return res.status(404).json({error: "User not found"});
     }
   })
   .delete(async (req, res) => {
@@ -200,8 +188,7 @@ router
     }
 
     try {
-      //console.log("made it here3")
-      let updateduser = await userData.updateTeam(
+      let updateduser = await userData.updateUser(
         req.params.userId,
         userinfo.firstname,
         userinfo.lastname,
