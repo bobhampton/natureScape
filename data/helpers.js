@@ -60,9 +60,9 @@ const exportedMethods = {
                 throw "The last name cannot be empty of just spaces";
             };
 
-            if(!this.validateEmail(userEmail)){
-                throw "You must provide a valid email";
-            };
+            //if(!this.validateEmail(userEmail)){
+            //    throw "You must provide a valid email";
+            //};
             if(typeof userEmail !== 'string'){
                 throw "The email must be a string"
             };
@@ -93,13 +93,14 @@ const exportedMethods = {
                 throw "The password cannot be empty of just spaces";
             };
 
-            if(typeof agreement !== 'boolean'){
+            /* if(typeof agreement !== 'boolean'){
               throw "The agreement must be a boolean"
-            }
+            } 
             //If false
             if(!agreement){
               throw "You must check the box to agree to Terms And Conditions"
             }
+              */
 
         },
 

@@ -1,8 +1,9 @@
-import { Router } from "express";
+import { Router } from 'express'
 import userData from '../data/users.js'
 import validation from '../data/helpers.js'
+import { users } from '../config/mongoCollections.js'
 
-const router = Router();
+const router = Router()
 
 router
 // .route('/')//Localhost:3000/users/   --Gets all users--
@@ -54,6 +55,21 @@ router
 //   });
 
 router
+  .route('/') //Localhost:3000/users/   --Gets all users--
+  .get(async (req, res) => {
+    //No inputs to validate
+    try {
+      let userList = await userData.getAllUsers()
+      // .find({})
+      // .project({_id: 1, name: 1,})
+      // .toArray();
+      return res.json(userList)
+    } catch (e) {
+      return res.sendStatus(404).send(e)
+    }
+  })
+
+router
   .route('/newUser')
   //How to get to the newUser form
   .get(async(req, res)=>{
@@ -94,85 +110,95 @@ router
     }    
   });
 
-
-
-
-
 router
-  .route('/:userId')//localhost:3000/teams/507f1f77bcf86cd799439011  --teamID is 507f1f77bcf86cd799439011--
+  .route('/:userId') //localhost:3000/teams/507f1f77bcf86cd799439011  --teamID is 507f1f77bcf86cd799439011--
   .get(async (req, res) => {
     //code here for GET
-    try{
-      req.params.userId = validation.checkId(req.params.userId, "Id of URL param");
-    } catch(e){
-      return res.status(400).json({error: e});
+    try {
+      req.params.userId = validation.checkId(
+        req.params.userId,
+        'Id of URL param'
+      )
+    } catch (e) {
+      return res.status(400).json({ error: e })
     }
 
-    try{
-      let user = await userData.getUserById(req.params.userId);
-
-      return res.status(200).render('profilePage/userProfile', {
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-        username: user.username,
-        bio: user.profile.bio,
-        css: "/public/css/userProfile.css"
-      });
-    }catch(e){
-      return res.status(404).json({error: "User not found"});
+    try {
+      let user = await userData.getUserById(req.params.userId)
+      res.render('profilePage/newUser', {
+        css: '/public/css/profile.css',
+        newUser: {
+          _id: user._id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          username: user.username,
+          password_hash: user.password_hash,
+          creation_time: user.creation_time,
+          agreement: user.agreement,
+          profile: {
+            bio: user.profile.bio,
+            profile_picture: {
+              data: user.profile.profile_picture.data.toString('base64'),
+              contentType: user.profile.profile_picture.contentType
+            }
+          }
+        }
+      })
+    } catch (e) {
+      return res.status(404).json({ error: 'User not found' })
     }
   })
   .delete(async (req, res) => {
     //code here for DELETE
-    try{
-      req.params.userId = validation.checkId(req.params.userId);
-    }catch(e){
-      return res.status(400).json({error: e});
+    try {
+      req.params.userId = validation.checkId(req.params.userId)
+    } catch (e) {
+      return res.status(400).json({ error: e })
     }
 
-    try{
-      let deletedUser = await userData.removeUser(req.params.teamId);
+    try {
+      let deletedUser = await userData.removeUser(req.params.teamId)
 
-      return res.status(200).json({_id:req.params.userId, deleted: true});
-    }catch(e){
+      return res.status(200).json({ _id: req.params.userId, deleted: true })
+    } catch (e) {
       //JSON always returns a string
-      return res.status(404).json({error: e});
+      return res.status(404).json({ error: e })
     }
   })
   .put(async (req, res) => {
     //console.log("made it here")
-    const userinfo = req.body;
+    const userinfo = req.body
     //code here for PUT
-    if(!userinfo || Object.keys(userinfo).length === 0){
+    if (!userinfo || Object.keys(userinfo).length === 0) {
       return res
         .status(400)
-        .json({error: "There are no fields in the request body"});
+        .json({ error: 'There are no fields in the request body' })
     }
 
-    try{
+    try {
       //console.log("made it here")
-      req.params.userId = validation.checkId(req.params.userId);
-      validation.checkUser(firstname, lastname, email, username, password_hash);
-    }catch{
-      return res.status(400).json({error: e});
+      req.params.userId = validation.checkId(req.params.userId)
+      validation.checkUser(firstname, lastname, email, username, password_hash)
+    } catch {
+      return res.status(400).json({ error: e })
     }
 
-    try{
-      //console.log("made it here3")
-      let updateduser = await userData.updateTeam(req.params.userId,
+    try {
+      let updateduser = await userData.updateUser(
+        req.params.userId,
         userinfo.firstname,
         userinfo.lastname,
         userinfo.email,
         userinfo.username,
         userinfo.password_hash
-        );
+      )
 
       //Explicit display of 200 status.
       //console.log("made it here4")
-      return res.status(200).json(updateduser); 
-    }catch(e){
-      return res.status(404).json({error:e});
+      return res.status(200).json(updateduser)
+    } catch (e) {
+      return res.status(404).json({ error: e })
     }
-  });
-export default router;
+  })
+export default router
