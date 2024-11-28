@@ -37,7 +37,7 @@ const exportedMethods = {
     // Setting up Tom as default profile picture lol
     const defaultProfilePicPath = path.join(
       __dirname,
-      '../public/images/tom.jpg'
+      '../public/images/defaultProfilePhoto.png'
     )
     const profilePicData = fs.readFileSync(defaultProfilePicPath)
     const profilePic = {
@@ -56,7 +56,7 @@ const exportedMethods = {
       creation_time: uploadTimeStampUTC,
       agreement: false,
       profile: {
-        bio: "This is my bio stuff. I'm a cool person, like Tom from MySpace. He was everyone's first friend back in the day and taught us all how to copy and paste HTML code into our profiles. Instead of becoming a dick like Zuckerberg, Tom quietly faded off into the void along with myspace. Mad respect Tom.",
+        bio: "This is my bio stuff.",
         profile_picture: profilePic
       }
     }

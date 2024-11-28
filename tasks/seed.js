@@ -218,6 +218,7 @@ const seedImages = async () => {
       date_time_taken: null,
       date_time_uploaded: null,
       likes: 0,
+      views: 0,
       verification_rating: 0,
       location: {
         latitude: null,

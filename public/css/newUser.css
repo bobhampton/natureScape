@@ -12,3 +12,11 @@ body {
     flex: 1;
     height: calc(100vh - 70px);
 }
+
+#profile-photo {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+}
