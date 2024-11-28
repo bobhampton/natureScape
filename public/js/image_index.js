@@ -55,3 +55,30 @@ async function likeImage (id) {
     alert('Error liking image')
   }
 }
+
+// Function to increment views for an image
+async function incrementViews(id) {
+  const response = await fetch(`/images/view/${id}`, {
+    method: 'POST'
+  });
+  if (response.ok) {
+    const data = await response.json();
+    //console.log(`Views incremented successfully for imageId: ${id}`); // Debugging
+
+    // Update the number of views in the DOM
+    const viewsElement = document.getElementById(`views-${id}`);
+    if (viewsElement) {
+      viewsElement.textContent = data.views;
+    }
+  } else {
+    console.error('Error incrementing views:', response.statusText);
+  }
+}
+
+// Add event listeners to image elements
+document.querySelectorAll('.image-item a').forEach(imageLink => { // Select all anchor elements inside the class image-item
+  imageLink.addEventListener('click', function(event) { // Add click event listener to each anchor element
+    const imageId = this.getAttribute('href').split('/').pop(); // Split the href attribute by / into array and pop last element (imageId)
+    incrementViews(imageId); // Pass imageId to incrementViews function that will make an AJAX request to increment views
+  });
+});
