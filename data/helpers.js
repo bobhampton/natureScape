@@ -83,7 +83,7 @@ const exportedMethods = {
             };
 
             if(!passwordHash){
-                throw "You must provide an password";
+                throw "You must provide a password";
             };
             if(typeof passwordHash !== 'string'){
                 throw "The password must be a string"

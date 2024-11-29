@@ -40,7 +40,7 @@ const exportedMethods = {
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add the new user";
 
     // Return the newly added user
-    return await this.getuserById(insertInfo.insertedId.toString());
+    return await this.getUserById(insertInfo.insertedId.toString());
 },
 
 async getAllUsers() {
