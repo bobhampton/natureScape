@@ -21,8 +21,29 @@ app.engine('handlebars', exphbs.engine({ defaultLayout: 'main',
       return value === null ? 'null' : value;
     }
   }
- }))
+ }
+))
+
 app.set('view engine', 'handlebars')
+
+app.use('/private', (req, res, next) => {
+    if (!req.session.user) {
+        //If no user logged in, redirect to login page
+        return res.redirect('/');
+    } else {
+        next();
+    }
+})
+
+app.use('/login', (req, res, next) => {
+    if (req.session.user) {
+        //If no user logged in, redirect to login page
+        return res.redirect('/private');
+    } else {
+        req.method = 'POST';
+        next();
+    }
+})
 
 // Set up routes
 configRoutes(app)

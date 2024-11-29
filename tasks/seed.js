@@ -1,4 +1,5 @@
 import { dbConnection, closeConnection } from '../config/mongoConnection.js'
+import bcrypt from 'bcryptjs'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -17,66 +18,71 @@ await db.dropDatabase()
 // Function to seed users
 const seedUsers = async () => {
   console.log('Seeding users...')
-
   //Seeding users
-  let user1
-  let user2
-  let user3
-  let user4
-  let user5
+  let user1;
+  let user2;
+  let user3;
+  let user4;
+  let user5;
+  let saltRounds = 16
 
   try {
-    // Create Users
+      // Create Users
+    let userpassword = await bcrypt.hash("hashed_password_123", saltRounds);
+    
     user1 = await usersData.createUser(
-      'John',
-      'Doe',
-      'johndoe@gmail.com',
-      'johndoe',
-      'hashed_password_123'
-    )
-
+        "John",
+        "Doe",
+        "johndoe@gmail.com",
+        "johndoe",
+        userpassword
+    );
+    userpassword = await bcrypt.hash("hashed_password_456", saltRounds);
     user2 = await usersData.createUser(
-      'Jane',
-      'Smith',
-      'janesmith@hotmail.com',
-      'janesmith',
-      'hashed_password_456'
-    )
+        "Jane",
+        "Smith",
+        "janesmith@hotmail.com",
+        "janesmith",
+        userpassword
+    );
 
+    userpassword = await bcrypt.hash("hashed_password_789", saltRounds);
     user3 = await usersData.createUser(
-      'Alice',
-      'Johnson',
-      'alicejohnson@yahoo.com',
-      'alicejohnson',
-      'hashed_password_789'
-    )
+        "Alice",
+        "Johnson",
+        "alicejohnson@yahoo.com",
+        "alicejohnson",
+        userpassword
+    );
 
+    userpassword = await bcrypt.hash("hashed_password_012", saltRounds);
     user4 = await usersData.createUser(
-      'Donald',
-      'Trump',
-      'Donny@yahoo.com',
-      'DJT',
-      'hashed_password_012'
-    )
+        "Donald",
+        "Trump",
+        "Donny@yahoo.com",
+        "DJT",
+        userpassword
+    );
 
+    userpassword = await bcrypt.hash("hashed_password_90210", saltRounds);
     user5 = await usersData.createUser(
-      'Scott',
-      'Mescudi',
-      'KidCudi@gmail.com',
-      'KidCudi',
-      'hashed_password_90210'
-    )
+        "Scott",
+        "Mescudi",
+        "KidCudi@gmail.com",
+        "KidCudi",
+        userpassword
+    );
 
-    console.log('Users seeded successfully!\n')
-    // console.log("User 1:", user1);
-    // console.log("User 2:", user2);
-    // console.log("User 3:", user3);
-    // console.log("User 4:", user3);
-    // console.log("User 5:", user3);
+    console.log("Users created successfully!");
+    //console.log("User 1:", user1);
+    //console.log("User 2:", user2);
+    //console.log("User 3:", user3);
+    //console.log("User 4:", user3);
+    //console.log("User 5:", user3);
   } catch (error) {
-    console.error('Error while creating users:', error)
+  console.error("Error while creating users:", error);
   }
-} //End of seedUsers
+}
 
 // Function to find location id by area and state
 const findLocationId = async (area, state) => {
@@ -361,4 +367,4 @@ const runSeed = async () => {
 } //End of runSeed
 
 // Run the seed function (main if you will...)
-runSeed()
+runSeed();

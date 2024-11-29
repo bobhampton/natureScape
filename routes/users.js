@@ -3,9 +3,8 @@ import userData from '../data/users.js'
 import validation from '../data/helpers.js'
 import { users } from '../config/mongoCollections.js'
 
-const router = Router()
+const router = Router();
 
-router
 // .route('/')//Localhost:3000/users/   --Gets all users--
 //   .get(async (req, res) => {
 //     //No inputs to validate
