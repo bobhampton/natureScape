@@ -1,34 +1,44 @@
 <div class="user-form-container">
-    <h2>Create an Account</h2>
+    <h1>{{title}}</h1>
 
-    <form action="/users" method="POST">
+    <form action="/users/newUser" method="POST">
         <!-- First Name -->
         <label for="firstname"><b>First Name</b></label>
-        <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+        <input type="text" id="firstname" name="tfirstname" placeholder="Enter your first name" required>
+        <br>
 
         <!-- Last Name -->
         <label for="lastname"><b>Last Name</b></label>
-        <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
+        <input type="text" id="lastname" name="tlastname" placeholder="Enter your last name" required>
+        <br>
 
         <!-- Email -->
         <label for="email"><b>Email</b></label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <input type="email" id="email" name="temail" placeholder="Enter your email" required>
+        <br>
 
         <!-- Username -->
         <label for="username"><b>Username</b></label>
-        <input type="text" id="username" name="username" placeholder="Enter a username" required>
+        <input type="text" id="username" name="tusername" placeholder="Enter a username" required>
+        <br>
 
         <!-- Password -->
         <label for="password"><b>Password</b></label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <input type="password" id="password" name="tpassword" placeholder="Enter your password" required>
+        <br>
 
         <!-- Terms and Conditions Checkbox -->
         <div class="terms-container">
             <label for="terms">
-                <input type="checkbox" id="terms" name="terms" required>
-                I agree to the <a href="/terms" target="_blank">Terms & Conditions</a>
+                <input type="checkbox" id="terms" name="tterms" required>
+                I agree to the <a href="/terms" target="_blank">Terms And Conditions</a>
             </label>
         </div>
+        <br>
+
+        <!-- Password -->
+        <label for="bio"><b>Biography</b></label>
+        <input type="text" id="bio" name="tbio" placeholder="Enter a biography" required>
 
         <!-- Submit Button -->
         <button type="submit">Create Account</button>

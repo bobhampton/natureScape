@@ -1,13 +1,13 @@
 import { dbConnection, closeConnection } from '../config/mongoConnection.js'
+import bcrypt from 'bcryptjs'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { photos, locations } from '../config/mongoCollections.js'
+import { photos, locations, users } from '../config/mongoCollections.js'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
 import { findKeys, latLonToDecimal } from '../routes/helpers.js'
-import userData from '../data/users.js'
-
+import usersData from '../data/users.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -15,63 +15,73 @@ const __dirname = path.dirname(__filename)
 const db = await dbConnection()
 await db.dropDatabase()
 
-//Seeding users
-let user1;
-let user2;
-let user3;
-let user4;
-let user5;
+// Function to seed users
+const seedUsers = async () => {
+  console.log('Seeding users...')
+  //Seeding users
+  let user1;
+  let user2;
+  let user3;
+  let user4;
+  let user5;
+  let saltRounds = 16
 
-try {
-  // Create Users
-  user1 = await usersData.createUser(
-      "John",
-      "Doe",
-      "johndoe@gmail.com",
-      "johndoe",
-      "hashed_password_123"
-  );
+  try {
+      // Create Users
+    let userpassword = await bcrypt.hash("hashed_password_123", saltRounds);
+    
+    user1 = await usersData.createUser(
+        "John",
+        "Doe",
+        "johndoe@gmail.com",
+        "johndoe",
+        userpassword
+    );
+    userpassword = await bcrypt.hash("hashed_password_456", saltRounds);
+    user2 = await usersData.createUser(
+        "Jane",
+        "Smith",
+        "janesmith@hotmail.com",
+        "janesmith",
+        userpassword
+    );
 
-  user2 = await usersData.createUser(
-      "Jane",
-      "Smith",
-      "janesmith@hotmail.com",
-      "janesmith",
-      "hashed_password_456"
-  );
+    userpassword = await bcrypt.hash("hashed_password_789", saltRounds);
+    user3 = await usersData.createUser(
+        "Alice",
+        "Johnson",
+        "alicejohnson@yahoo.com",
+        "alicejohnson",
+        userpassword
+    );
 
-  user3 = await usersData.createUser(
-      "Alice",
-      "Johnson",
-      "alicejohnson@yahoo.com",
-      "alicejohnson",
-      "hashed_password_789"
-  );
+    userpassword = await bcrypt.hash("hashed_password_012", saltRounds);
+    user4 = await usersData.createUser(
+        "Donald",
+        "Trump",
+        "Donny@yahoo.com",
+        "DJT",
+        userpassword
+    );
 
-  user4 = await usersData.createUser(
-    "Donald",
-    "Trump",
-    "Donny@yahoo.com",
-    "DJT",
-    "hashed_password_012"
-  );
+    userpassword = await bcrypt.hash("hashed_password_90210", saltRounds);
+    user5 = await usersData.createUser(
+        "Scott",
+        "Mescudi",
+        "KidCudi@gmail.com",
+        "KidCudi",
+        userpassword
+    );
 
-  user5 = await usersData.createUser(
-    "Scott",
-    "Mescudi",
-    "KidCudi@gmail.com",
-    "KidCudi",
-    "hashed_password_90210"
-  );
-
-  console.log("Users created successfully!");
-  //console.log("User 1:", user1);
-  //console.log("User 2:", user2);
-  //console.log("User 3:", user3);
-  //console.log("User 4:", user3);
-  //console.log("User 5:", user3);
-} catch (error) {
+    console.log("Users created successfully!");
+    //console.log("User 1:", user1);
+    //console.log("User 2:", user2);
+    //console.log("User 3:", user3);
+    //console.log("User 4:", user3);
+    //console.log("User 5:", user3);
+  } catch (error) {
   console.error("Error while creating users:", error);
+  }
 }
 
 // Function to find location id by area and state
@@ -83,12 +93,12 @@ const findLocationId = async (area, state) => {
   })
 
   if (!location) {
-    console.log(`Location ${area}, ${state} not found`)
+    //console.log(`Location ${area}, ${state} not found`) //debugging
     return null
   }
 
   return location._id
-}
+} //End of findLocationId
 
 // Function to add location to database
 const addLocation = async (state, city, area) => {
@@ -104,35 +114,19 @@ const addLocation = async (state, city, area) => {
   if (insertInfo.insertedCount === 0) {
     throw 'Could not add location'
   } else {
-    console.log(
-      `Location ${area}, ${state} added to the DB with id ${insertInfo.insertedId}`
-    )
+    //console.log( `Location ${area}, ${state} added to the DB with id ${insertInfo.insertedId}`) //debugging
   }
 
   return insertInfo.insertedId
-}
+} //End of addLocation
 
+// Function to seed images
 const seedImages = async () => {
-  console.log('Seeding images...')
+  console.log('Seeding images/locations...')
   const imageFolder = path.join(__dirname, '../seed_images')
   const imageFiles = fs.readdirSync(imageFolder)
 
-  /* 
-    1 degree of lat is approximately 69 miles (111 km)
-
-    lon is measured as an angle from the Prime Meridian (0 degrees) 
-    to 180 degrees east or west. So a degree of lon represents smaller 
-    distances at higher altitudes.
-
-    Let's keep it simple and just add 3 degrees to the lat to make the
-    second location ~200 miles away from the first.
-
-    ccSC1/2 is Congaree National Park, South Carolina
-    crUT1/2 is Capitol Reef National Park, Utah
-    ogND1/2 is Orchard Glen, North Dakota
-    rrCA1/2 is Red Rock Canyon State Park, California
-    ssUT1/2 is Steinaker State Park, Utah
-  */
+  // 1 degree of lat is approximately 69 miles (111 km)
   let heading = 254.52317809400603
   const manualLatLon = {
     ccSC1: {
@@ -215,7 +209,7 @@ const seedImages = async () => {
 
     // Filter out non-image files like .DS_Store >_<
     if (!['.jpg', '.jpeg', '.png', '.heic', '.heif'].includes(fileExtension)) {
-      console.log(`Non-image file ${file} found, skipping...`)
+      //console.log(`Non-image file ${file} found, skipping...`) //debugging
       continue
     }
 
@@ -230,6 +224,7 @@ const seedImages = async () => {
       date_time_taken: null,
       date_time_uploaded: null,
       likes: 0,
+      views: 0,
       verification_rating: 0,
       location: {
         latitude: null,
@@ -356,17 +351,20 @@ const seedImages = async () => {
     try {
       const imageCollection = await photos()
       await imageCollection.insertOne(newPhoto)
-      console.log(`Image ${file} saved to database`)
+      //console.log(`Image ${file} saved to database`) //debugging
     } catch (err) {
       console.error(`Error saving image ${file}:`, err)
     }
   }
-}
+  console.log('Images/locations seeded successfully!\n')
+} //End of seedImages
 
 const runSeed = async () => {
   await seedImages()
+  await seedUsers()
   await closeConnection()
   console.log('Done!')
-}
+} //End of runSeed
 
-runSeed()
+// Run the seed function (main if you will...)
+runSeed();

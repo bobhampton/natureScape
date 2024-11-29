@@ -1,18 +1,19 @@
-<hr />
-<div class="header-container">
+
+<div id="image-index-header" class="header-container">
   <h1>Upload image to mongoDB</h1>
 </div>
-
 <hr />
-<div>
+
+<div id="image-index-upload-form" class="image-upload-form">
   <form
     id="uploadForm"
     action="/images/upload"
     method="POST"
     enctype="multipart/form-data"
+    onsubmit="return checkFileSize(event);"
   >
     <div>
-      <label id="image-title" class="image-title" for="name">Image Title</label>
+      <label id="image-upload-title" class="image-upload" for="name">Image Title</label>
       <input
         type="text"
         id="name"
@@ -23,7 +24,7 @@
       />
     </div>
     <div>
-      <label for="desc">Image Description</label>
+      <label id="image-upload-desc" class="image-upload" for="desc">Image Description</label>
       <textarea
         id="desc"
         name="desc"
@@ -33,7 +34,7 @@
         required
       ></textarea>
     </div>
-    <div class="file-upload-container">
+    <div id="image-index-file-upload-container" class="file-upload-container">
       <!-- Add 'multiple' attribute to 'file' to allow multiple file uploads? -->
       <input
         type="file"
@@ -48,21 +49,28 @@
   </form>
 </div>
 <hr />
+
 <div id="image-container" class="image-container">
   {{#each images}}
-    <div class="image-item">
+    <div class="image-item" id="image-{{this._id}}">
+      <div class="like-heart" onclick="likeImage('{{this._id}}')">
+        <span class="heart-icon">❤️</span>
+        <span class="like-count" id="likes-{{this._id}}">{{this.likes}}</span>
+      </div>
       <a href="/images/photo/{{this._id}}">
         <img
           class="responsive-img"
           src="data:image/{{this.img.contentType}};base64,{{this.img.data}}"
-          alt="{{this.name}}"
+          alt="{{this.photo_name}}"
         />
       </a>
       <div class="image-details">
-        <h5>{{this.photo_name}}</h5>
+        <h5 id="image-index-display-name">{{this.photo_name}}</h5>
         <p id="image-list-description">{{this.photo_description}}</p>
-        <button onclick="deleteImageFromList('{{this._id}}')">Delete</button>
+        <p>Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
+        <button id="image-index-delete-button" onclick="deleteImageFromList('{{this._id}}')">Delete</button>
       </div>
     </div>
   {{/each}}
 </div>
+<script src="/public/js/image_index.js"></script>

@@ -37,7 +37,7 @@ const exportedMethods = {
       },
 
       checkUser(firstName, lastName, userEmail, userName,
-        passwordHash){
+        passwordHash, agreement, bio){
             if(!firstName){
                 throw "You must provide a first name";
             };
@@ -60,9 +60,9 @@ const exportedMethods = {
                 throw "The last name cannot be empty of just spaces";
             };
 
-            if(!this.validateEmail(userEmail)){
-                throw "You must provide a valid email";
-            };
+            //if(!this.validateEmail(userEmail)){
+            //    throw "You must provide a valid email";
+            //};
             if(typeof userEmail !== 'string'){
                 throw "The email must be a string"
             };
@@ -85,21 +85,30 @@ const exportedMethods = {
             if(!passwordHash){
                 throw "You must provide an password";
             };
-            if(typeof passwordHash !== 'string'){
-                throw "The password must be a string"
+           
+            if(typeof agreement !== 'boolean'){
+              throw "The agreement must be a boolean"
+            } 
+            //If false
+            if(!agreement){
+              throw "You must check the box to agree to Terms And Conditions"
+            }
+
+            if(typeof bio !== 'string'){
+              throw "The password must be a string"
             };
-            passwordHash = passwordHash.trim();
-            if(passwordHash.length === 0){
-                throw "The password cannot be empty of just spaces";
-            };
+            bio = bio.trim();
+
+              
+
         },
 
         validateEmail (email){
-            return String(email)
-              .toLowerCase()
-              .match(
-                /^(([^<>()[]\.,;:\s@"]+(.[^<>()[]\.,;:\s@"]+)*)|.(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/
-              );
+            const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if(!email || typeof email !== 'string' || !emailReg.test(email)){
+                throw "You must provide a valid email address"
+            }
+            return email.trim().toLowerCase();
         },
 
         buildUpdateString(updateFields) {
