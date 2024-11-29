@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
 
+    <!-- Reset Style Sheet -->
+    <link rel="stylesheet" type="text/css" href="/public/css/reset.css">
+
     <!-- Mapbox CSS -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
 
+    <!-- Static CSS -->
     <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
+
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Our CSS -->
     <link rel="stylesheet" type="text/css" href={{css}}>
@@ -17,6 +24,49 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
 </head>
 <body>
+
+    <!-- NAV BAR -->
+    <nav>
+        <div class="nav-bar">
+            <i class='bx bx-menu sidebarOpen'></i>
+            <span class="logo navLogo"><a href="#">NatureScape</a></span>
+
+            <div class="menu">
+
+                <div class="logo-toggle">
+                    <span class="logo"><a href="#">NatureScape</a></span>
+                    <i class='bx bx-x-circle sidebarClose'></i>
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/locationlist">Locations</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="#">Profile</a></li>
+                </ul>
+            </div>
+            <div class="darkLight-searchBox">
+                <div class="dark-light">
+                    <i class='bx bx-moon moon' ></i>
+                    <i class='bx bx-sun sun' ></i>
+                </div>
+
+                <div class="searchBox">
+                    <div class="searchToggle">
+                        <i class='bx bx-x-circle cancel'></i>
+                        <i class='bx bx-search search'></i>
+                    </div>
+
+                    <div class="search-field">
+                        <input type="text" placeholder="Search...">
+                        <i class='bx bx-search'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- NAV BAR -->
+
     {{!-- <div class="container">
         <header>
             <nav>

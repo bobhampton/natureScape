@@ -1,0 +1,87 @@
+@import url('https://fonts.cdnfonts.com/css/averia');
+
+:root {
+  --body-color: #ddf5de;
+  --text-color: #1E5F22;
+  --input-bg: #F2F2F2;
+  --input-border: #ccc;
+  --button-bg: #1E5F22;
+  --button-text: #FFF;
+  --button-hover-bg: #145116;
+  --button-hover-text: #FFF;
+}
+
+body {
+  font-family: 'Averia', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh;
+  background-color: var(--body-color);
+}
+
+.landing-page {
+  margin-top: 70px;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 70px);
+}
+
+#login_form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: var(--text-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--button-text);
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.loginContainer label {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--button-text);
+}
+
+.loginContainer input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.loginContainer input:focus {
+  border-color: var(--text-color);
+  outline: none;
+}
+
+.loginContainer button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.loginContainer button:hover {
+  background-color: var(--button-hover-bg);
+  color: var(--button-hover-text);
+}
