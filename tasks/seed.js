@@ -17,7 +17,7 @@ await db.dropDatabase()
 
 // Function to seed users
 const seedUsers = async () => {
-  console.log('Seeding users...')
+  console.log('Seeding users. This takes a while due to password hashing...')
   //Seeding users
   let user1;
   let user2;
