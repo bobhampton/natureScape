@@ -37,7 +37,7 @@ const exportedMethods = {
       },
 
       checkUser(firstName, lastName, userEmail, userName,
-        passwordHash){
+        passwordHash, agreement, bio){
             if(!firstName){
                 throw "You must provide a first name";
             };
@@ -85,22 +85,21 @@ const exportedMethods = {
             if(!passwordHash){
                 throw "You must provide an password";
             };
-            if(typeof passwordHash !== 'string'){
-                throw "The password must be a string"
-            };
-            passwordHash = passwordHash.trim();
-            if(passwordHash.length === 0){
-                throw "The password cannot be empty of just spaces";
-            };
-
-            /* if(typeof agreement !== 'boolean'){
+           
+            if(typeof agreement !== 'boolean'){
               throw "The agreement must be a boolean"
             } 
             //If false
             if(!agreement){
               throw "You must check the box to agree to Terms And Conditions"
             }
-              */
+
+            if(typeof bio !== 'string'){
+              throw "The password must be a string"
+            };
+            bio = bio.trim();
+
+              
 
         },
 
