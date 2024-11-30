@@ -1,6 +1,8 @@
 <div class="landing-page" id="landing-page">
     <h1>{{title}}</h1>
     <p>Frame the moment. Share the journey.</p>
-    <button type="button" onclick="logoutUser"> Logout </button>
+    <form action="/logout">
+      <button type="submit" id="logoutButton"> Logout </button>
+    </form>
 </div>
-{{!-- <script src="/public/js/login.js"></script> --}}
+<script type="module" src="/public/js/home.js"></script>
