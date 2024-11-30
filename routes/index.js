@@ -22,11 +22,12 @@ const constructorMethod = app => {
   app.use('/images/upload', imagesRoutes); // POST upload an image
   app.use('/images/photo/:id', imagesRoutes); // GET a specific image
   app.use('/locationlist', locationRoutes);
-  app.use('/users', userRoutes);
-  app.use('/users/:userId', userRoutes);
-  app.use('/users/newUser', userRoutes);
-  app.use('/profile/:userId', profileRoutes);
-  app.use('/profile/profile/:profileId', profileRoutes);
+  app.use('/users', userRoutes);//Get all users -- Will not be in final product
+  app.use('/users/:userId', userRoutes);//Get user by Id --Will not be in final product
+  app.use('/users/newUser', userRoutes);//Register a new user
+  app.use('/users/terms', userRoutes);//Get the terms for the user
+  app.use('/profile/:userId', profileRoutes);//Get user profile
+  app.use('/profile/profile/:profileId', profileRoutes);//Update the user
   app.use('*', (req, res) => {
     res.status(404).json({ error: 'Route Not found' })
   });
