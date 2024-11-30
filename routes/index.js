@@ -1,9 +1,11 @@
+import homeRoutes from './home.js'
 import imagesRoutes from './images.js'
 import loginRoutes from './login.js'
 import fileUpload from 'express-fileupload'
 import locationRoutes from './locationlist.js'
 import userRoutes from './users.js'
 import profileRoutes from './profile.js'
+import { application } from 'express'
 
 const constructorMethod = app => {
   // Middleware to handle file uploads and limit photo size to 16MB
@@ -16,7 +18,8 @@ const constructorMethod = app => {
   )
 
   // add routes here
-  app.use('/', loginRoutes); // home page and login
+  app.use('/', homeRoutes); // home
+  app.use('/login', loginRoutes)// login
   app.use('/images', imagesRoutes); // GET all images
   app.use('/images/:id', imagesRoutes); // DELETE a specific image
   app.use('/images/upload', imagesRoutes); // POST upload an image
