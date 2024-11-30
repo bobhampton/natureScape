@@ -7,14 +7,19 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     //Render landing page with login
     try {
-        res.status(200).render('home/home', { title: "NatureScape" , css: "/public/css/home.css", js: "/public/js/login.js"});
+      if (req.session.user) {
+        return res.status(200).render('home/home', { title: "NatureScape" , css: "/public/css/home.css", js: "/public/js/home.js"});
+      } else {
+        return res.status(200).render('home/login', { title: "NatureScape" , css: "/public/css/home.css", js: "/public/js/login.js"});
+      }
+        
     } catch (error) {
         res.status(500).json({error: error});
     }
 });
 
 //POST for login logic
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
     //Get username and password from req.body
     const {username, password} = req.body;
     const user = await checkUser(username);
