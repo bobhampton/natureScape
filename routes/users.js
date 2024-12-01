@@ -225,6 +225,19 @@ router
       return res.status(200).json(updateduser)
     } catch (e) {
       return res.status(404).json({ error: e })
-    }
+    }  
   })
+  router
+  .route('/users/terms') //Renders the terms page
+  .get(async (req, res) => {
+    //code here for GET
+    try {
+      return res.render('users/terms', {
+        css: '/public/css/terms.css'
+      })
+    } catch (e) {
+      return res.status(400).json({ error: e })
+    }
+  });
+
 export default router
