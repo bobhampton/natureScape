@@ -489,7 +489,7 @@ nav .nav-bar .logo a {
 }
 
 .darkLight-searchBox .dark-light,
-.darkLight-searchBox .searchToggle {
+.darkLight-searchBox .account a {
   height: 40px;
   width: 40px;
   display: flex;
@@ -499,7 +499,7 @@ nav .nav-bar .logo a {
 }
 
 .dark-light i,
-.searchToggle i {
+.account i {
   position: absolute;
   color: var(--text-color);
   font-size: 22px;
@@ -522,7 +522,7 @@ nav .nav-bar .logo a {
   pointer-events: none;
 }
 
-.searchToggle i.cancel {
+/* .searchToggle i.cancel {
   opacity: 0;
   pointer-events: none;
 }
@@ -556,9 +556,9 @@ nav .nav-bar .logo a {
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s ease;
-}
+} */
 
-.searchToggle.active ~ .search-field {
+/* .searchToggle.active ~ .search-field {
   bottom: -74px;
   opacity: 1;
   pointer-events: auto;
@@ -587,9 +587,9 @@ nav .nav-bar .logo a {
   font-weight: 400;
   color: var(--search-text);
   background-color: var(--search-bar);
-}
+} */
 
-body.dark .search-field input {
+/* body.dark .search-field input {
   color: var(--text-color);
 }
 
@@ -603,7 +603,7 @@ body.dark .search-field input {
 
 body.dark .search-field i {
   color: var(--text-color);
-}
+} */
 
 @media (max-width: 790px) {
   nav .nav-bar .sidebarOpen {

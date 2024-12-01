@@ -1,4 +1,5 @@
 import express from 'express'
+import session from 'express-session'
 import exphbs from 'express-handlebars'
 import configRoutes from './routes/index.js'
 
@@ -9,6 +10,15 @@ const port = 3000
 app.use('/public', express.static('public')) // Serve static files from 'public' dir
 app.use(express.urlencoded({ extended: true })) // Parse URL-encoded requests
 app.use(express.json()) // Parse JSON requests (lets you use 'req.body')
+
+app.use(
+  session({
+    secret: 'mySecretKey to sign cookie',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 }
+  })
+);
 
 // Set up default layout and view engine for handlebars
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main',
@@ -21,7 +31,9 @@ app.engine('handlebars', exphbs.engine({ defaultLayout: 'main',
       return value === null ? 'null' : value;
     }
   }
- }))
+ }
+))
+
 app.set('view engine', 'handlebars')
 
 // Set up routes

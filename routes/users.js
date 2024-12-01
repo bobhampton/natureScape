@@ -5,9 +5,8 @@ import { users } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername} from './helpers.js'
 
-const router = Router()
+const router = Router();
 
-router
 // .route('/')//Localhost:3000/users/   --Gets all users--
 //   .get(async (req, res) => {
 //     //No inputs to validate
