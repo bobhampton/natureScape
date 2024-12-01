@@ -1,12 +1,13 @@
-import express from 'express';
 import { users } from '../config/mongoCollections.js';
 import bcrypt from 'bcryptjs';
+import helpers from './helpers.js'
 
 const userCollection = await users();
 
 async function checkUser(username) {
+  let checkedUsername = helpers.checkString(username, "Username").toLowerCase();
   let userFound = await userCollection.findOne(
-    { 'username': username}
+    { 'username': checkedUsername}
   )
   if (userFound === null) {
     throw "User not found";

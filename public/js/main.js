@@ -44,10 +44,10 @@ const body = document.querySelector('body'),
         }
       });
 
-// code to toggle dark mode
-      searchToggle.addEventListener('click', () =>{
-        searchToggle.classList.toggle('active');
-      });
+// // code to toggle search box
+//       searchToggle.addEventListener('click', () =>{
+//         searchToggle.classList.toggle('active');
+//       });
 
 // code to toggle sidebar
 sidebarOpen.addEventListener('click', () => {
