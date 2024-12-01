@@ -2,6 +2,7 @@ import { photos, locations } from '../config/mongoCollections.js'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
 import { findKeys, latLonToDecimal } from '../routes/helpers.js'
+import validation from './helpers.js'
 
 export const findLocationId = async (area, state) => {
   const locationsCollection = await locations()
@@ -146,4 +147,14 @@ export const addImage = async (name, desc, imageFile) => {
   } else {
     console.log(`Image ${name} saved to database`)
   }
+}
+
+export const getPhotosByUserId = async (userId) => {
+  if(!userId) throw 'User Id is required!';
+  userId = validation.checkId(userId);
+
+  const photoCollection = await photos(); //Access photos collection
+  const photoList = await photoCollection.find({userId: userId }).toArray(); //Find all photos by User Id
+  if (!userId) throw 'No photos found with the given User ID'
+  return photoList;
 }
