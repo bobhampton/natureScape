@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "seed": "node tasks/seed.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node test.js",
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
@@ -24,6 +24,7 @@
     "express": "^4.21.1",
     "express-fileupload": "^1.5.1",
     "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
     "fs": "^0.0.1-security",
     "handlebars": "^4.7.8",
     "mongodb": "^6.10.0",

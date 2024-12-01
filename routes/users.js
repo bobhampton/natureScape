@@ -2,10 +2,11 @@ import { Router } from 'express'
 import userData from '../data/users.js'
 import validation from '../data/helpers.js'
 import { users } from '../config/mongoCollections.js'
+import bcrypt from 'bcryptjs'
+import {checkInputUsername} from './helpers.js'
 
-const router = Router()
+const router = Router();
 
-router
 // .route('/')//Localhost:3000/users/   --Gets all users--
 //   .get(async (req, res) => {
 //     //No inputs to validate
@@ -85,28 +86,53 @@ router
   //When they submit the form
   .post(async (req, res)=>{
     try {
+      const isChecked = req.body.tterms === "on"; //Meaning true
+      const password = validation.checkString(req.body.tpassword)
       const userInput = {
-        firstname: validation.checkString(req.body.firstname,"First Name"),
-        lastname: validation.checkString(req.body.lastname, "Last Name"),
-        email: validation.validateEmail(req.body.email),
-        username: validation.checkString(req.body.username, "Username"),
-        password: validation.checkString(req.body.password),
-        terms: req.body.terms
-        //bio: validation.checkString(req.body.bio, "Biography")
+        firstname: validation.checkString(req.body.tfirstname,"First Name"),
+        lastname: validation.checkString(req.body.tlastname, "Last Name"),
+        email: validation.validateEmail(req.body.temail),
+        username: validation.checkString(req.body.tusername, "Username"),
+        passwordhash: bcrypt.hash(password, 16), //Encrypts the incoming password
+        terms: isChecked,
+        bio: validation.checkString(req.body.tbio, "Biography")
       }
 
+      //Ensure the username is not already taken
+      await checkInputUsername(userInput.username);
+
       //Add new user to the database
-      const newUser = await userData.createUser(userInput);
+      await userData.createUser(
+        //Making sure all values input from this route is going to the createUser function
+        userInput.firstname,
+        userInput.lastname,
+        userInput.email,
+        userInput.username,
+        userInput.passwordhash,
+        userInput.terms,
+        userInput.bio
+      );
+      //data/users.createUser never returns and object
+      //const newUser = await userData.createUser(userInput);
 
       //Redirect to the login page to go to the login page route
       res.redirect('/'); 
-
     } catch (e) {
+      if(e === "The username is a duplicate"){//If change this message also change in route/helpers.checkInputUsername
+        res.status(400).render('users/user',{
+          title: "Choose a different username ",
+          css: "/public/css/newUser.css",
+          error: e
+          });
+      }else{
+      console.log(e);
+      console.log(e.message);
       res.status(400).render('users/user',{
         title: "New User Entry",
         css: "/public/css/newUser.css",
         error: e
         });
+      }
     }    
   });
 
@@ -199,6 +225,19 @@ router
       return res.status(200).json(updateduser)
     } catch (e) {
       return res.status(404).json({ error: e })
-    }
+    }  
   })
+  router
+  .route('/users/terms') //Renders the terms page
+  .get(async (req, res) => {
+    //code here for GET
+    try {
+      return res.render('users/terms', {
+        css: '/public/css/terms.css'
+      })
+    } catch (e) {
+      return res.status(400).json({ error: e })
+    }
+  });
+
 export default router
