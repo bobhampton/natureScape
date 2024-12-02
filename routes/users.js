@@ -98,6 +98,7 @@ router
         bio: validation.checkString(req.body.tbio, "Biography")
       }
 
+      
       //Ensure the username is not already taken
       await checkInputUsername(userInput.username);
 
@@ -116,7 +117,7 @@ router
       //const newUser = await userData.createUser(userInput);
 
       //Redirect to the login page to go to the login page route
-      res.redirect('/'); 
+      res.redirect('/login'); 
     } catch (e) {
       if(e === "The username is a duplicate"){//If change this message also change in route/helpers.checkInputUsername
         res.status(400).render('users/user',{
@@ -151,7 +152,16 @@ router
 
     try {
       let user = await userData.getUserById(req.params.userId)
+      let message;
+      if(user.terms){
+        message = "You agreed to the terms";         
+      }else{
+        message = "You have not yet agreed to the terms"
+      }
+
       res.render('profilePage/newUser', {
+        //name on left is whatever I want.  Variables on right
+        //come from the database in line 154
         css: '/public/css/profile.css',
         newUser: {
           _id: user._id,
@@ -160,8 +170,8 @@ router
           email: user.email,
           username: user.username,
           password_hash: user.password_hash,
-          creation_time: user.creation_time,
-          agreement: user.agreement,
+          creation_time: String(user.creationDate),
+          agreement: message,
           profile: {
             bio: user.profile.bio,
             profile_picture: {
@@ -227,17 +237,5 @@ router
       return res.status(404).json({ error: e })
     }  
   })
-  router
-  .route('/users/terms') //Renders the terms page
-  .get(async (req, res) => {
-    //code here for GET
-    try {
-      return res.render('users/terms', {
-        css: '/public/css/terms.css'
-      })
-    } catch (e) {
-      return res.status(400).json({ error: e })
-    }
-  });
 
 export default router
