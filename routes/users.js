@@ -98,6 +98,7 @@ router
         bio: validation.checkString(req.body.tbio, "Biography")
       }
 
+      
       //Ensure the username is not already taken
       await checkInputUsername(userInput.username);
 
@@ -116,7 +117,7 @@ router
       //const newUser = await userData.createUser(userInput);
 
       //Redirect to the login page to go to the login page route
-      res.redirect('/'); 
+      res.redirect('/login'); 
     } catch (e) {
       if(e === "The username is a duplicate"){//If change this message also change in route/helpers.checkInputUsername
         res.status(400).render('users/user',{

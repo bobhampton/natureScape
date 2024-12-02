@@ -51,7 +51,7 @@ const exportedMethods = {
       creationDate: uploadTimeStampUTC,
       terms: true,
       profile: {
-        bio: "Add to my personal bio here.",
+        bio: bio,
         profile_picture: profilePic
       }
     }
