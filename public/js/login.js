@@ -1,6 +1,6 @@
 const loginForm = document.getElementById('login_form');
-const username = document.getElementsByName('uname')[0];
-const password = document.getElementsByName('passwd')[0];
+const username = document.getElementsById('uname');
+const password = document.getElementsById('passwd');
 
 loginForm.addEventListener('submit', async (e) => {
   let errors = [];
@@ -27,17 +27,17 @@ const checkLoginInfo = async (usernameInput, passwordInput) => {
     // else if (!(await checkPassword(usernameInput, passwordInput))) {
     //   errors.push("Incorrect username or password");
     // }
-    const userResponse = await fetch('/login/checkUser', {
+    const userResponse = await fetch("/login/checkUser", {
       method:'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({username: usernameInput}),
     });
     const userResult = await userResponse.json();
     if (!userResult.exists) {
-      errors.push(`User ${usernameInput} does not exist`);
+      errors.push("Incorrect username or password");
     }
     else {
-      const passwordResponse = await fetch('/login/checkPassword', {
+      const passwordResponse = await fetch("/login/checkPassword", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({ username: usernameInput, password: passwordInput}),

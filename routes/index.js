@@ -5,7 +5,7 @@ import fileUpload from 'express-fileupload'
 import locationRoutes from './locationlist.js'
 import userRoutes from './users.js'
 import profileRoutes from './profile.js'
-import { application } from 'express'
+import express from 'express'
 
 const constructorMethod = app => {
   // Middleware to handle file uploads and limit photo size to 16MB
@@ -16,6 +16,9 @@ const constructorMethod = app => {
       responseOnLimit: 'Photo size must be less than 16MB'
     })
   )
+
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true}));
 
   // add routes here
   app.use('/', homeRoutes); // home
