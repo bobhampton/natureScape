@@ -1,9 +1,9 @@
 <div class = "user-dashboard-container">
-  <Form action="/profilePage" method="POST">
-      <label>
+  <form action="/profilePage" method="POST">
+      <!--<label>
         User Profile Page 
       </label>
-      <header>
+      <header> -->
         <h1>Welcome to Your Dashboard, {{newUser.first_name}}!</h1>
       </header>
       <br>
@@ -11,18 +11,18 @@
       <main>
         <!-- User Details Part -->
         <section id="user-details">
-          <h2>Profile Information</h2>
+          <h2>Profile Information:</h2>
+          <br>
           <ul>
-            <li><strong>First Name:</li></strong>{{newUser.first_name}}</li>
-            <li><strong>Last Name:</li></strong>{{newUser.last_name}}</li>
-            <li><strong>Email:</li></strong>{{newUser.email}}</li>
-            <li><strong>Username:</li></strong>{{newUser.username}}</li>
-            <li><strong>Creation_time:</li></strong>{{newUser.creation_time}}</li>
-            <li><strong>Agreement:</li></strong>{{newUser.agreement}}</li>
-            <li><strong>Profile bio:</li></strong>{{newUser.profile.bio}}</li>
-            <li><strong>Profile photo:</li><img src="data:image/{{newUser.profile.profile_picture.contentType}};base64,{{newUser.profile.profile_picture.data}}" alt="Profile Pic" /></li>
-            
-            <!--<li><strong>Bio:</li></strong>{{newUser.profile.bio}}</li>   -->
+            <!--keys of the route-->
+            <li><strong>First Name:</strong> {{newUser.first_name}}</li>
+            <li><strong>Last Name:</strong> {{newUser.last_name}}</li>
+            <li><strong>Email:</strong> {{newUser.email}}</li>
+            <li><strong>Username:</strong> {{newUser.username}}</li>
+            <li><strong>Creation_time:</strong> {{newUser.creation_time}}</li>
+            <li><strong>Agreement:</strong> {{newUser.agreement}}</li>
+            <li><strong>Profile bio:</strong> {{newUser.profile.bio}}</li>
+            <li><strong>Profile photo:</li><img src="data:image/ {{newUser.profile.profile_picture.contentType}};base64,{{newUser.profile.profile_picture.data}}" alt="Profile Pic" /></li>
           </ul>
         </section>
 
@@ -37,8 +37,15 @@
           <!--<a href=""></
           a>-->
 
+        <br>
+        <button type="button" onclick="alert('will be link for updating profile')">Update Profile</button>
+
+
+        <!-- FIX ME <button type="submit" formaction="./users/">Delete profile</button> HOW DO YOU HAVE TWO 
+        BUTTONS WITH DIFFERENT VERBS? PATCH AND DELETE-->
+
         </section>
       </main>
-    </Form>
+    </form>
 </div>
   
