@@ -2,10 +2,10 @@ import { users } from '../config/mongoCollections.js';
 import bcrypt from 'bcryptjs';
 import helpers from './helpers.js'
 
-const userCollection = await users();
-
 async function checkUser(username) {
-  let checkedUsername = helpers.checkString(username, "Username").toLowerCase();
+  const userCollection = await users();
+  let checkedUsername = helpers.checkString(username, "Username");
+  checkedUsername = checkedUsername.toLowerCase();
   let userFound = await userCollection.findOne(
     { 'username': checkedUsername}
   )
