@@ -1,6 +1,6 @@
 const loginForm = document.getElementById('login_form');
-const username = document.getElementsById('uname');
-const password = document.getElementsById('passwd');
+const username = document.getElementById('uname');
+const password = document.getElementById('passwd');
 
 loginForm.addEventListener('submit', async (e) => {
   let errors = [];
