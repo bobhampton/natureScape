@@ -82,22 +82,22 @@ const exportedMethods = {
                 throw "The username cannot be empty of just spaces";
             };
 
-            if(!passwordHash){
-                throw "You must provide an password";
-            };
+            // if(!passwordHash){
+            //     throw "You must provide an password";
+            // };
            
-            if(typeof agreement !== 'boolean'){
-              throw "The agreement must be a boolean"
-            } 
-            //If false
-            if(!agreement){
-              throw "You must check the box to agree to Terms And Conditions"
-            }
+            // if(typeof agreement !== 'boolean'){
+            //   throw "The agreement must be a boolean"
+            // } 
+            // //If false
+            // if(!agreement){
+            //   throw "You must check the box to agree to Terms And Conditions"
+            // }
 
-            if(typeof bio !== 'string'){
-              throw "The password must be a string"
-            };
-            bio = bio.trim();
+            // if(typeof bio !== 'string'){
+            //   throw "The password must be a string"
+            // };
+            // bio = bio.trim();
 
               
 
