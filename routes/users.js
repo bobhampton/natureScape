@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import userData from '../data/users.js'
 import validation from '../data/helpers.js'
-import { users } from '../config/mongoCollections.js'
+import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername} from './helpers.js'
 
@@ -159,6 +159,21 @@ router
         message = "You have not yet agreed to the terms"
       }
 
+      // Find all photos associated with the user
+      const photoCollection = await photos()
+      const userPhotos = await photoCollection.find({ user_id: user._id }).toArray()
+      const formattedPhotos = userPhotos.map(photo => ({
+        _id: photo._id,
+        photo_name: photo.photo_name,
+        photo_description: photo.photo_description,
+        likes: photo.likes,
+        views: photo.views,
+        img: {
+          data: photo.img.data.toString('base64'),
+          contentType: photo.img.contentType
+        }
+      }))
+
       res.render('profilePage/newUser', {
         //name on left is whatever I want.  Variables on right
         //come from the database in line 154
@@ -179,7 +194,8 @@ router
               contentType: user.profile.profile_picture.contentType
             }
           }
-        }
+        },
+        images: formattedPhotos
       })
     } catch (e) {
       return res.status(404).json({ error: 'User not found' })
