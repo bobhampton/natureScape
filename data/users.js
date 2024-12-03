@@ -27,7 +27,7 @@ const exportedMethods = {
 
     // Get the current time in UTC
     const temp = Date.now()
-    const uploadTimeStampUTC = new Date(temp)
+    const uploadTimeStampUTC = (new Date(temp))
 
      // Setting up default profile picture lol
     const defaultProfilePicPath = path.join(
@@ -51,7 +51,7 @@ const exportedMethods = {
       creationDate: uploadTimeStampUTC,
       terms: true,
       profile: {
-        bio: "Add to my personal bio here.",
+        bio: bio,
         profile_picture: profilePic
       }
     }

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import userData from '../data/users.js'
 import validation from '../data/helpers.js'
-import { users } from '../config/mongoCollections.js'
+import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername} from './helpers.js'
 
@@ -93,11 +93,12 @@ router
         lastname: validation.checkString(req.body.tlastname, "Last Name"),
         email: validation.validateEmail(req.body.temail),
         username: validation.checkString(req.body.tusername, "Username"),
-        passwordhash: bcrypt.hash(password, 16), //Encrypts the incoming password
+        passwordhash: await bcrypt.hash(password, 16), //Encrypts the incoming password
         terms: isChecked,
         bio: validation.checkString(req.body.tbio, "Biography")
       }
 
+      
       //Ensure the username is not already taken
       await checkInputUsername(userInput.username);
 
@@ -116,7 +117,7 @@ router
       //const newUser = await userData.createUser(userInput);
 
       //Redirect to the login page to go to the login page route
-      res.redirect('/'); 
+      res.redirect('/login'); 
     } catch (e) {
       if(e === "The username is a duplicate"){//If change this message also change in route/helpers.checkInputUsername
         res.status(400).render('users/user',{
@@ -151,7 +152,31 @@ router
 
     try {
       let user = await userData.getUserById(req.params.userId)
+      let message;
+      if(user.terms){
+        message = "You agreed to the terms";         
+      }else{
+        message = "You have not yet agreed to the terms"
+      }
+
+      // Find all photos associated with the user
+      const photoCollection = await photos()
+      const userPhotos = await photoCollection.find({ user_id: user._id }).toArray()
+      const formattedPhotos = userPhotos.map(photo => ({
+        _id: photo._id,
+        photo_name: photo.photo_name,
+        photo_description: photo.photo_description,
+        likes: photo.likes,
+        views: photo.views,
+        img: {
+          data: photo.img.data.toString('base64'),
+          contentType: photo.img.contentType
+        }
+      }))
+
       res.render('profilePage/newUser', {
+        //name on left is whatever I want.  Variables on right
+        //come from the database in line 154
         css: '/public/css/profile.css',
         newUser: {
           _id: user._id,
@@ -160,8 +185,8 @@ router
           email: user.email,
           username: user.username,
           password_hash: user.password_hash,
-          creation_time: user.creation_time,
-          agreement: user.agreement,
+          creation_time: String(user.creationDate),
+          agreement: message,
           profile: {
             bio: user.profile.bio,
             profile_picture: {
@@ -169,7 +194,8 @@ router
               contentType: user.profile.profile_picture.contentType
             }
           }
-        }
+        },
+        images: formattedPhotos
       })
     } catch (e) {
       return res.status(404).json({ error: 'User not found' })
@@ -227,17 +253,5 @@ router
       return res.status(404).json({ error: e })
     }  
   })
-  router
-  .route('/users/terms') //Renders the terms page
-  .get(async (req, res) => {
-    //code here for GET
-    try {
-      return res.render('users/terms', {
-        css: '/public/css/terms.css'
-      })
-    } catch (e) {
-      return res.status(400).json({ error: e })
-    }
-  });
 
 export default router

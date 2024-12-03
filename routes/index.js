@@ -5,7 +5,8 @@ import fileUpload from 'express-fileupload'
 import locationRoutes from './locationlist.js'
 import userRoutes from './users.js'
 import profileRoutes from './profile.js'
-import { application } from 'express'
+import express from 'express'
+import termRoutes from './terms.js'
 
 const constructorMethod = app => {
   // Middleware to handle file uploads and limit photo size to 16MB
@@ -16,6 +17,9 @@ const constructorMethod = app => {
       responseOnLimit: 'Photo size must be less than 16MB'
     })
   )
+
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true}));
 
   // add routes here
   app.use('/', homeRoutes); // home
@@ -28,9 +32,9 @@ const constructorMethod = app => {
   app.use('/users', userRoutes);//Get all users -- Will not be in final product
   app.use('/users/:userId', userRoutes);//Get user by Id --Will not be in final product
   app.use('/users/newUser', userRoutes);//Register a new user
-  app.use('/users/terms', userRoutes);//Get the terms for the user
   app.use('/profile/:userId', profileRoutes);//Get user profile
   app.use('/profile/profile/:profileId', profileRoutes);//Update the user
+  app.use('/terms', termRoutes);
   app.use('*', (req, res) => {
     res.status(404).json({ error: 'Route Not found' })
   });
