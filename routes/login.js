@@ -26,16 +26,16 @@ router
     } catch (error) {
         res.status(500).json({error: error});
     }
-  });
+  })
 
 //POST for login logic
-router
-  .route('/')
   .post(async (req, res) => {
     //Get username and password from req.body
-    const {username, password} = req.body;
+    //const {username, password} = req.body;
+    const username = req.body.uname;
+    const password = req.body.passwd;
     const user = await checkUser(username);
-    const match = await checkPassword(username, password);
+    const match = await checkPassword(user.username, password);
     
     if (match) {
       req.session.isAuth = true;
@@ -55,10 +55,10 @@ router
   .post(async (req, res) => {
     try {
       const { username } = req.body;
-      const userExists = await checkUser(username);
-      res.json({ exists: userExists });
+      await checkUser(username);
+      res.json({ exists: true });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ exists: false });
     }
   })
 
@@ -69,7 +69,7 @@ router
       const isValid = await checkPassword(username, password);
       res.json({ valid: isValid });
     } catch (error) {
-      res.status(500).json({ error: error.message});
+      res.status(500).json({ valid: false });
     }
   })
 
