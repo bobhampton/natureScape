@@ -8,9 +8,10 @@ import { ObjectId } from 'mongodb';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.render('locations/locationlist', {css: "/public/css/locationlist.css", token: mapboxApiKey, js: "/public/js/locationlist.js"});
-});
+router.get('/', async (req, res) => {
+    const locations = await locationMethods.getAllPhotos();
+    res.render('locations/locationlist', {css:"/public/css/locationlist.css", token: mapboxApiKey, js:"/public/js/locationlist.js", locations: JSON.stringify(locations)});
+})
 
 router.get('/test', async (req, res) => {
   const photos = await locationMethods.getAllPhotos();

@@ -15,6 +15,9 @@ const __dirname = path.dirname(__filename)
 const db = await dbConnection()
 await db.dropDatabase()
 
+// Global variable to keep track of user index when assigning userId to photos
+let userNum = 0
+
 // Function to seed users
 const seedUsers = async () => {
   console.log('Seeding users. This takes a while due to password hashing...')
@@ -358,6 +361,17 @@ const seedImages = async () => {
       })
     newPhoto.metadata = metadata // All captured metadata - Keeping this for now
 
+    // Set the user_id for the photo
+    const userCollection = await users()
+    const allUsers = await userCollection.find({}).toArray()
+    
+
+    if (userNum >= allUsers.length) {
+      userNum = 0
+    }
+    newPhoto.user_id = allUsers[userNum]._id
+    userNum++
+
     try {
       const imageCollection = await photos()
       await imageCollection.insertOne(newPhoto)
@@ -370,8 +384,8 @@ const seedImages = async () => {
 } //End of seedImages
 
 const runSeed = async () => {
-  await seedImages()
   await seedUsers()
+  await seedImages()
   await closeConnection()
   console.log('Done!')
 } //End of runSeed

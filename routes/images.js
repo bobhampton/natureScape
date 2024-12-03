@@ -46,6 +46,13 @@ router.get('/photo/:id', async (req, res) => {
       return res.status(404).send('Photo not found')
     }
 
+    // Increment the number of views
+    const result = await imageCollection.findOneAndUpdate(
+      { _id: new ObjectId(photoId) },
+      { $inc: { views: 1 } },
+      { returnDocument: 'after' }
+    )
+
     res.render('images/image', {
       css: '/public/css/image.css',
       photo: {

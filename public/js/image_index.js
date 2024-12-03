@@ -38,6 +38,15 @@ async function deleteImageFromList (id) {
 // Function to like an image
 async function likeImage (id) {
   //console.log(`Attempting to like image with id: ${id}`); // Debugging
+
+  const likeButton = document.getElementById(`like-button-${id}`);
+  
+  // Check if user has already liked the image
+  const likedImages = JSON.parse(localStorage.getItem('likedImages')) || {};
+  if (likedImages[id]) {
+    alert('You have already liked this image');
+    return;
+  }
   const response = await fetch(`/images/like/${id}`, {
     method: 'POST'
   })
@@ -50,35 +59,13 @@ async function likeImage (id) {
     if (likesElement) {
       likesElement.textContent = data.likes
     }
+
+    // Set a flag in local storage for when a user likes an image
+    likedImages[id] = true;
+    localStorage.setItem('likedImages', JSON.stringify(likedImages));
+
   } else {
     console.error('Error liking image:', response.statusText)
     alert('Error liking image')
   }
 }
-
-// Function to increment views for an image
-async function incrementViews(id) {
-  const response = await fetch(`/images/view/${id}`, {
-    method: 'POST'
-  });
-  if (response.ok) {
-    const data = await response.json();
-    //console.log(`Views incremented successfully for imageId: ${id}`); // Debugging
-
-    // Update the number of views in the DOM
-    const viewsElement = document.getElementById(`views-${id}`);
-    if (viewsElement) {
-      viewsElement.textContent = data.views;
-    }
-  } else {
-    console.error('Error incrementing views:', response.statusText);
-  }
-}
-
-// Add event listeners to image elements
-document.querySelectorAll('.image-item a').forEach(imageLink => { // Select all anchor elements inside the class image-item
-  imageLink.addEventListener('click', function(event) { // Add click event listener to each anchor element
-    const imageId = this.getAttribute('href').split('/').pop(); // Split the href attribute by / into array and pop last element (imageId)
-    incrementViews(imageId); // Pass imageId to incrementViews function that will make an AJAX request to increment views
-  });
-});
