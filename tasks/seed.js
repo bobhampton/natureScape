@@ -355,15 +355,7 @@ const seedImages = async () => {
 
     // Set the user_id for the photo
     const userCollection = await users()
-    const allUsers = await userCollection.find({}).toArray()
-    
-    if (!allUsers || allUsers.length === 0) {
-      throw "No users found in the database to assign user_id.";
-    }
-  
-    if (!allUsers[userNum] || !allUsers[userNum]._id) {
-      throw `User at index ${userNum} is invalid: ${allUsers[userNum]}`;
-    }
+    const allUsers = await userCollection.find({}).toArray() 
 
     newPhoto.user_id = allUsers[userNum]._id
     userNum++;
