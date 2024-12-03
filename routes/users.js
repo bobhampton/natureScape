@@ -93,7 +93,7 @@ router
         lastname: validation.checkString(req.body.tlastname, "Last Name"),
         email: validation.validateEmail(req.body.temail),
         username: validation.checkString(req.body.tusername, "Username"),
-        passwordhash: bcrypt.hash(password, 16), //Encrypts the incoming password
+        passwordhash: await bcrypt.hash(password, 16), //Encrypts the incoming password
         terms: isChecked,
         bio: validation.checkString(req.body.tbio, "Biography")
       }
