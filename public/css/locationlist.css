@@ -42,3 +42,12 @@ body {
 .location-item:hover {
     background-color: #f0f0f0;
 }
+
+.location-list-title {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+li {
+    list-style-position: inside;
+}

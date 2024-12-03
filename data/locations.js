@@ -23,6 +23,10 @@ export const getAllPhotos = async () => {
             $project: {
                 _id: 1,
                 photo_name: 1,
+                date_time_uploaded: 1,
+                likes: 1,
+                views: 1,
+                verification_rating: 1,
                 location: 1,
                 img: 1,
                 locationDetails: 1
@@ -33,6 +37,10 @@ export const getAllPhotos = async () => {
     const result = photoList.map(photo => ({
         id: photo._id.toString(),
         name: photo.photo_name,
+        uploadDateTime: photo.date_time_uploaded,
+        likes: photo.likes,
+        views: photo.views,
+        verification_rating: photo.verification_rating,
         coordinates: [photo.location.longitude, photo.location.latitude],
         img: photo.img,
         location_id: photo.locationDetails?._id || null,
@@ -43,3 +51,9 @@ export const getAllPhotos = async () => {
 
     return result;
 };
+
+export const getAllLocations = async () => {
+    const locationCollection = await locations();
+    let locationList = await locationCollection.find().toArray();
+    return locationList;
+}
