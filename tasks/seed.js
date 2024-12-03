@@ -27,6 +27,7 @@ const seedUsers = async () => {
   let user3;
   let user4;
   let user5;
+  let user6;
   let saltRounds = 16
 
   try {
@@ -75,6 +76,15 @@ const seedUsers = async () => {
         "Mescudi",
         "KidCudi@gmail.com",
         "KidCudi",
+        userpassword
+    );
+
+    userpassword = await bcrypt.hash("abc123", saltRounds);
+    user6 = await usersData.createUser(
+        "John",
+        "Ham",
+        "jham@gmail.com",
+        "jam",
         userpassword
     );
 
