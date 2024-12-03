@@ -11,13 +11,26 @@
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
-    center: [-74.006, 40.7128], // Initial map center
-    zoom: 12,
+    projection: 'globe',
+    center: [30, 15], // Initial map center
+    zoom: 1
 });
   
   // Add markers to the map
 locations.forEach((location) => {
-    new mapboxgl.Marker()
+
+    const customMarker = document.createElement('div');
+    customMarker.className = 'custom-marker';
+    customMarker.innerHTML = `<i class='bx bxs-camera' ></i>`;
+    customMarker.style.width = '32px';
+    customMarker.style.height = '32px';
+    customMarker.style.display = 'flex';
+    customMarker.style.alignItems = 'center';
+    customMarker.style.justifyContent = 'center';
+    customMarker.style.color = '#ff0000';
+    customMarker.style.fontSize = '24px';
+
+    new mapboxgl.Marker(customMarker)
       .setLngLat(location.coordinates)
       .setPopup(new mapboxgl.Popup().setHTML(
         `<h1>Photo Name: ${location.name}</h1>
@@ -26,7 +39,11 @@ locations.forEach((location) => {
           <li>Likes: ${location.likes}</li>
           <li>Views: ${location.views}</li>
           <li>Verification_Rating: ${location.verification_rating}
-         </ul>`
+         </ul>
+         <img
+          src="data:image/${location.img.contentType};base64,${location.img.data}"
+          width="150" height="150"
+         />`
       ))
       .addTo(map);
 });
@@ -45,7 +62,7 @@ locations.forEach((location) => {
 
     item.onclick = () => {
       // Fly to location when clicked
-      map.flyTo({ center: location.coordinates, zoom: 14 });
+      map.flyTo({ center: location.coordinates, zoom: 10.5 });
     };
     locationsContainer.appendChild(item);
     addedLocations.add(location.area_name); // Newly Added
