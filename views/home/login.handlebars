@@ -1,7 +1,7 @@
 <div class="landing-page" id="landing-page">
     <h1>{{title}}</h1>
     <p>Frame the moment. Share the journey.</p>
-    <form id="login_form" action="" method="post">
+    <form id="login_form" action="/login" method="post">
         <div id="loginContainer">
             <div>
                 <label for="uname" id="usernameField">
@@ -18,13 +18,13 @@
             </div>
             <p>{{loginMessage}}</p>
             <div id="rememberMe">
-                <span><input type="checkbox" checked="checked" name="remember"> Remember me</span>
+              <label for="rememberMe">Remember me</label>
+                <span><input type="checkbox" value="isRememberMe" checked="checked" id="remember" name="remember"></span>
                 <button type="submit">Login</button>
             </div>
         </div>
     </form>
-        <div id="forgotPassword">
-            <span id="forgotPasswordLink"><a href="#">Forgot password</a></span>
+        <div id="accountCreate">
             <span id="accountCreateLink"><a href="#">Create an account</a></span>
         </div>
     <form id="feedback_form" method="post">

@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const isUserLoggedIn = !req.session.user;
+    const isUserLoggedIn = req.session.user;
     const view = isUserLoggedIn ? 'home/home' : 'home/login';
     const jsFile = isUserLoggedIn ? '/public/js/home.js' : '/public/js/login.js';
 
