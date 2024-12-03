@@ -1,6 +1,6 @@
 import { users } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
-import bcrypt from 'bcryptjs'
+//import bcrypt from 'bcryptjs'
 import validation from './helpers.js'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
@@ -10,34 +10,29 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const exportedMethods = {
-  async createUser (first_name, last_name, email, username, password_hash) {
+  async createUser (firstname, lastname, email, username,
+     passwordhash, terms, bio) {
     // Validate inputs
     const newUser = validation.checkUser(
-      first_name,
-      last_name,
+      firstname,
+      lastname,
       email,
       username,
-      password_hash
+      passwordhash,
+      terms,
+      bio
     )
 
     //Timestamps will be easier
 
     // Get the current time in UTC
     const temp = Date.now()
-    const uploadTimeStampUTC = new Date(temp)
+    const uploadTimeStampUTC = (new Date(temp))
 
-    /* 
-    const theCurrentDate = new Date()
-    const year = theCurrentDate.getFullYear()
-    const month = theCurrentDate.getMonth() + 1 //Months begin at index 0 so start at one
-    const day = theCurrentDate.getDate()
-    const creationDate = month + '/' + day + '/' + year //Now a string
-  */
-
-    // Setting up Tom as default profile picture lol
+     // Setting up default profile picture lol
     const defaultProfilePicPath = path.join(
       __dirname,
-      '../public/images/tom.jpg'
+      '../public/images/defaultProfilePhoto.png'
     )
     const profilePicData = fs.readFileSync(defaultProfilePicPath)
     const profilePic = {
@@ -47,16 +42,16 @@ const exportedMethods = {
 
     // Set up all the data for the new user
     const userData = {
-      ...newUser,
-      first_name,
-      last_name,
-      email,
-      username,
-      password_hash,
-      creation_time: uploadTimeStampUTC,
-      agreement: false,
+      //...newUser,
+      first_name: firstname,
+      last_name: lastname,
+      email: email,
+      username: username,
+      password_hash: passwordhash,
+      creationDate: uploadTimeStampUTC,
+      terms: true,
       profile: {
-        bio: "This is my bio stuff. I'm a cool person, like Tom from MySpace. He was everyone's first friend back in the day and taught us all how to copy and paste HTML code into our profiles. Instead of becoming a dick like Zuckerberg, Tom quietly faded off into the void along with myspace. Mad respect Tom.",
+        bio: bio,
         profile_picture: profilePic
       }
     }

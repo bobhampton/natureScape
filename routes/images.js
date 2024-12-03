@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
       photo_name: image.photo_name,
       photo_description: image.photo_description,
       likes: image.likes,
+      views: image.views,
       img: {
         data: image.img.data.toString('base64'),
         contentType: image.img.contentType
@@ -55,6 +56,7 @@ router.get('/photo/:id', async (req, res) => {
         date_time_taken: photoData.date_time_taken,
         date_time_uploaded: photoData.date_time_uploaded,
         likes: photoData.likes,
+        views: photoData.views,
         verification_rating: photoData.verification_rating,
         location: photoData.location,
         img: {
@@ -142,6 +144,27 @@ router.post('/like/:id', async (req, res) => {
   } catch (err) {
     console.log(err)
     res.status(500).send('Error liking image')
+  }
+})
+
+// Route to increment views for an image
+router.post('/view/:id', async (req, res) => {
+  try {
+    const imageCollection = await photos();
+    const result = await imageCollection.findOneAndUpdate(
+      { _id: new ObjectId(req.params.id) },
+      { $inc: { views: 1 } },
+      { returnDocument: 'after' }
+    );
+
+    if (!result.value) {
+      return res.status(404).send('Image not found');
+    }
+
+    res.status(200).json({ views: result.views });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Error incrementing views');
   }
 })
 

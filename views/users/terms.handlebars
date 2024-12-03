@@ -1,37 +1,4 @@
-body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-        }
-        .terms-container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .terms-container h1 {
-            text-align: center;
-        }
-        .terms-container .checkbox-container {
-            margin: 20px 0;
-        }
-        button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<div>
 </head>
 <body>
     <div class="terms-container">
@@ -45,13 +12,12 @@ body {
             <li>Any saved or non-published work may be changed or modified by NatureScape at its discretion, and you agree not to hold NatureScape liable for these actions.</li>
             <li>Personal information shared with NatureScape may be used for purposes beyond what is directly published by the user, including data analytics, presenting suggested items, or other related uses.</li>
         </ul>
-        <div class="checkbox-container">
-            <input type="checkbox" id="agree" name="agree" required>
-            <label for="agree">I have read and agree to the Terms and Agreement.</label>
-        </div>
-        <button type="submit" onclick="handleSubmit()">Submit</button>
+        <button onclick="window.location.href='/users/newUser'">Back To Account Creation</button>
+
+        <!--<button type="submit" onclick="handleSubmit()">Back To Account Creation</button>-->
     </div>
 
+<!--
     <script>
         function handleSubmit() {
             const checkbox = document.getElementById('agree');
@@ -63,5 +29,7 @@ body {
             }
         }
     </script>
+    -->
 </body>
-</html>
+</div>
+
