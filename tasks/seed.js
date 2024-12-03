@@ -38,7 +38,8 @@ const seedUsers = async () => {
         "Doe",
         "johndoe@gmail.com",
         "johndoe",
-        userpassword
+        userpassword,
+        true //Agreement
     );
     userpassword = await bcrypt.hash("hashed_password_456", saltRounds);
     user2 = await usersData.createUser(
@@ -46,7 +47,8 @@ const seedUsers = async () => {
         "Smith",
         "janesmith@hotmail.com",
         "janesmith",
-        userpassword
+        userpassword,
+        true //Agreement
     );
 
     userpassword = await bcrypt.hash("hashed_password_789", saltRounds);
@@ -355,12 +357,20 @@ const seedImages = async () => {
     const userCollection = await users()
     const allUsers = await userCollection.find({}).toArray()
     
-
-    if (userNum >= allUsers.length) {
-      userNum = 0
+    if (!allUsers || allUsers.length === 0) {
+      throw "No users found in the database to assign user_id.";
     }
+  
+    if (!allUsers[userNum] || !allUsers[userNum]._id) {
+      throw `User at index ${userNum} is invalid: ${allUsers[userNum]}`;
+    }
+
     newPhoto.user_id = allUsers[userNum]._id
-    userNum++
+    userNum++;
+    if (userNum >= allUsers.length) {
+      userNum = 0;
+    }
+    
 
     try {
       const imageCollection = await photos()

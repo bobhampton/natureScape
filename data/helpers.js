@@ -85,6 +85,11 @@ const exportedMethods = {
             if(!passwordHash){
                 throw "You must provide a password";
             };
+
+            if(typeof passwordHash !== "string") {
+              console.error("Invalid password:", passwordHash); //Debug statement
+              throw "The password input must be a string";
+            }
            
             if(typeof agreement !== 'boolean'){
               throw "The agreement must be a boolean"
