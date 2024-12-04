@@ -1,5 +1,4 @@
-//TODO: Check if dark mode is enabled, and if so, refresh page with DM enabled
-// Delete an image while viewing that image. Redirects back to the images list page
+// Delete an image when viewing just that image
 async function deleteImageSingleView (id) {
     console.log(`Attempting to delete image with id: ${id}`)
     const response = await fetch(`/images/${id}`, {
@@ -13,3 +12,12 @@ async function deleteImageSingleView (id) {
       alert('Error deleting image')
     }
   }
+
+// Edit an image when viewing just that image
+async function editImageSingleView (id) {
+    console.log(`Attempting to edit image with id: ${id}`)
+    window.location.href = `/images/edit/${id}` // Redirect to edit image page
+  }
+  
+
+  

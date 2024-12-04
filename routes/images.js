@@ -1,4 +1,4 @@
-import { photos } from '../config/mongoCollections.js'
+import { photos, locations } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
 import express from 'express'
 import { addImage } from '../data/photos.js'
@@ -90,11 +90,11 @@ router.post('/upload', async (req, res) => {
     return res.status(400).send(`Photo size must be less than ${maxUploadSize}`)
   }
 
-  const { name, desc } = req.body
+  const { name, desc, lat, lon, state, city, areaName } = req.body
   const imageFile = req.files.image
 
   try {
-    addImage(name, desc, imageFile)
+    addImage(name, desc, lat, lon, state, city, areaName, imageFile)
     res.status(200).redirect('/images')
   } catch (err) {
     console.error(err)
@@ -154,25 +154,71 @@ router.post('/like/:id', async (req, res) => {
   }
 })
 
-// Route to increment views for an image
-router.post('/view/:id', async (req, res) => {
+// Route to edit an image by ID
+router.get('/edit/:id', async (req, res) => {
+  const photoId = req.params.id;
+
   try {
     const imageCollection = await photos();
-    const result = await imageCollection.findOneAndUpdate(
-      { _id: new ObjectId(req.params.id) },
-      { $inc: { views: 1 } },
-      { returnDocument: 'after' }
-    );
+    const photoData = await imageCollection.findOne({ _id: new ObjectId(photoId) });
 
-    if (!result.value) {
-      return res.status(404).send('Image not found');
+    if (!photoData) {
+      return res.status(404).send('Photo not found');
     }
 
-    res.status(200).json({ views: result.views });
+    res.render('images/edit', {
+      css: '/public/css/image.css',
+      photo: {
+        _id: photoData._id,
+        photo_name: photoData.photo_name,
+        photo_description: photoData.photo_description,
+        location: {
+          latitude: photoData.location.latitude,
+          longitude: photoData.location.longitude,
+          heading: photoData.location.heading,
+          location_id: photoData.location.location_id
+        },
+        img: {
+          contentType: photoData.img.contentType,
+          data: photoData.img.data.toString('base64')
+        }
+      },
+    });
   } catch (err) {
-    console.log(err);
-    res.status(500).send('Error incrementing views');
+    console.error(err);
+    res.status(500).send('Server error');
   }
-})
+});
+
+// Route to handle the form submission and update the photo information
+router.post('/edit/:id', async (req, res) => {
+  const photoId = req.params.id;
+  const { photo_name, photo_description, lat, lon, state, city, areaName } = req.body;
+
+  try {
+    const imageCollection = await photos();
+    const photoData = await imageCollection.findOne({ _id: new ObjectId(photoId) });
+    const updateData = {
+      photo_name,
+      photo_description,
+      location: {
+        latitude: lat,
+        longitude: lon,
+        heading: photoData.location.heading,
+        location_id: photoData.location.location_id
+      }
+    };
+
+    const result = await imageCollection.updateOne(
+      { _id: new ObjectId(photoId) },
+      { $set: updateData }
+    );
+
+    res.redirect(`/images/photo/${photoId}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
 
 export default router
