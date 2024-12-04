@@ -39,7 +39,8 @@ const seedUsers = async () => {
         "Doe",
         "johndoe@gmail.com",
         "johndoe",
-        userpassword
+        userpassword,
+        true //Agreement
     );
     userpassword = await bcrypt.hash("hashed_password_456", saltRounds);
     user2 = await usersData.createUser(
@@ -47,7 +48,8 @@ const seedUsers = async () => {
         "Smith",
         "janesmith@hotmail.com",
         "janesmith",
-        userpassword
+        userpassword,
+        true //Agreement
     );
 
     userpassword = await bcrypt.hash("hashed_password_789", saltRounds);
@@ -363,14 +365,14 @@ const seedImages = async () => {
 
     // Set the user_id for the photo
     const userCollection = await users()
-    const allUsers = await userCollection.find({}).toArray()
-    
+    const allUsers = await userCollection.find({}).toArray() 
 
-    if (userNum >= allUsers.length) {
-      userNum = 0
-    }
     newPhoto.user_id = allUsers[userNum]._id
-    userNum++
+    userNum++;
+    if (userNum >= allUsers.length) {
+      userNum = 0;
+    }
+    
 
     try {
       const imageCollection = await photos()

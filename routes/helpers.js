@@ -61,3 +61,18 @@ export async function checkInputUsername(username){
     // }
 
 }
+
+export async function checkInputEmail(email){
+    const userCollection = await users();
+    let userFound = await userCollection.findOne(
+        {'email': email}
+    );
+  
+    if(userFound === null){
+        //Goes into the database
+        return;
+    }
+    if(typeof userFound === 'object'){
+        throw "This email is already registered";
+    }
+} 

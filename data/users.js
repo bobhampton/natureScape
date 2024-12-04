@@ -40,6 +40,7 @@ const exportedMethods = {
       contentType: 'image/jpeg'
     }
 
+    
     // Set up all the data for the new user
     const userData = {
       //...newUser,
