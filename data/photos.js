@@ -3,15 +3,14 @@ import sharp from 'sharp'
 import exifReader from 'exif-reader'
 import { findKeys, latLonToDecimal } from '../routes/helpers.js'
 
-export const findLocationId = async (area, state) => {
+export const findLocationId = async (area) => {
   const locationsCollection = await locations()
   const location = await locationsCollection.findOne({
-    area,
-    state
+    area
   })
 
   if (!location) {
-    console.log(`Location ${area}, ${state} not found`)
+    //console.log(`Location ${area}, ${state} not found`)
     return null
   }
 
@@ -40,8 +39,15 @@ export const addLocation = async (state, city, area) => {
   return insertInfo.insertedId
 }
 
-export const addImage = async (name, desc, imageFile) => {
+export const addImage = async (name, desc, lat, lon, state, city, areaName, imageFile) => {
   let metadata = {}
+
+  let locationId = await findLocationId(areaName)
+
+  if (locationId === null) {
+    locationId = await addLocation(state, null, areaName)
+  }
+
 
   // Create a new photo object
   let newPhoto = {
@@ -53,10 +59,10 @@ export const addImage = async (name, desc, imageFile) => {
     likes: 0,
     verification_rating: 0,
     location: {
-      latitude: null,
-      longitude: null,
+      latitude: lat,
+      longitude: lon,
       heading: null,
-      location_id: null
+      location_id: locationId
     },
     img: {
       contentType: null,
