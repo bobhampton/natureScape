@@ -1,25 +1,36 @@
 <div class="user-form-container">
     <h1>{{title}}</h1>
 
+    <!-- Display error message if there's any -->
+    {{#if error}}
+        <div class="alert">
+            <strong>Error:</strong> {{error}}
+        </div>
+    {{/if}}
+
     <form action="/users/newUser" method="POST">
         <!-- First Name -->
         <label for="firstname"><b>First Name</b></label>
-        <input type="text" id="firstname" name="tfirstname" placeholder="Enter your first name" required>
+        <input type="text" id="firstname" name="tfirstname" placeholder="Enter your first name" 
+               value="{{userInput.tfirstname}}" required>
         <br>
 
         <!-- Last Name -->
         <label for="lastname"><b>Last Name</b></label>
-        <input type="text" id="lastname" name="tlastname" placeholder="Enter your last name" required>
+        <input type="text" id="lastname" name="tlastname" placeholder="Enter your last name"
+               value="{{userInput.tlastname}}" required>
         <br>
 
         <!-- Email -->
         <label for="email"><b>Email</b></label>
-        <input type="email" id="email" name="temail" placeholder="Enter your email" required>
+        <input type="email" id="email" name="temail" placeholder="Enter your email"
+               value="{{userInput.temail}}" required>
         <br>
 
         <!-- Username -->
         <label for="username"><b>Username</b></label>
-        <input type="text" id="username" name="tusername" placeholder="Enter a username" required>
+        <input type="text" id="username" name="tusername" placeholder="Enter a username"
+               value="{{userInput.tusername}}" required>
         <br>
 
         <!-- Password -->
@@ -30,24 +41,23 @@
         <!-- Terms and Conditions Checkbox -->
         <div class="terms-container">
             <label for="terms">
-                <input type="checkbox" id="terms" name="tterms" required>
+                <input type="checkbox" id="terms" name="tterms" {{#if userInput.tterms}}checked{{/if}} required>
                 I agree to the <a href="/terms" target="_blank">Terms And Conditions</a>
             </label>
         </div>
         <br>
 
-        <!-- Password -->
+        <!-- Biography -->
         <label for="bio"><b>Biography</b></label>
-        <input type="text" id="bio" name="tbio" placeholder="Enter a biography" required>
+        <input type="text" id="bio" name="tbio" placeholder="Enter a biography" 
+               value="{{userInput.tbio}}" required>
+        <br>
 
         <!-- Submit Button -->
         <button type="submit">Create Account</button>
     </form>
 
-        <div class="login-link">
-            <p>Already have an account? <a href="/login">Log in here</a></p>
-            <!--<p>Visit your <a href="/profilePage/userProfile">profile page</a> (coming soon!)</p>-->
-        </div>
-
+    <div class="login-link">
+        <p>Already have an account? <a href="/login">Log in here</a></p>
     </div>
 </div>

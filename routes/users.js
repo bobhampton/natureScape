@@ -3,7 +3,7 @@ import userData from '../data/users.js'
 import validation from '../data/helpers.js'
 import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
-import {checkInputUsername} from './helpers.js'
+import {checkInputUsername, checkInputEmail} from './helpers.js'
 
 const router = Router();
 
@@ -101,6 +101,7 @@ router
       
       //Ensure the username is not already taken
       await checkInputUsername(userInput.username);
+      await checkInputEmail(userInput.email);
 
       //Add new user to the database
       await userData.createUser(
@@ -123,19 +124,29 @@ router
         res.status(400).render('users/user',{
           title: "Choose a different username ",
           css: "/public/css/newUser.css",
-          error: e
+          error: e,
+          userInput: req.body // Send filled-out form data back
           });
-      }else{
-      console.log(e);
-      console.log(e.message);
-      res.status(400).render('users/user',{
-        title: "New User Entry",
-        css: "/public/css/newUser.css",
-        error: e
-        });
+      }else if(e === "This email is already registered"){
+        res.status(400).render('users/user',{
+          title: "Choose a different email",
+          css: "/public/css/newUser.css",
+          error: e,
+          userInput: req.body // Send filled-out form data back
+          });
+        } else {
+          console.log(e);
+          console.log(e.message);
+        }
+
+        res.status(400).render('users/user',{
+          title: "New User Entry",
+          css: "/public/css/newUser.css",
+          error: e,
+          userInput: req.body //Send filled-out form data back
+          });
       }
-    }    
-  });
+    });
 
 router
   .route('/:userId') //localhost:3000/teams/507f1f77bcf86cd799439011  --teamID is 507f1f77bcf86cd799439011--
