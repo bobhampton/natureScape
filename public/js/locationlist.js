@@ -58,7 +58,7 @@ locations.forEach((location) => {
 
     item.innerHTML = `<span>Area Name: ${location.area_name}</span><br>
                       <span>State: ${location.state}</span><br>
-                      <a href="${location.location_id}">Click here to view!</a>`
+                      <a href="/locationlist/${location.location_id}">Click here to view!</a>`
 
     item.onclick = () => {
       // Fly to location when clicked
