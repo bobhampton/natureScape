@@ -4,6 +4,7 @@ import validation from '../data/helpers.js'
 import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername, checkInputEmail} from './helpers.js'
+import { createFeedback, getAllFeedback } from '../data/feedback.js'
 
 const router = Router();
 
@@ -185,6 +186,10 @@ router
         }
       }))
 
+      //Getting feedback
+      const feedbackList = await getAllFeedback();
+      const userFeedback = feedbackList.filter((fb) => fb.user.toString() === req.params.userId);
+
       res.render('profilePage/newUser', {
         //name on left is whatever I want.  Variables on right
         //come from the database in line 154
@@ -206,10 +211,25 @@ router
             }
           }
         },
-        images: formattedPhotos
+        images: formattedPhotos,
+        feedback: userFeedback
       })
     } catch (e) {
       return res.status(404).json({ error: 'User not found' })
+    }
+  })
+  .post(async (req, res) => {
+    try {
+      const userId = validation.checkId(req.params.userId, 'User ID');
+      const feedbackInput = validation.checkString(req.body.feedback, 'Feedback');
+
+      await createFeedback(feedbackInput, userId);
+
+      //THIS NEEDS TO BE DEBUGGED
+      res.redirect(`/users/${userId}`);
+    } catch (e) {
+      console.error(e);
+      res.status(400).render('error', { error: e });
     }
   })
   .delete(async (req, res) => {
