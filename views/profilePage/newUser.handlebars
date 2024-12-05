@@ -42,15 +42,21 @@
                 </a>
                 <div class="image-details">
                   <h5 id="image-index-display-name">{{this.photo_name}}</h5>
-                  <p id="image-list-description">{{this.photo_description}}</p>
+                  <p> id="image-list-description">{{this.photo_description}}</p>
                   <p>Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
                   {{!-- <button id="image-index-delete-button" onclick="deleteImageFromList('{{this._id}}')">Delete</button> --}}
                 </div>
               </div>
             {{/each}}
           </div>
-
         </section>
+        <br>
+        <br>
+
+        
+
+        
+
 
         <!-- Add Photos & Location Link -->
         <section id="add-photos">
@@ -67,5 +73,27 @@
         </section>
       </main>
     </form>
+    <!-- Submit Feedback Form -->
+        <section id="submit-feedback">
+          <h2>Submit Feedback:</h2>
+          <form action="/users/{{newUser._id}}" method="POST">
+            <textarea name="feedback" placeholder="Write your feedback here (optional)"></textarea>
+            <button type="submit">Submit Feedback</button>
+          </form>
+        </section>
+
+
+        <!-- Feedback Section -->
+        <section id="user-feedback">
+          <h2>Your Feedback Log:</h2>
+          {{#each feedback}}
+            <div class="feedback-item">
+              <p>{{this.feedback}}</p>
+              <p><em>Submitted on: {{this.timestamp}}</em></p>
+            </div>
+          {{else}}
+            <p>No feedback available.</p>
+          {{/each}}
+        </section>
 </div>
   {{!-- <script src="/public/js/image_index.js"></script> --}}
