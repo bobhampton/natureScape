@@ -62,6 +62,28 @@ export async function checkInputUsername(username){
 
 }
 
+export async function checkDuplicateId(incomingId){
+    incomingId = incomingId.toLowerCase();
+    const userCollection = await users();
+      //Search users collection and find the 'userId' in the 
+      //collection that matches the userId
+
+      //Case insensitive search  
+      //Checks for any casing in the database
+      const user = await userCollection.findOne(
+          {userId: {$regex: `^${incomingId}$`, $options: `i`}});
+      //Is this userId taken?
+      //console.log(typeof userFound);
+      //console.log(userFound);
+      if(!user){
+          //No duplicate, proceed to add the new user
+         return;
+      }else{
+        //If a match was found with a case insensitive search
+        throw "Username cannot be used"
+      }
+};
+
 export async function checkInputEmail(email){
     const userCollection = await users();
     let userFound = await userCollection.findOne(
