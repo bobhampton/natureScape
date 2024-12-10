@@ -1,6 +1,6 @@
 import { users } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
-//import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import validation from './helpers.js'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename)
 
 const exportedMethods = {
   async createUser (firstname, lastname, email, username,
-     passwordhash, terms, bio) {
+     passwordhash, terms, bio, role) {
     // Validate inputs
     const newUser = validation.checkUser(
       firstname,
@@ -20,16 +20,23 @@ const exportedMethods = {
       username,
       passwordhash,
       terms,
-      bio
+      bio,
+      role
     )
 
-    //Timestamps will be easier
+    // Make sure username and email aren't already in the DB
+    const userCollection = await users()
+    if (await userCollection.findOne({ username: newUser.username })) {
+      throw `Username ${newUser.username} already exists. Please choose a different user name.`
+     } else if (await userCollection.findOne({ email: newUser.email })) {
+      throw `Email ${newUser.email} already exists. Please choose a different email.`
+    }
 
     // Get the current time in UTC
     const temp = Date.now()
     const uploadTimeStampUTC = (new Date(temp))
 
-     // Setting up default profile picture lol
+     // Setting up default profile picture
     const defaultProfilePicPath = path.join(
       __dirname,
       '../public/images/defaultProfilePhoto.png'
@@ -39,30 +46,31 @@ const exportedMethods = {
       data: profilePicData.toString('base64'),
       contentType: 'image/jpeg'
     }
-
+    
     // Set up all the data for the new user
     const userData = {
       //...newUser,
-      first_name: firstname,
-      last_name: lastname,
-      email: email,
-      username: username,
-      password_hash: passwordhash,
+      first_name: newUser.firstname,
+      last_name: newUser.lastname,
+      email: newUser.email,
+      username: newUser.username,
+      password_hash: newUser.passwordhash,
       creationDate: uploadTimeStampUTC,
       terms: true,
       profile: {
-        bio: bio,
+        bio: newUser.bio,
         profile_picture: profilePic
-      }
+      },
+      role: newUser.role
     }
 
     // Add user to database
-    const userCollection = await users()
+    //const userCollection = await users()
     const insertInfo = await userCollection.insertOne(userData)
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
-      throw `Could not add the new user: ${newUser.first_name} ${newUser.last_name}`
+      throw `Could not add the new user: ${newUser.firstname} ${newUser.lastname}`
 
-    // No need to return anything, it's in the DB and we'll snag it later
+    // Can add return bool here if needed
   },
 
   async getAllUsers () {
