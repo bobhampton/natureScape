@@ -91,7 +91,7 @@ export const seedImages = async () => {
       let takenDay = fileNameInput[3]
 
       // Set the date taken
-      newPhoto.date_time_taken = new Date(takenYear, takenMonth - 1, takenDay)
+      newPhoto.date_time_taken = new Date(takenYear, takenMonth - 1, takenDay) // apparently month is 0-indexed
 
       // Check if location already exists in database
       if (fileName in manualLatLon) {
