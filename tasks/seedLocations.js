@@ -18,8 +18,9 @@ export const findLocationId = async (area, state) => {
   } //End of findLocationId
   
   // Function to add location to database
-  export const addLocation = async (state, city, area) => {
+  export const addLocation = async (country, state, city, area) => {
     const newLocation = {
+      country,
       state,
       city,
       area

@@ -2,8 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { photos, users } from '../config/mongoCollections.js'
-import sharp from 'sharp'
-import exifReader from 'exif-reader'
 import { findKeys, latLonToDecimal } from '../routes/helpers.js'
 import { findLocationId, addLocation } from './seedLocations.js'
 import reverse from 'reverse-geocode'
@@ -18,63 +16,121 @@ export const seedImages = async () => {
   const imageFiles = fs.readdirSync(imageFolder)
 
   let userNum = 0
+  let fileNum = 1
+  let fileNameInput
+  let fileName
+  let takenYear
+  let takenMonth
+  let takenDay
 
   console.log('Seeding images/locations...')
 
   // 1 degree of lat is approximately 69 miles (111 km)
   let heading = 254.52317809400603
   const manualLatLon = {
+    // Congaree National Park, SC, US
     ccSC: {
       latitude: 33.83037368257592,
-      longitude: -80.82370672901854
+      longitude: -80.82370672901854,
+      state: 'SC',
+      country: 'US',
+      area: 'Congaree National Park'
     },
+    // Capitol Reef National Park, UT, US
     crUT: {
       latitude: 38.18535,
-      longitude: -111.1785
+      longitude: -111.1785,
+      state: 'UT',
+      country: 'US',
+        area: 'Capitol Reef National Park'
     },
+    // Orchard Glen, ND, US
     ogND: {
       latitude: 46.775901224709,
-      longitude: -96.787450748989
+      longitude: -96.787450748989,
+      state: 'ND',
+      country: 'US',
+        area: 'Orchard Glen'
     },
+    // Red Rock Canyon State Park, CA, US
     rrCA: {
       latitude: 35.373601,
-      longitude: -117.993204
+      longitude: -117.993204,
+      state: 'CA',
+      country: 'US',
+        area: 'Red Rock Canyon State Park'
     },
+    // Steinaker State Park, UT, US
     ssUT: {
       latitude: 40.51582,
-      longitude: -109.53892
+      longitude: -109.53892,
+      state: 'UT',
+      country: 'US',
+        area: 'Steinaker State Park'
     },
+    // False Bay Nature Reserve. Grassy Park, Cape Town, ZA
     fbZA: {
       latitude: -34.05902,
-      longitude: 18.499532
+      longitude: 18.499532,
+      state: 'Western Cape',
+      country: 'ZA',
+      area: 'Grassy Park'
     },
+    // Helderberg Nature Reserve dam. Somerset West, Cape Town, ZA
     hnZA: {
       latitude: -34.06295,
-      longitude: 18.87208
+      longitude: 18.87208,
+      state: 'Western Cape',
+      country: 'ZA',
+      area: 'Somerset West'
     },
+    // Lettmair Au, Austria. Admont, AT
     laAT: {
       latitude: 47.582506,
-      longitude: 14.587522
+      longitude: 14.587522,
+      state: 'Styria',
+      country: 'AT',
+      area: 'Admont'
     },
+    // Best Kept Secret Cheshire, UK. Frodsham, UK
     bkGB: {
       latitude: 53.255201,
-      longitude: -2.74744
+      longitude: -2.74744,
+      state: 'Cheshire',
+      country: 'GB',
+        area: 'Frodsham'
     },
+    // Maglemosen genopstår, Denmark. Farum, DK
     mgDK: {
       latitude: 55.80663,
-      longitude: 12.30903
+      longitude: 12.30903,
+      state: 'Capital Region',
+      country: 'DK',
+        area: 'Farum'
     },
+    // Skalanes. Múlaþing, IS
     smIS: {
       latitude: 65.294782,
-      longitude: -13.701698
+      longitude: -13.701698,
+      state: 'Eastern Region',
+      country: 'IS',
+        area: 'Múlaþing'
     },
-    sgAK: {
+    // Sheridan Glacier. AK, US
+    agAK: {
       latitude: 60.53176,
-      longitude: -145.37783
+      longitude: -145.37783,
+      state: 'AK',
+      country: 'US',
+      area: 'Sheridan Glacier'
     },
+    // Keālia Kanuimanu Ponds. HI, US
     kkHI: {
       latitude: 20.794749,
-      longitude: -156.473163
+      longitude: -156.473163,
+      state: 'HI',
+      country: 'US',
+        area: 'Keālia Kanuimanu Ponds'
     }
   }
 
@@ -84,7 +140,6 @@ export const seedImages = async () => {
 
     // Filter out non-image files like .DS_Store >_<
     if (!['.jpg', '.jpeg', '.png', '.heic', '.heif'].includes(fileExtension)) {
-      //console.log(`Non-image file ${file} found, skipping...`) //debugging
       continue
     }
 
@@ -116,13 +171,18 @@ export const seedImages = async () => {
     // Add manual data to photo
     try {
       // Split file name to extract date taken
-      let fileNameInput = file.split('_')
+      fileNameInput = file.split('_')
       fileNameInput = fileNameInput[0].split('-')
-      let fileName = fileNameInput[0]
-      newPhoto.photo_name = fileName
-      let takenYear = fileNameInput[1]
-      let takenMonth = fileNameInput[2]
-      let takenDay = fileNameInput[3]
+      if (fileName === fileNameInput[0]) {
+        fileNum++
+      } else {
+        fileNum = 1
+      }
+      fileName = fileNameInput[0]
+      newPhoto.photo_name = `${fileName}${fileNum}`
+      takenYear = fileNameInput[1]
+      takenMonth = fileNameInput[2]
+      takenDay = fileNameInput[3]
 
       // Set the date taken
       newPhoto.date_time_taken = new Date(takenYear, takenMonth - 1, takenDay) // apparently month is 0-indexed
@@ -161,6 +221,7 @@ export const seedImages = async () => {
 
             // Add location to database
             location = await addLocation(
+              manualLatLon[fileName].country,
               manualLatLon[fileName].state,
               manualLatLon[fileName].city,
               manualLatLon[fileName].area
@@ -173,9 +234,10 @@ export const seedImages = async () => {
             manualLatLon[fileName].state = state
 
             location = await addLocation(
+                manualLatLon[fileName].country,
               manualLatLon[fileName].state,
               null,
-              null
+              manualLatLon[fileName].area
             )
           }
         }
@@ -196,13 +258,12 @@ export const seedImages = async () => {
     // Set the new photo object properties
 
     ;(newPhoto.photo_description =
-      'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum'),
+      'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation '),
       (newPhoto.date_time_uploaded = uploadTimeStampUTC),
       (newPhoto.img = {
         data: Buffer.from(fileData),
         contentType: contentType
       })
-    //newPhoto.metadata = metadata
 
     // Set the user_id for the photo
     const userCollection = await users()
