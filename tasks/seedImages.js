@@ -12,13 +12,14 @@ import { lookUpRaw, lookUp, lookUpGeoJSON } from 'geojson-places'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-let userNum = 0
-
 // Function to seed images
 export const seedImages = async () => {
-  console.log('Seeding images/locations...')
   const imageFolder = path.join(__dirname, '../seed_images')
   const imageFiles = fs.readdirSync(imageFolder)
+
+  let userNum = 0
+
+  console.log('Seeding images/locations...')
 
   // 1 degree of lat is approximately 69 miles (111 km)
   let heading = 254.52317809400603
@@ -27,21 +28,53 @@ export const seedImages = async () => {
       latitude: 33.83037368257592,
       longitude: -80.82370672901854
     },
-    crUT1: {
+    crUT: {
       latitude: 38.18535,
       longitude: -111.1785
     },
-    ogND1: {
+    ogND: {
       latitude: 46.775901224709,
       longitude: -96.787450748989
     },
-    rrCA1: {
+    rrCA: {
       latitude: 35.373601,
       longitude: -117.993204
     },
-    ssUT1: {
+    ssUT: {
       latitude: 40.51582,
       longitude: -109.53892
+    },
+    fbZA: {
+      latitude: -34.05902,
+      longitude: 18.499532
+    },
+    hnZA: {
+      latitude: -34.06295,
+      longitude: 18.87208
+    },
+    laAT: {
+      latitude: 47.582506,
+      longitude: 14.587522
+    },
+    bkGB: {
+      latitude: 53.255201,
+      longitude: -2.74744
+    },
+    mgDK: {
+      latitude: 55.80663,
+      longitude: 12.30903
+    },
+    smIS: {
+      latitude: 65.294782,
+      longitude: -13.701698
+    },
+    sgAK: {
+      latitude: 60.53176,
+      longitude: -145.37783
+    },
+    kkHI: {
+      latitude: 20.794749,
+      longitude: -156.473163
     }
   }
 
@@ -86,6 +119,7 @@ export const seedImages = async () => {
       let fileNameInput = file.split('_')
       fileNameInput = fileNameInput[0].split('-')
       let fileName = fileNameInput[0]
+      newPhoto.photo_name = fileName
       let takenYear = fileNameInput[1]
       let takenMonth = fileNameInput[2]
       let takenDay = fileNameInput[3]
@@ -122,7 +156,8 @@ export const seedImages = async () => {
             // Use reverse-geocode to get state, city, and area
             manualLatLon[fileName].state = reverseGeo.state_abbr
             manualLatLon[fileName].city = reverseGeo.city
-            manualLatLon[fileName].area = reverseGeo.city // Can change this to zip code if needed
+            //manualLatLon[fileName].area = reverseGeo.city // Can change this to city if needed?
+            manualLatLon[fileName].area = reverseGeo.zipcode
 
             // Add location to database
             location = await addLocation(
@@ -159,9 +194,9 @@ export const seedImages = async () => {
     const uploadTimeStampUTC = new Date(temp)
 
     // Set the new photo object properties
-    ;(newPhoto.photo_name = path.basename(file, fileExtension)),
-      (newPhoto.photo_description =
-        'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum'),
+
+    ;(newPhoto.photo_description =
+      'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum'),
       (newPhoto.date_time_uploaded = uploadTimeStampUTC),
       (newPhoto.img = {
         data: Buffer.from(fileData),
