@@ -3,7 +3,7 @@ import userData from '../data/users.js'
 import validation from '../data/helpers.js'
 import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
-import {checkInputUsername, checkInputEmail} from './helpers.js'
+import {checkInputUsername, checkInputEmail, checkDuplicateId} from './helpers.js'
 import { createFeedback, getAllFeedback } from '../data/feedback.js'
 
 const router = Router();
@@ -102,6 +102,7 @@ router
       
       //Ensure the username is not already taken
       await checkInputUsername(userInput.username);
+      await checkDuplicateId(userInput.username);
       await checkInputEmail(userInput.email);
 
       //Add new user to the database

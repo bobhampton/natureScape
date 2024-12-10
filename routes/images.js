@@ -8,8 +8,17 @@ const router = express.Router()
 // Route to fetch all images
 router.get('/', async (req, res) => {
   try {
+    //Use query parameter
+    const filter = req.query.filter;
     const imageCollection = await photos()
-    const images = await imageCollection.find({}).toArray()
+    let images;
+    if(filter === "liked"){
+      images = await imageCollection.find({}).sort({likes: -1}).limit(5).toArray();
+    }else if(filter === 'views'){
+      images = await imageCollection.find({}).sort({views: -1}).limit(5).toArray();
+    }else{
+      images = await imageCollection.find({}).toArray();
+    }
     const formattedImages = images.map(image => ({
       _id: image._id,
       photo_name: image.photo_name,
