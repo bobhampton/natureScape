@@ -23,7 +23,7 @@ export const seedImages = async () => {
   // 1 degree of lat is approximately 69 miles (111 km)
   let heading = 254.52317809400603
   const manualLatLon = {
-    ccSC1: {
+    ccSC: {
       latitude: 33.83037368257592,
       longitude: -80.82370672901854
     },
@@ -82,7 +82,16 @@ export const seedImages = async () => {
 
     // Add manual data to photo
     try {
-      let fileName = file.slice(0, 5)
+      // Split file name to extract date taken
+      let fileNameInput = file.split('_')
+      fileNameInput = fileNameInput[0].split('-')
+      let fileName = fileNameInput[0]
+      let takenYear = fileNameInput[1]
+      let takenMonth = fileNameInput[2]
+      let takenDay = fileNameInput[3]
+
+      // Set the date taken
+      newPhoto.date_time_taken = new Date(takenYear, takenMonth - 1, takenDay)
 
       // Check if location already exists in database
       if (fileName in manualLatLon) {
@@ -158,7 +167,7 @@ export const seedImages = async () => {
         data: Buffer.from(fileData),
         contentType: contentType
       })
-    //newPhoto.metadata = metadata 
+    //newPhoto.metadata = metadata
 
     // Set the user_id for the photo
     const userCollection = await users()
