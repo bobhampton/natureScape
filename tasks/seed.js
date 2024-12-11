@@ -1,13 +1,5 @@
 import { dbConnection, closeConnection } from '../config/mongoConnection.js'
-import bcrypt from 'bcryptjs'
-import fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { photos, locations, users } from '../config/mongoCollections.js'
-import sharp from 'sharp'
-import exifReader from 'exif-reader'
-import { findKeys, latLonToDecimal } from '../routes/helpers.js'
-import usersData from '../data/users.js'
 import { seedUsers } from './seedUsers.js'
 import { seedImages } from './seedImages.js'
 import { seedComments } from './seedComments.js'
@@ -41,11 +33,16 @@ const test = async () => {
 
 
 const runSeed = async () => {
+  console.log('*')
   await seedUsers()
+  console.log('****')
   await seedImages()
+  console.log('***********')
   await seedComments()
   
-  console.log('Done!')
+  console.log('**************************')
+  console.log('******* Seed done! *******')
+  console.log('**************************\n')
 
   //await test()
 

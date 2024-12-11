@@ -141,4 +141,7 @@ export const seedComments = async () => {
   } catch (e) {
     console.error('Error seeding comments:', e)
   }
+  console.log('************')
+  console.log('Comments created successfully!')
+  console.log('*************\n')
 }
