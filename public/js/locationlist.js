@@ -1,13 +1,4 @@
-// Mock location data
-// const locations = [
-//     { id: 1, name: 'Location A', coordinates: [-74.006, 40.7128] },
-//     { id: 2, name: 'Location B', coordinates: [-73.935242, 40.73061] },
-//     { id: 3, name: 'Location C', coordinates: [-74.035242, 40.74161] },
-// ];
-
-// const locations = <%= JSON.stringify(locations) %>;
-  
-// Initialize Mapbox map
+  // Initialize Mapbox map
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
@@ -67,4 +58,14 @@ locations.forEach((location) => {
     locationsContainer.appendChild(item);
     addedLocations.add(location.area_name); // Newly Added
   }
+});
+
+if (darkmode === 'active') map.setStyle('mapbox://styles/mapbox/navigation-night-v1');
+
+if (darkmode === null) map.setStyle('mapbox://styles/mapbox/streets-v11');
+
+document.getElementById('theme-switch').addEventListener('click', () => {
+  darkmode = localStorage.getItem('darkmode');
+  const newStyle = (darkmode === 'active') ? 'mapbox://styles/mapbox/navigation-night-v1' : 'mapbox://styles/mapbox/streets-v11';
+  map.setStyle(newStyle);
 });
