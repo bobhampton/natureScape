@@ -326,7 +326,9 @@ export const seedUsers = async () => {
         user.role
       )
     }
+    console.log('**')
     console.log('Users created successfully!')
+    console.log('***\n')
   } catch (error) {
     console.error('Error while creating users:', error)
   }
