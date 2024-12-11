@@ -41,13 +41,14 @@ router.get('/:locationId', async (req, res) => {
       _id: photo._id,
       photo_name: photo.photo_name,
       photo_description: photo.photo_description,
+      photo_date_time: photo.date_time_taken ?? photo.date_time_uploaded,
       likes: photo.likes,
       views: photo.views,
       img: {
         data: photo.img.data.toString('base64'),
         contentType: photo.img.contentType
       }
-    }));
+    })).sort((a, b) => b.photo_date_time - a.photo_date_time);
 
     //Render page using location data and photos
     res.render('locations/location_view_edit', {
