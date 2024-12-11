@@ -1,19 +1,14 @@
-/* * {
-    margin:  0;
-    padding: 0;
-    box-sizing: border-box;
-} */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
+    /* display: flex; */
     height: 100vh;
+    background-color: var(--body-color);
 }
 
 .location-list-body {
-    margin-top: 70px;
+    /* margin-top: 70px; */
     display: flex;
     flex: 1;
     height: calc(100vh - 70px);
@@ -37,15 +32,17 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     cursor: pointer;
+    color: var(--body-text-color);
 }
 
 .location-item:hover {
-    background-color: #f0f0f0;
+    background-color: var(--symbol-color);
 }
 
 .location-list-title {
     text-align: center;
     margin-bottom: 5px;
+    color: var(--body-text-color);
 }
 
 li {
