@@ -1,7 +1,7 @@
-import { photos, locations } from '../config/mongoCollections.js'
+import { photos, locations, comments, users } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
 import express from 'express'
-import { addImage } from '../data/photos.js'
+import { addImage, getCommentsByPhotoId, getUsernameById } from '../data/photos.js'
 
 const router = express.Router()
 
@@ -61,6 +61,21 @@ router.get('/photo/:id', async (req, res) => {
       { $inc: { views: 1 } },
       { returnDocument: 'after' }
     )
+  
+    // Get all comments associated with the photo
+    let formattedComments = await getCommentsByPhotoId(photoId)
+
+    /*
+    ********** TESTING ******************************
+    remove if block after testing
+    need this when uploading photo and not logged in
+    *************************************************
+    */
+   let photoUsername = null
+   if (photoData.user_id) {
+    // Find the username of the user who uploaded the photo
+    photoUsername = await getUsernameById(photoData.user_id)
+   }
 
     res.render('images/image', {
       css: '/public/css/image.css',
@@ -79,8 +94,10 @@ router.get('/photo/:id', async (req, res) => {
           contentType: photoData.img.contentType,
           data: photoData.img.data.toString('base64')
         },
-        metadata: photoData.metadata
-      }
+        metadata: photoData.metadata,
+        username: photoUsername
+      },
+      comments: formattedComments
     })
   } catch (err) {
     console.error(err)
