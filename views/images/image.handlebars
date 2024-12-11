@@ -16,10 +16,14 @@
         <p>{{photo.photo_description}}</p>
       </div>
       <hr />
+      
       <div class="all-image-details">
         <ul>
           <li>Uploaded by (user_id):
             {{#checkNull photo.user_id}}{{/checkNull}}
+          </li>
+          <li>Uploaded by (username)
+            {{#checkNull photo.username}}{{/checkNull}}
           </li>
           <li>Taken on (date_time_taken):
             {{#checkNull photo.date_time_taken}}{{/checkNull}}
@@ -38,6 +42,21 @@
           <li>Content type (img.contentType): {{photo.img.contentType}}</li>
         </ul>
       </div>
+      <hr />
+
+      <div class="photo-comments">
+        <p>Comments</p>
+        <ul>
+          {{#each comments}}
+          <li>
+            <p>{{this.comment_text}}</p>
+            <p>USERNAME: {{this.username}}</p>
+            <p>On: {{this.creation_time}}</p>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+      
       <button
         id="single-image-delete"
         onclick="deleteImageSingleView('{{photo._id}}')"

@@ -22,6 +22,7 @@ export const seedImages = async () => {
   let takenYear
   let takenMonth
   let takenDay
+  let maxTopFive = 5
 
   console.log('Seeding images/locations...')
 
@@ -257,13 +258,13 @@ export const seedImages = async () => {
 
     // Set the new photo object properties
 
-    ;(newPhoto.photo_description =
-      'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation '),
-      (newPhoto.date_time_uploaded = uploadTimeStampUTC),
-      (newPhoto.img = {
+    newPhoto.photo_description =
+      'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ',
+      newPhoto.date_time_uploaded = uploadTimeStampUTC,
+      newPhoto.img = {
         data: Buffer.from(fileData),
         contentType: contentType
-      })
+      }
 
     // Set the user_id for the photo
     const userCollection = await users()
@@ -276,6 +277,20 @@ export const seedImages = async () => {
       userNum++
     }
 
+    // Randomly select between 0-5 likes & views to add to the photo
+    const randomLikes = Math.floor(Math.random() * 5)
+    const randomViews = Math.floor(Math.random() * (25 - 5 + 1)) + 5;
+
+    if (randomViews === 0 && randomViews < randomLikes) {
+      newPhoto.views = randomLikes * 8
+    }
+    if (randomViews < randomLikes) {
+      newPhoto.views = randomLikes * 5
+    }
+
+    newPhoto.likes = randomLikes
+    newPhoto.views = randomViews
+
     try {
       const imageCollection = await photos()
       await imageCollection.insertOne(newPhoto)
@@ -284,5 +299,30 @@ export const seedImages = async () => {
       console.error(`Error saving image ${file}:`, e)
     }
   }
+
+  // Randomly choose 5 photos for extra likes/views
+  const imageCollection = await photos()
+  const allImages = await imageCollection.find({}).toArray()
+
+  for (let i = 0; i < maxTopFive; i++) {
+    const topFiveMultiplier = Math.floor(Math.random() * 5) + 5
+    const randomImage = Math.floor(Math.random() * allImages.length)
+    const randomLikes = (allImages[randomImage].likes * topFiveMultiplier)
+    const randomViews = (allImages[randomImage].views * topFiveMultiplier)
+
+    try {
+      await imageCollection.updateOne(
+        { _id: allImages[randomImage]._id },
+        { $inc: { likes: randomLikes, views: randomViews } }
+      )
+      //console.log(`Image ${allImages[randomImage]._id} updated with ${randomLikes} likes and ${randomViews} views`) //debugging
+    } catch (e) {
+      console.error(`Error updating image ${allImages[randomImage]._id}:`, e)
+    }
+
+  }
+    
+
+
   console.log('Images/locations seeded successfully!\n')
 } //End of seedImages

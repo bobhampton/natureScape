@@ -1,8 +1,9 @@
-import { photos, locations } from '../config/mongoCollections.js'
+import { photos, locations, users, comments } from '../config/mongoCollections.js'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
 import { findKeys, latLonToDecimal } from '../routes/helpers.js'
 import validation from './helpers.js'
+import { ObjectId } from 'mongodb'
 
 export const findLocationId = async (area) => {
   const locationsCollection = await locations()
@@ -164,3 +165,43 @@ export const getPhotosByUserId = async (userId) => {
   if (!userId) throw 'No photos found with the given User ID'
   return photoList;
 }
+
+export const getCommentsByPhotoId = async (photoId) => {
+  if(!photoId) throw 'Photo Id is required!';
+
+  // Find all comments associated with the photo
+  const commentCollection = await comments()
+  const commentsData = await commentCollection.find({ photo_Id: new ObjectId(photoId) }).toArray()
+
+  const formattedComments = commentsData.map(comment => ({
+    _id: comment._id,
+    photo_Id: comment.photo_Id,
+    user_Id: comment.user_Id,
+    comment_text: comment.comment_text,
+    creation_time: comment.creation_time
+  }))
+  
+  if (!formattedComments) {
+    return false
+  }
+  for (const comment of formattedComments) {
+    comment.username = await getUsernameById(comment.user_Id)
+  }
+    return formattedComments
+  
+}
+
+export const getUsernameById = async (userId) => {
+  if(!userId) throw 'User Id is required!';
+
+  const userCollection = await users()
+  const user = await userCollection.findOne({ _id: new ObjectId(userId) })
+
+  if (!user) {
+    return null
+  } else {
+    return user.username
+  }
+}
+
+
