@@ -34,6 +34,50 @@
         required
       ></textarea>
     </div>
+    <div>
+      <label id="image-upload-areaName" class="image-upload" for="areaName">Area Name</label>
+      <input
+        type="text"
+        id="areaName"
+        placeholder="Area Name"
+        value=""
+        name="areaName"
+        required
+      />
+    </div>
+    <div> 
+    <label id="image-upload-lat" class="image-upload" for="lat">Latitude</label>
+    <input
+      type="text"
+      id="lat"
+      placeholder="Latitude"
+      value=""
+      name="lat"
+      required
+    />
+    </div>
+    <div>
+      <label id="image-upload-lon" class="image-upload" for="lon">Longitude</label>
+      <input
+        type="text"
+        id="lon"
+        placeholder="Longitude"
+        value=""
+        name="lon"
+        required
+      />
+    </div>
+    <div>
+      <label id="image-upload-state" class="image-upload" for="state">State</label>
+      <input
+        type="text"
+        id="state"
+        placeholder="State"
+        value=""
+        name="state"
+        required
+      />
+    </div>
     <div id="image-index-file-upload-container" class="file-upload-container">
       <!-- Add 'multiple' attribute to 'file' to allow multiple file uploads? -->
       <input
@@ -49,6 +93,10 @@
   </form>
 </div>
 <hr />
+  <div>
+      <a href="/images">All Images</a><a href="/images?filter=liked">Most Liked</a><a href="/images?filter=views">Most Viewed</a>
+  </div>
+<hr/>
 
 <div id="image-container" class="image-container">
   {{#each images}}

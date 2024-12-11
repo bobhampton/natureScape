@@ -1,3 +1,4 @@
+/* Single image page */
 #single-image {
   text-align: center;
   margin-top: 90px;
@@ -36,4 +37,56 @@
   flex: 1 1 calc(33.333% - 10px);
   object-fit: contain;
   margin: 0 auto;
+}
+
+.photo-comments {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  text-align: left;
+}
+
+.photo-comments li {
+  margin-bottom: 10px;
+}
+
+/* Edit image page */
+#edit-image {
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#edit-image h1 {
+  margin-bottom: 20px;
+  margin-top: 90px;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.edit-form input,
+.edit-form textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+#edit-image-submit-button {
+  width: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
 }

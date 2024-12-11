@@ -1,17 +1,18 @@
-import { photos, locations } from '../config/mongoCollections.js'
+import { photos, locations, users, comments } from '../config/mongoCollections.js'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
 import { findKeys, latLonToDecimal } from '../routes/helpers.js'
+import validation from './helpers.js'
+import { ObjectId } from 'mongodb'
 
-export const findLocationId = async (area, state) => {
+export const findLocationId = async (area) => {
   const locationsCollection = await locations()
   const location = await locationsCollection.findOne({
-    area,
-    state
+    area
   })
 
   if (!location) {
-    console.log(`Location ${area}, ${state} not found`)
+    //console.log(`Location ${area}, ${state} not found`)
     return null
   }
 
@@ -40,8 +41,15 @@ export const addLocation = async (state, city, area) => {
   return insertInfo.insertedId
 }
 
-export const addImage = async (name, desc, imageFile) => {
+export const addImage = async (name, desc, lat, lon, state, city, areaName, imageFile) => {
   let metadata = {}
+
+  let locationId = await findLocationId(areaName)
+
+  if (locationId === null) {
+    locationId = await addLocation(state, null, areaName)
+  }
+
 
   // Create a new photo object
   let newPhoto = {
@@ -53,10 +61,10 @@ export const addImage = async (name, desc, imageFile) => {
     likes: 0,
     verification_rating: 0,
     location: {
-      latitude: null,
-      longitude: null,
+      latitude: lat,
+      longitude: lon,
       heading: null,
-      location_id: null
+      location_id: locationId
     },
     img: {
       contentType: null,
@@ -147,3 +155,53 @@ export const addImage = async (name, desc, imageFile) => {
     console.log(`Image ${name} saved to database`)
   }
 }
+
+export const getPhotosByUserId = async (userId) => {
+  if(!userId) throw 'User Id is required!';
+  userId = validation.checkId(userId);
+
+  const photoCollection = await photos(); //Access photos collection
+  const photoList = await photoCollection.find({userId: userId }).toArray(); //Find all photos by User Id
+  if (!userId) throw 'No photos found with the given User ID'
+  return photoList;
+}
+
+export const getCommentsByPhotoId = async (photoId) => {
+  if(!photoId) throw 'Photo Id is required!';
+
+  // Find all comments associated with the photo
+  const commentCollection = await comments()
+  const commentsData = await commentCollection.find({ photo_Id: new ObjectId(photoId) }).toArray()
+
+  const formattedComments = commentsData.map(comment => ({
+    _id: comment._id,
+    photo_Id: comment.photo_Id,
+    user_Id: comment.user_Id,
+    comment_text: comment.comment_text,
+    creation_time: comment.creation_time
+  }))
+  
+  if (!formattedComments) {
+    return false
+  }
+  for (const comment of formattedComments) {
+    comment.username = await getUsernameById(comment.user_Id)
+  }
+    return formattedComments
+  
+}
+
+export const getUsernameById = async (userId) => {
+  if(!userId) throw 'User Id is required!';
+
+  const userCollection = await users()
+  const user = await userCollection.findOne({ _id: new ObjectId(userId) })
+
+  if (!user) {
+    return null
+  } else {
+    return user.username
+  }
+}
+
+

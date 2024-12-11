@@ -1,0 +1,29 @@
+<div class="edit-image-body">
+<div id="edit-image">
+
+<h1 id="edit-image-h1">Edit Photo</h1>
+  <form id="edit-image" class="edit-form" action="/images/edit/{{photo._id}}" method="POST">
+    <div>
+      <label for="photo_name">Photo Name:</label>
+      <input type="text" id="photo_name" name="photo_name" value="{{#checkNull photo.photo_name}}{{/checkNull}}" required>
+    </div>
+    <div>
+      <label for="photo_description">Photo Description:</label>
+      <textarea id="photo_description" name="photo_description" required>{{#checkNull photo.photo_description}}{{/checkNull}}</textarea>
+    </div>
+    <div>
+      <label for="lat">Latitude:</label>
+      <input type="text" id="lat" name="lat" value="{{#checkNull photo.location.latitude}}{{/checkNull}}" required>
+    </div>
+    <div>
+      <label for="lon">Longitude:</label>
+      <input type="text" id="lon" name="lon" value="{{#checkNull photo.location.longitude}}{{/checkNull}}" required>
+    </div>
+    <div>
+      <label for="areaName">Area Name:</label>
+      <input type="text" id="areaName" name="areaName" value="{{#checkNull location.area}}{{/checkNull}}">
+    </div> 
+    <button id="edit-image-submit-button" type="submit">Save Changes</button>
+  </form>
+  </div>
+</div>
