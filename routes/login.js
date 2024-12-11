@@ -48,8 +48,24 @@ router
         js: "/public/js/login.js", 
         loginMessage: "Incorrect credentials" });
     }
+  }); 
+
+//GET for logout
+router
+  .route('/logout')
+  .get(async (req, res) => {
+    req.session.destroy((error) => {
+      if (error) {
+        console.error('Error destroying session:', error);
+        res.status(500).send("Error logging out");
+      } else {
+        res.clearCookie('session-cookie');
+        res.redirect('/login');
+      }
+    });
   });
 
+//Route for client side js to fetch for authentication
 router
   .route('/checkUser')
   .post(async (req, res) => {
@@ -73,4 +89,4 @@ router
     }
   })
 
-export default router
+export default router;
