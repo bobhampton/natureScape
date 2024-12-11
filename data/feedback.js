@@ -42,7 +42,7 @@ const createFeedback = async (feedbackInput, userId) => {
 
     const insertInfo = await feedbackCollection.insertOne(feedbackObj);
     //Need to debug this!!!
-    if (!insertInfo.acknowledged || !insertInfo.insertId){
+    if (!insertInfo.acknowledged || !insertInfo.insertedId){
         throw "Could not complete feedback submittal";
     }
     
