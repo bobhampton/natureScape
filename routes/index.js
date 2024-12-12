@@ -28,6 +28,7 @@ const constructorMethod = app => {
   app.use('/images/:id', imagesRoutes); // DELETE a specific image
   app.use('/images/upload', imagesRoutes); // POST upload an image
   app.use('/images/photo/:id', imagesRoutes); // GET a specific image
+  app.use('/images/edit/:id', imagesRoutes); // Edit a specific image
   app.use('/locationlist', locationRoutes);
   app.use('/users', userRoutes);//Get all users -- Will not be in final product
   app.use('/users/:userId', userRoutes);//Get user by Id --Will not be in final product

@@ -16,7 +16,7 @@ app.use(
     secret: 'mySecretKey to sign cookie',
     resave: false,
     saveUninitialized: false,
-    //cookie: { maxAge: 600000 }
+    cookie: { maxAge: 600000 }
   })
 );
 
