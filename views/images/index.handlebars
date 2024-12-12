@@ -50,8 +50,8 @@
   </form>
 </div>
 <hr />
-  <div>
-      <a href="/images">All Images</a><a href="/images?filter=liked">Most Liked</a><a href="/images?filter=views">Most Viewed</a>
+  <div id="gallery-filter-links">
+      <a id="gallery-all-images-link" href="/images">All Images</a><a id="gallery-most-liked" href="/images?filter=liked">Most Liked</a><a id="gallery-most-viewed" href="/images?filter=views">Most Viewed</a>
   </div>
 <hr/>
 
@@ -70,12 +70,14 @@
         />
       </a>
       <div class="image-details">
-        <h5 id="image-index-display-name">{{this.photo_name}}</h5>
-        <p id="image-list-description">{{this.photo_description}}</p>
-        <p>Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
+
+        <h5 id="image-index-display-name">Photo Name: {{this.photo_name}}</h5>
+        <p id="image-list-description">Photo Description: {{this.photo_description}}</p>
+        <p id="image-list-view">Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
         {{#if (eq loggedInUserId this.user_id)}}
           <button id="image-index-delete-button" onclick="deleteImageFromList('{{this._id}}')">Delete</button>
         {{/if}}
+
       </div>
     </div>
   {{/each}}
