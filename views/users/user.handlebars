@@ -9,6 +9,14 @@
     {{/if}}
 
     <form action="/users/newUser" method="POST">
+        <!-- Role Selection -->
+        <label for="role"><b>Role</b></label>
+        <select id="role" name="trole" required>
+            <option value="user" {{#if (eq userInput.trole 'user')}}selected{{/if}}>User</option>
+            <option value="admin" {{#if (eq userInput.trole 'admin')}}selected{{/if}}>Admin</option>
+        </select>
+        <br>
+
         <!-- First Name -->
         <div id="newUser-firstName">
             <label for="firstname"><b>First Name: </b></label>
@@ -57,6 +65,7 @@
             <br>
         </div>
         
+
 
         <!-- Biography -->
         <div id="newUser-biography">
