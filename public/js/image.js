@@ -1,3 +1,5 @@
+
+
 // Delete an image when viewing just that image
 async function deleteImageSingleView (id) {
   console.log(`Attempting to delete image with id: ${id}`)
@@ -30,6 +32,7 @@ document.getElementById('add-comment-form').addEventListener('submit', async fun
   event.preventDefault();
 
   const commentText = document.getElementById('comment_text').value;
+  let =
   const photoId = '{{photo._id}}';
 
   const response = await fetch(`/images/comment/${photoId}`, {

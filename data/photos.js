@@ -225,30 +225,13 @@ export const getCommentsByPhotoId = async photoId => {
   }
 
   for (const comment of formattedComments) {
-    
-    /*
-      **********************************************
-      ************ TESTING DELETE AFTER ************
-      **********************************************
-      
-      set user_Id to admin user_Id if it's null
-    */
-    if (!comment.user_Id) {
-      // Get the admin user_Id
-      const userCollection = await users()
-      const adminUser = await userCollection.findOne({ username: 'admin' })
-      comment.user_Id = adminUser._id
-    }
-    // **********************************************
-    // **********************************************
-
     comment.username = await getUsernameById(comment.user_Id)
   }
   return formattedComments
 }
 
 export const getUsernameById = async userId => {
-  if (!userId) throw 'User Id is required!'
+  if (!userId) throw '2User Id is required!'
 
   const userCollection = await users()
   const user = await userCollection.findOne({ _id: new ObjectId(userId) })

@@ -1,3 +1,5 @@
+
+
 import { photos, locations, comments, users } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
 import express from 'express'
@@ -13,6 +15,11 @@ const router = express.Router()
 
 // Route to fetch all images
 router.get('/', async (req, res) => {
+
+  // let user = req.session.user;
+  // if (!user) {
+  //   return res.redirect('/login');
+  // }
   try {
     //Use query parameter
     const filter = req.query.filter;
@@ -50,6 +57,13 @@ router.get('/', async (req, res) => {
 // Route to display a specific photo
 router.get('/photo/:id', async (req, res) => {
   const photoId = req.params.id
+  let user = req.session.user
+
+  console.log('user._id:', user._id)
+
+  if (!user) {
+    return res.redirect('/login')
+  }
 
   try {
     const imageCollection = await photos()
@@ -71,22 +85,9 @@ router.get('/photo/:id', async (req, res) => {
     // Get all comments associated with the photo
     let formattedComments = await getCommentsByPhotoId(photoId)
 
-    /*
-    ********** TESTING ******************************
-    remove if block after testing
-    need this when uploading photo and not logged in
+    let photoUsername = await getUsernameById(photoData.user_id)
 
-    *************************************************
-    */
-   let photoUsername = null
-   if (photoData.user_id) {
-    // Find the username of the user who uploaded the photo
-    photoUsername = await getUsernameById(photoData.user_id)
-   }
-   // Set the logged in user as admin for now
-   let userCollection = await users()
-    let adminUser = await userCollection.findOne({ username: 'admin' })
-    let loggedInUserId = adminUser._id
+   //let userCollection = await users()
 
     res.render('images/image', {
       css: '/public/css/image.css',
@@ -107,8 +108,8 @@ router.get('/photo/:id', async (req, res) => {
         }
       },
       comments: formattedComments,
-      photoUsername,
-      loggedInUserId,
+      photoUsername
+      //loggedInUserId,
     })
   } catch (err) {
     console.error(err)
