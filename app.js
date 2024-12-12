@@ -16,9 +16,15 @@ app.use(
     secret: 'mySecretKey to sign cookie',
     resave: false,
     saveUninitialized: false,
-    //cookie: { maxAge: 600000 }
+    cookie: { maxAge: 600000 }
   })
 );
+
+app.use((req, res, next) => {
+  res.locals.session = req.session; // Attach session data to res.locals
+  next();
+});
+
 
 // Set up default layout and view engine for handlebars
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main',

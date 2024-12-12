@@ -24,3 +24,12 @@ export const authorizeRole = (requiredRole) => {
     }
   };
 };
+
+export const ensureAuth = (req, res, next) => {
+  if (req.session.user) {
+      next();
+  } else {
+      req.session.redirectTo = req.originalUrl; // Save the original URL
+      res.redirect('/login');
+  }
+};

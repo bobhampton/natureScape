@@ -217,7 +217,8 @@ router
           }
         },
         images: formattedPhotos,
-        feedback: userFeedback
+        feedback: userFeedback,
+        //session: req.session
       })
     } catch (e) {
       return res.status(404).json({ error: 'User not found' })
