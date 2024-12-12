@@ -5,6 +5,7 @@ import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername, checkInputEmail, checkDuplicateId} from './helpers.js'
 import { createFeedback, getAllFeedback } from '../data/feedback.js'
+import { authorizeRole } from '../middleware.js'
 
 const router = Router();
 
@@ -58,7 +59,7 @@ const router = Router();
 
 router
   .route('/') //Localhost:3000/users/   --Gets all users--
-  .get(async (req, res) => {
+  .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
     //No inputs to validate
     try {
       let userList = await userData.getAllUsers()
@@ -97,7 +98,8 @@ router
         username: validation.checkString(req.body.tusername, "Username"),
         passwordhash: await bcrypt.hash(password, 16), //Encrypts the incoming password
         terms: isChecked,
-        bio: validation.checkString(req.body.tbio, "Biography")
+        bio: validation.checkString(req.body.tbio, "Biography"),
+        role: validation.checkString(req.body.trole, "Role") //Add role
       }
 
       
@@ -115,7 +117,8 @@ router
         userInput.username,
         userInput.passwordhash,
         userInput.terms,
-        userInput.bio
+        userInput.bio,
+        userInput.role 
       );
       //data/users.createUser never returns and object
       //const newUser = await userData.createUser(userInput);
