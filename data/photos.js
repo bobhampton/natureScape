@@ -1,56 +1,106 @@
-import { photos, locations, users, comments } from '../config/mongoCollections.js'
+import {
+  photos,
+  locations,
+  users,
+  comments
+} from '../config/mongoCollections.js'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
-import { findKeys, latLonToDecimal } from '../routes/helpers.js'
+// import { findKeys, latLonToDecimal } from '../routes/helpers.js'
 import validation from './helpers.js'
 import { ObjectId } from 'mongodb'
+// import exiftool from 'node-exiftool'
+// import distExiftool from 'dist-exiftool'
+import { convert } from 'geo-coordinates-parser'
+import reverse from 'reverse-geocode'
+import { lookUpRaw, lookUp, lookUpGeoJSON } from 'geojson-places'
 
-export const findLocationId = async (area) => {
-  const locationsCollection = await locations()
-  const location = await locationsCollection.findOne({
-    area
+// export const findLocationId = async (area) => {
+//   const locationsCollection = await locations()
+//   const location = await locationsCollection.findOne({
+//     area
+//   })
+
+//   if (!location) {
+//     //console.log(`Location ${area}, ${state} not found`)
+//     return null
+//   }
+
+//   return location._id
+// }
+
+export const findLocationAreaByPhotoId = async photoId => {
+  const photoCollection = await photos()
+  const photo = await photoCollection.findOne({
+    _id: new ObjectId(photoId)
   })
 
+  if (!photo) {
+    return false
+  }
+
+  const locationId = photo.location.location_id
+  const locationsCollection = await locations()
+  const location = await locationsCollection.findOne({
+    _id: new ObjectId(locationId)
+  })
+
+  return location.area
+}
+
+// Function to add location to database
+export const latLonAddLocation = async (lat, lon, areaName) => {
+
+  let newLocation = {
+    country: null,
+    state: null,
+    city: null,
+    area: areaName
+  }
+
+  let geoLookUp = lookUp(lat, lon)
+  let stateCode = geoLookUp.state_code
+  let splitStateCode = stateCode.split('-')
+  let country = splitStateCode[0]
+  let state = splitStateCode[1]
+
+  newLocation.country = country
+  newLocation.state = state
+
+  // Check country to see if we can use reverse-geocode
+  if (country === 'US' || country === 'CA' || country === 'AU') {
+    let reverseGeo = reverse.lookup(lat, lon, country)
+    
+    if (reverseGeo) {
+      // newLocation.state = reverseGeo.state_abbr
+      newLocation.city = reverseGeo.city
+      //newLocation.area = reverseGeo.city
+    }
+  }
+
+  // Add newLocation to the database
+  const locationCollection = await locations()
+  const insertInfo = await locationCollection.insertOne(newLocation)
+
+  if (insertInfo.insertedCount === 0) {
+    throw 'Could not add location'
+  }
+
+  return insertInfo.insertedId
+}
+
+export const findLocationByAreaName = async areaName => {
+  const locationCollection = await locations()
+  const location = await locationCollection.findOne({ area: areaName })
+
   if (!location) {
-    //console.log(`Location ${area}, ${state} not found`)
     return null
   }
 
   return location._id
 }
 
-// Function to add location to database
-export const addLocation = async (state, city, area) => {
-  const newLocation = {
-    state,
-    city,
-    area
-  }
-
-  const locationsCollection = await locations()
-  const insertInfo = await locationsCollection.insertOne(newLocation)
-
-  if (insertInfo.insertedCount === 0) {
-    throw 'Could not add location'
-  } else {
-    console.log(
-      `Location ${area}, ${state} added to the DB with id ${insertInfo.insertedId}`
-    )
-  }
-
-  return insertInfo.insertedId
-}
-
-export const addImage = async (name, desc, lat, lon, state, city, areaName, imageFile) => {
-  let metadata = {}
-
-  let locationId = await findLocationId(areaName)
-
-  if (locationId === null) {
-    locationId = await addLocation(state, null, areaName)
-  }
-
-
+export const addImage = async (name, desc, imageFile) => {
   // Create a new photo object
   let newPhoto = {
     photo_name: name,
@@ -61,10 +111,10 @@ export const addImage = async (name, desc, lat, lon, state, city, areaName, imag
     likes: 0,
     verification_rating: 0,
     location: {
-      latitude: lat,
-      longitude: lon,
+      latitude: null,
+      longitude: null,
       heading: null,
-      location_id: locationId
+      location_id: null
     },
     img: {
       contentType: null,
@@ -72,80 +122,67 @@ export const addImage = async (name, desc, lat, lon, state, city, areaName, imag
     }
   }
 
+  // Set the newPhoto properties that we can
+
   // Extract metadata from the image using sharp
+  let metadata = {}
   const image = sharp(imageFile.data).withMetadata().toFormat('jpeg')
   metadata = await image.metadata()
+
+  // Set the newPhoto properties that we can
+  newPhoto.photo_name = name
+  newPhoto.photo_description = desc
+  newPhoto.img = {
+    data: imageFile.data,
+    contentType: imageFile.mimetype
+  }
+  newPhoto.metadata = metadata
+
+  let areaName = null
 
   // Convert EXIF to display in Compass
   if (metadata.exif) {
     metadata.exif = exifReader(metadata.exif)
+
+    areaName = metadata.exif.Image.ImageDescription
+
+    // Convert GPS coordinates to decimal format
+    let latRef = metadata.exif.GPSInfo.GPSLatitudeRef
+    let lonRef = metadata.exif.GPSInfo.GPSLongitudeRef
+    let lat = metadata.exif.GPSInfo.GPSLatitude
+    let lon = metadata.exif.GPSInfo.GPSLongitude
+
+    // Round seconds to 2 decimal places
+    lat[2] = Math.round((lat[2] + Number.EPSILON) * 100) / 100
+    lon[2] = Math.round((lon[2] + Number.EPSILON) * 100) / 100
+
+    let latLonToDecimal = convert(
+      `${lat[0]}°${lat[1]}'${lat[2]}"${latRef}, ${lon[0]}°${lon[1]}'${lon[2]}"${lonRef}`
+    )
+
+    // Set the newPhoto EXIF properties
+    newPhoto.date_time_taken = metadata.exif.Photo.DateTimeDigitized
+    newPhoto.location.latitude = latLonToDecimal.decimalLatitude
+    newPhoto.location.longitude = latLonToDecimal.decimalLongitude
   }
 
-  const searchKeys = [
-    'GPSLatitude',
-    'GPSLongitude',
-    'GPSLatitudeRef',
-    'GPSLongitudeRef',
-    'GPSImgDirection',
-    'DateTimeOriginal'
-  ]
-  /* 
-    we might need these later?
-    'GPSImgDirectionRef',
-    'GPSAltitude',
-    'GPSTimeStamp,
-     */
+  // See if the location already exists in the database
+  let locationId = await findLocationByAreaName(areaName)
 
-  // See if we got dem keys we need
-  const photoData = findKeys(metadata, searchKeys)
-
-  // Convert GPS coordinates to decimal format
-  if (Object.keys(photoData).length !== 0) {
-    if (photoData.GPSImgDirection) {
-      newPhoto.location.heading = photoData.GPSImgDirection
-    }
-    if (photoData.DateTimeOriginal) {
-      newPhoto.date_time_taken = new Date(photoData.DateTimeOriginal)
-    }
-    if (
-      photoData.GPSLatitude &&
-      photoData.GPSLongitude &&
-      photoData.GPSLatitudeRef &&
-      photoData.GPSLongitudeRef
-    ) {
-      const lat = photoData.GPSLatitude
-      const lon = photoData.GPSLongitude
-      const latRef = photoData.GPSLatitudeRef
-      const lonRef = photoData.GPSLongitudeRef
-      const { latitude, longitude } = latLonToDecimal(lat, lon, latRef, lonRef)
-
-      /*
-        TODO:
-        - Will need to implement a locationId lookup/creation 
-          based on lat/lon once Vraj finishes how he wants to 
-          define an area by lat/lon. For now, if photo has lat/lon
-          they will be stored, but location_id will be null.
-        */
-
-      newPhoto.location.latitude = latitude
-      newPhoto.location.longitude = longitude
-    }
+  // Add the location to the database if it doesn't exist
+  if (locationId === null) {
+    locationId = await latLonAddLocation(newPhoto.location.latitude, newPhoto.location.longitude, areaName)
+    newPhoto.location.location_id = locationId
+  } else {
+    newPhoto.location.location_id = locationId
   }
 
-  // Get the current time in UTC
+  // Set the newPhoto upload time
   const temp = Date.now()
   const uploadTimeStampUTC = new Date(temp)
+  newPhoto.date_time_uploaded = uploadTimeStampUTC
 
-  // Set the new photo object properties
-  ;(newPhoto.photo_name = name),
-    (newPhoto.photo_description = desc),
-    (newPhoto.date_time_uploaded = uploadTimeStampUTC),
-    (newPhoto.img = {
-      data: imageFile.data,
-      contentType: imageFile.mimetype
-    })
-  newPhoto.metadata = metadata // All captured metadata - Keeping this for now
-
+  // Add the new photo to the database
   const imageCollection = await photos()
   let insertInfo = await imageCollection.insertOne(newPhoto)
 
@@ -156,22 +193,24 @@ export const addImage = async (name, desc, lat, lon, state, city, areaName, imag
   }
 }
 
-export const getPhotosByUserId = async (userId) => {
-  if(!userId) throw 'User Id is required!';
-  userId = validation.checkId(userId);
+export const getPhotosByUserId = async userId => {
+  if (!userId) throw 'User Id is required!'
+  userId = validation.checkId(userId)
 
-  const photoCollection = await photos(); //Access photos collection
-  const photoList = await photoCollection.find({userId: userId }).toArray(); //Find all photos by User Id
+  const photoCollection = await photos() //Access photos collection
+  const photoList = await photoCollection.find({ userId: userId }).toArray() //Find all photos by User Id
   if (!userId) throw 'No photos found with the given User ID'
-  return photoList;
+  return photoList
 }
 
-export const getCommentsByPhotoId = async (photoId) => {
-  if(!photoId) throw 'Photo Id is required!';
+export const getCommentsByPhotoId = async photoId => {
+  if (!photoId) throw 'Photo Id is required!'
 
   // Find all comments associated with the photo
   const commentCollection = await comments()
-  const commentsData = await commentCollection.find({ photo_Id: new ObjectId(photoId) }).toArray()
+  const commentsData = await commentCollection
+    .find({ photo_Id: new ObjectId(photoId) })
+    .toArray()
 
   const formattedComments = commentsData.map(comment => ({
     _id: comment._id,
@@ -180,19 +219,19 @@ export const getCommentsByPhotoId = async (photoId) => {
     comment_text: comment.comment_text,
     creation_time: comment.creation_time
   }))
-  
+
   if (!formattedComments) {
     return false
   }
+
   for (const comment of formattedComments) {
     comment.username = await getUsernameById(comment.user_Id)
   }
-    return formattedComments
-  
+  return formattedComments
 }
 
-export const getUsernameById = async (userId) => {
-  if(!userId) throw 'User Id is required!';
+export const getUsernameById = async userId => {
+  if (!userId) throw '2User Id is required!'
 
   const userCollection = await users()
   const user = await userCollection.findOne({ _id: new ObjectId(userId) })
@@ -203,5 +242,3 @@ export const getUsernameById = async (userId) => {
     return user.username
   }
 }
-
-

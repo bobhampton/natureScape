@@ -11,19 +11,22 @@
       <label for="photo_description">Photo Description:</label>
       <textarea id="photo_description" name="photo_description" required>{{#checkNull photo.photo_description}}{{/checkNull}}</textarea>
     </div>
-    <div>
+    {{!-- <div>
       <label for="lat">Latitude:</label>
       <input type="text" id="lat" name="lat" value="{{#checkNull photo.location.latitude}}{{/checkNull}}" required>
     </div>
     <div>
       <label for="lon">Longitude:</label>
       <input type="text" id="lon" name="lon" value="{{#checkNull photo.location.longitude}}{{/checkNull}}" required>
-    </div>
-    <div>
+    </div> --}}
+    {{!-- <div>
       <label for="areaName">Area Name:</label>
-      <input type="text" id="areaName" name="areaName" value="{{#checkNull location.area}}{{/checkNull}}">
-    </div> 
+      <input type="text" id="areaName" name="areaName" value="{{#checkNull areaName}}{{/checkNull}}" required>
+    </div>  --}}
     <button id="edit-image-submit-button" type="submit">Save Changes</button>
+    <button id="cancel-button" type="button" onclick="cancelEdit('{{photo._id}}')">Cancel</button>
   </form>
   </div>
 </div>
+
+<script src="/public/js/image_edit.js"></script>
