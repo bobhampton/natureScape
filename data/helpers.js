@@ -91,7 +91,7 @@ const exportedMethods = {
   },
 
   validateEmail (email) {
-    email = email.checkString(email, 'email')
+    email = this.checkString(email, 'email')
     const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     if (!email || typeof email !== 'string' || !emailReg.test(email)) {
       throw 'You must provide a valid email address'
