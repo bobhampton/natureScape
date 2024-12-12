@@ -35,31 +35,22 @@ export async function checkInputUsername(username){
     const userCollection = await users();
     //Search users collection and find the 'username' in the 
     //collection that matches the incoming username
+    username = username.toLowerCase()
     let userFound = await userCollection.findOne(
-        {'username' : username}
+       // {'username' : username}
+       //{username: {$regex: `^${username}$`, $options: `i`}});
+       username
     )
-    //Is this username taken?
-    //console.log(typeof userFound);
-    //console.log(userFound);
+    //User is not in the database
     if(userFound === null){
-        //Goes into the database
-        return;
+        //Insert user into the database
+        console.log(`Username '${username}' is available.`);
+        return true;
     }
     if(typeof userFound === 'object'){
-        throw "The username is a duplicate";
+        throw new "The username is a duplicate";
     }
-    // userFound.username = userFound.toString();
-    //console.log(typeof userFound);
-    // //Check if username is already taken
-    // if(userFound === username){
-    //     throw "Unable to use that username"
-    // } 
-    // //Make sure the user is unable to create another profile
-    // //due to variation of letters in the username.
-    // if(userFound.toLowerCase() === username.toLowerCase()){
-    //     throw "Username cannot be used"
-    // }
-
+    
 }
 
 export async function checkDuplicateId(incomingId){
@@ -92,7 +83,7 @@ export async function checkInputEmail(email){
   
     if(userFound === null){
         //Goes into the database
-        return;
+        return true;
     }
     if(typeof userFound === 'object'){
         throw "This email is already registered";
