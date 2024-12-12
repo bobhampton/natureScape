@@ -8,8 +8,8 @@ async function deleteImageSingleView (id) {
   })
   if (response.ok) {
     console.log('Image deleted successfully')
-    //window.location.href = '/images' // Redirect to images list
-    window.location.href = document.referrer // document.referrer contains url of prev page
+    window.location.href = '/images' // Redirect to images list
+    //window.location.href = document.referrer // document.referrer contains url of prev page
   } else {
     console.error('Error deleting image:', response.statusText)
     alert('Error deleting image')

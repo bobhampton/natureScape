@@ -100,12 +100,12 @@ export const findLocationByAreaName = async areaName => {
   return location._id
 }
 
-export const addImage = async (name, desc, imageFile) => {
+export const addImage = async (name, desc, user_id, imageFile) => {
   // Create a new photo object
   let newPhoto = {
     photo_name: name,
     photo_description: desc,
-    user_id: null,
+    user_id,
     date_time_taken: null,
     date_time_uploaded: null,
     likes: 0,
