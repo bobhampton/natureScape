@@ -8,54 +8,6 @@ import { createFeedback, getAllFeedback } from '../data/feedback.js'
 
 const router = Router();
 
-// .route('/')//Localhost:3000/users/   --Gets all users--
-//   .get(async (req, res) => {
-//     //No inputs to validate
-//     try{
-//       let userList = await userData.getAllUsers()
-//       // .find({})
-//       // .project({_id: 1, name: 1,})
-//       // .toArray();
-//       return res.json(userList);
-//     }catch(e){
-//       return res.sendStatus(404).send(e);
-//     }
-//   })
-//   .post(async (req, res) => {
-//     //code here for POST
-//     // const {firstname, lastname, email, username, password_hash} = req.body;
-//     // if(!firstname || !lastname || !email || !username || !password_hash){
-//     //   return res.status(400).render('users/user', {error : "Missing fields"});
-//     // }
-//     let userinfo = req.body;
-//     if(!userinfo || Object.keys(userinfo).length === 0){
-//       return res
-//         .status(400)
-//         .render("users/user",{error: "There are no fields in the request body"});
-//     }
-
-//   try{
-//     firstname = userinfo.firstname;
-//     lastname = userinfo.lastname;
-//     email = userinfo.email;
-//     username = userinfo.username;
-//     password_hash = userinfo.password_hash;
-
-//     //userInfo is the information in the request body
-//     validation.checkUser(firstname, lastname, email, username, password_hash);
-//   }catch(e){
-//       return res.status(400).render('users/user',{error: e});
-//   };
-
-//   try{
-//     const newUser = await userData.createUser(firstname, lastname, email, username, password_hash);
-
-//     return res.redirect(`../profilePage/${newUser._id}`);
-//   }catch(e){
-//     return res.sendStatus(400).json({error: e});
-//   }
-//   });
-
 router
   .route('/') //Localhost:3000/users/   --Gets all users--
   .get(async (req, res) => {
@@ -99,14 +51,23 @@ router
         bio: validation.checkString(req.body.tbio, "Biography")
       }
 
+      //Storing the username in the db as a lowercase value
+      userInput.username = userInput.username.toLowerCase()
+
       
       //Ensure the username is not already taken
-      await checkInputUsername(userInput.username);
-      await checkDuplicateId(userInput.username);
-      await checkInputEmail(userInput.email);
-
+      if (!checkInputUsername || !checkInputEmail) {
+        throw 'checkUsername or checkEmail'
+      }
+     // try{
+      //await checkInputUsername(userInput.username);
+      //await checkDuplicateId(userInput.username);
+      //await checkInputEmail(userInput.email);
+      //}catch(e){
+        //res.status(400).redirect('/newUser', {error: e})
+      //}
       //Add new user to the database
-      await userData.createUser(
+      let returnCreate = await userData.createUser(
         //Making sure all values input from this route is going to the createUser function
         userInput.firstname,
         userInput.lastname,
@@ -116,6 +77,7 @@ router
         userInput.terms,
         userInput.bio
       );
+
       //data/users.createUser never returns and object
       //const newUser = await userData.createUser(userInput);
 
