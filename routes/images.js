@@ -59,7 +59,7 @@ router.get('/photo/:id', async (req, res) => {
   const photoId = req.params.id
   let user = req.session.user
 
-  console.log('user._id:', user._id)
+  //console.log('user._id:', user._id)
 
   if (!user) {
     return res.redirect('/login')
@@ -277,7 +277,8 @@ router.post('/edit/:id', async (req, res) => {
 router.post('/comment/:id', async (req, res) => {
   const photoId = req.params.id;
   const { comment_text } = req.body;
-  console.log('photoId:', photoId);
+  const user = req.session.user;
+  //console.log('photoId:', photoId);
 
   if (!comment_text) {
     return res.status(400).json({ error: 'Comment text is required' });
@@ -294,8 +295,9 @@ router.post('/comment/:id', async (req, res) => {
     const commentCollection = await comments();
     const newComment = {
       photo_Id: photo._id,
-      user_Id: null, // Replace with the actual user ID if available
+      user_Id: user._id, 
       comment_text: comment_text,
+      username: user.username,
       creation_time: new Date()
     };
 

@@ -16,7 +16,7 @@
         <p>{{photo.photo_description}}</p>
       </div>
       <hr />
-      
+
       <div class="all-image-details">
         <ul>
           {{!-- <li>Uploaded by (user_id):
@@ -43,26 +43,35 @@
         </ul>
       </div>
       <hr />
-
-<p>Comments</p>
-  <ul>
-    {{#each comments}}
-    <li>
-      <p class="comment-text">{{this.comment_text}}</p>
-      <p class="comment-meta">USERNAME: {{this.username}} | On: {{this.creation_time}}</p>
-    </li>
-    {{/each}}
-  </ul>
-</div>
-
-<div class="add-comment-form">
-  <form id="add-comment-form" action="/images/comment/{{photo._id}}" method="POST">
-    <textarea id="comment_text" name="comment_text" placeholder="Add your comment here..." required></textarea>
-    <button type="submit">Add Comment</button>
-  </form>
-</div>
-
       
+      <p>Comments</p>
+      <div class="photo-comments">
+        <ul>
+          {{#each comments}}
+          <li>
+            <p class="comment-text">{{this.comment_text}}</p>
+            <p class="comment-meta">USERNAME: {{this.username}} | On: {{this.creation_time}}</p>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+
+      <div class="add-comment-form">
+        <form
+          id="add-comment-form"
+          action="/images/comment/{{photo._id}}"
+          method="POST"
+        >
+          <textarea
+            id="comment_text"
+            name="comment_text"
+            placeholder="Add your comment here..."
+            required
+          ></textarea>
+          <button type="submit">Add Comment</button>
+        </form>
+      </div>
+
       <button
         id="single-image-delete"
         onclick="deleteImageSingleView('{{photo._id}}')"
@@ -71,7 +80,8 @@
         id="single-image-edit"
         onclick="editImageSingleView('{{photo._id}}')"
       >Edit</button>
-      <button id="back-button" type="button" action="backToGallery">Back to main gallery</button>
+      <button id="back-button" type="button" action="backToGallery">Back to main
+        gallery</button>
 
     </div>
   </div>

@@ -32,8 +32,7 @@ document.getElementById('add-comment-form').addEventListener('submit', async fun
   event.preventDefault();
 
   const commentText = document.getElementById('comment_text').value;
-  let =
-  const photoId = '{{photo._id}}';
+  const photoId = document.getElementById('add-comment-form').action.split('/').pop(); 
 
   const response = await fetch(`/images/comment/${photoId}`, {
     method: 'POST',
@@ -52,8 +51,8 @@ document.getElementById('add-comment-form').addEventListener('submit', async fun
       <p class="comment-meta">USERNAME: ${newComment.username} | On: ${newComment.creation_time}</p>
     `;
     commentList.appendChild(newCommentElement);
-    document.getElementById('comment_text').value = '';
+    document.getElementById('comment_text').value = ''; 
   } else {
-    alert('Error adding comment');
+    console.error('Failed to add comment');
   }
 });
