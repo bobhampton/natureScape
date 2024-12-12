@@ -250,7 +250,7 @@ export const seedImages = async () => {
 
         /* 
           ************************************************************************
-          *********************** ADDING METADATA TO IMAGE ***********************
+          *********************** ADDING METADATA TO SEED_IMAGES *****************
           ************************************************************************
                                                                                  
           args:
@@ -299,7 +299,7 @@ export const seedImages = async () => {
             // Use reverse-geocode to get state, city, and area
             manualLatLon[fileName].state = reverseGeo.state_abbr
             manualLatLon[fileName].city = reverseGeo.city
-            manualLatLon[fileName].area = reverseGeo.city // Can change this to city if needed?
+            //manualLatLon[fileName].area = reverseGeo.city // Can change this to city if needed?
             //manualLatLon[fileName].area = reverseGeo.zipcode
 
             // Add location to database
@@ -409,6 +409,12 @@ export const seedImages = async () => {
   console.log('******')
   console.log('Metadata successfully added to images...')
 
+
+  /* 
+    ************************************************************************
+    *********************** ADDING METADATA TO TEST_IMAGES *****************
+    ************************************************************************
+  */
 
   // Add metadata to test photos from the 'test_images' folder without adding them to the database
   const testImageFolder = path.join(__dirname, '../test_images')

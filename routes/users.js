@@ -78,6 +78,7 @@ router
   .get(async(req, res)=>{
   try {
     return res.render('users/user',{
+      title: "Create a New User",
       css: '/public/css/newUser.css'
     });
   } catch (e) {
