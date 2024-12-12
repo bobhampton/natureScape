@@ -1,7 +1,13 @@
 import { photos, locations, comments, users } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
 import express from 'express'
-import { addImage, getCommentsByPhotoId, getUsernameById } from '../data/photos.js'
+import { 
+  addImage, 
+  latLonAddLocation,
+  getCommentsByPhotoId, 
+  getUsernameById,
+  findLocationAreaByPhotoId 
+} from '../data/photos.js'
 
 const router = express.Router()
 
@@ -69,6 +75,7 @@ router.get('/photo/:id', async (req, res) => {
     ********** TESTING ******************************
     remove if block after testing
     need this when uploading photo and not logged in
+
     *************************************************
     */
    let photoUsername = null
@@ -76,6 +83,10 @@ router.get('/photo/:id', async (req, res) => {
     // Find the username of the user who uploaded the photo
     photoUsername = await getUsernameById(photoData.user_id)
    }
+   // Set the logged in user as admin for now
+   let userCollection = await users()
+    let adminUser = await userCollection.findOne({ username: 'admin' })
+    let loggedInUserId = adminUser._id
 
     res.render('images/image', {
       css: '/public/css/image.css',
@@ -93,11 +104,11 @@ router.get('/photo/:id', async (req, res) => {
         img: {
           contentType: photoData.img.contentType,
           data: photoData.img.data.toString('base64')
-        },
-        metadata: photoData.metadata,
-        username: photoUsername
+        }
       },
-      comments: formattedComments
+      comments: formattedComments,
+      photoUsername,
+      loggedInUserId,
     })
   } catch (err) {
     console.error(err)
@@ -116,11 +127,11 @@ router.post('/upload', async (req, res) => {
     return res.status(400).send(`Photo size must be less than ${maxUploadSize}`)
   }
 
-  const { name, desc, lat, lon, state, city, areaName } = req.body
+  const { name, desc, areaName } = req.body
   const imageFile = req.files.image
 
   try {
-    addImage(name, desc, lat, lon, state, city, areaName, imageFile)
+    addImage(name, desc, imageFile)
     res.status(200).redirect('/images')
   } catch (err) {
     console.error(err)
@@ -192,6 +203,11 @@ router.get('/edit/:id', async (req, res) => {
       return res.status(404).send('Photo not found');
     }
 
+    // Get the area name (if it exists)
+    let areaName = null;
+
+    areaName = await findLocationAreaByPhotoId(photoId);
+
     res.render('images/edit', {
       css: '/public/css/image.css',
       photo: {
@@ -209,6 +225,8 @@ router.get('/edit/:id', async (req, res) => {
           data: photoData.img.data.toString('base64')
         }
       },
+      areaName,
+      js: '/public/js/image.js'
     });
   } catch (err) {
     console.error(err);
@@ -219,7 +237,7 @@ router.get('/edit/:id', async (req, res) => {
 // Route to handle the form submission and update the photo information
 router.post('/edit/:id', async (req, res) => {
   const photoId = req.params.id;
-  const { photo_name, photo_description, lat, lon, state, city, areaName } = req.body;
+  const { photo_name, photo_description } = req.body;
 
   try {
     const imageCollection = await photos();
@@ -227,13 +245,20 @@ router.post('/edit/:id', async (req, res) => {
     const updateData = {
       photo_name,
       photo_description,
-      location: {
-        latitude: lat,
-        longitude: lon,
-        heading: photoData.location.heading,
-        location_id: photoData.location.location_id
-      }
     };
+
+    // Set/add the area name
+    // let newLocation = null;
+
+    // if (!findLocationAreaByPhotoId(photoId)) {
+    //   newLocation = await latLonAddLocation(
+    //     photoData.location.latitude, 
+    //     photoData.location.longitude, 
+    //     areaName
+    //   );
+    // }
+
+
 
     const result = await imageCollection.updateOne(
       { _id: new ObjectId(photoId) },
@@ -244,6 +269,45 @@ router.post('/edit/:id', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
+  }
+});
+
+// Route to handle comment submission
+router.post('/comment/:id', async (req, res) => {
+  const photoId = req.params.id;
+  const { comment_text } = req.body;
+  console.log('photoId:', photoId);
+
+  if (!comment_text) {
+    return res.status(400).json({ error: 'Comment text is required' });
+  }
+
+  try {
+    const photoCollection = await photos();
+    const photo = await photoCollection.findOne({ _id: new ObjectId(photoId) });
+
+    if (!photo) {
+      return res.status(404).json({ error: 'Photo not found' });
+    }
+
+    const commentCollection = await comments();
+    const newComment = {
+      photo_Id: photo._id,
+      user_Id: null, // Replace with the actual user ID if available
+      comment_text: comment_text,
+      creation_time: new Date()
+    };
+
+    const insertResult = await commentCollection.insertOne(newComment);
+
+    if (insertResult.insertedCount === 0) {
+      throw new Error('Failed to add comment');
+    }
+
+    res.status(200).json(newComment);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 

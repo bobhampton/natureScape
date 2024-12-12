@@ -19,11 +19,11 @@
       
       <div class="all-image-details">
         <ul>
-          <li>Uploaded by (user_id):
+          {{!-- <li>Uploaded by (user_id):
             {{#checkNull photo.user_id}}{{/checkNull}}
-          </li>
+          </li> --}}
           <li>Uploaded by (username)
-            {{#checkNull photo.username}}{{/checkNull}}
+            {{#checkNull photoUsername}}{{/checkNull}}
           </li>
           <li>Taken on (date_time_taken):
             {{#checkNull photo.date_time_taken}}{{/checkNull}}
@@ -35,27 +35,34 @@
           <li>Views (views): {{photo.views}}</li>
           <li>Verification rating (verification_rating):
             {{photo.verification_rating}}</li>
-          <li>Location (location):
+          {{!-- <li>Location (location):
             <pre>{{#printObj photo.location}}{{/printObj}}
             </pre>
           </li>
-          <li>Content type (img.contentType): {{photo.img.contentType}}</li>
+          <li>Content type (img.contentType): {{photo.img.contentType}}</li> --}}
         </ul>
       </div>
       <hr />
 
       <div class="photo-comments">
-        <p>Comments</p>
-        <ul>
-          {{#each comments}}
-          <li>
-            <p>{{this.comment_text}}</p>
-            <p>USERNAME: {{this.username}}</p>
-            <p>On: {{this.creation_time}}</p>
-          </li>
-          {{/each}}
-        </ul>
-      </div>
+  <p>Comments</p>
+  <ul>
+    {{#each comments}}
+    <li>
+      <p class="comment-text">{{this.comment_text}}</p>
+      <p class="comment-meta">USERNAME: {{this.username}} | On: {{this.creation_time}}</p>
+    </li>
+    {{/each}}
+  </ul>
+</div>
+
+<div class="add-comment-form">
+  <form id="add-comment-form" action="/images/comment/{{photo._id}}" method="POST">
+    <textarea id="comment_text" name="comment_text" placeholder="Add your comment here..." required></textarea>
+    <button type="submit">Add Comment</button>
+  </form>
+</div>
+
       
       <button
         id="single-image-delete"
@@ -65,6 +72,7 @@
         id="single-image-edit"
         onclick="editImageSingleView('{{photo._id}}')"
       >Edit</button>
+      <button id="back-button" type="button" action="backToGallery">Back to main gallery</button>
 
     </div>
   </div>
