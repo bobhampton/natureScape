@@ -1,4 +1,107 @@
-.user-dashboard-container {
-    margin-top: 90px;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* display: flex; */
+    height: 100vh;
+    background-color: var(--body-color);
+}
+
+.user-dashboard-container h1 {
+    text-align: center;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #user-details h2 {
+    margin: 0;
+    padding-left: 40px;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #user-details ul {
+    display: grid;
+}
+
+.user-dashboard-container #user-details ul li {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #user-photos h2 {
+    padding-left: 40px;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #user-photos #image-container .image-details h5 {
+    padding-left: 40px;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #user-photos #image-container .image-details p#image-list-description {
+    padding-left: 40px;
+    font-size: 14px;
+    margin-bottom: 0;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #user-photos #image-container .image-details p#image-view-count {
+    padding-left: 40px;
+    font-size: 14px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #submit-feedback h2 {
+    padding-left: 40px;
+    margin-bottom: 0;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #submit-feedback textarea {
+    padding: 0;
+    margin-left: 40px;
+    width: 1000px;
+}
+
+.user-dashboard-container #submit-feedback button {
+    padding: 0;
+    margin-left: 40px;
+}
+
+.user-dashboard-container #user-feedback h2 {
+    padding-left: 40px;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #user-feedback .feedback-item {
+    padding-left: 40px;
+    color: var(--body-text-color);
+}
+
+.user-dashboard-container #user-feedback .feedback-item  p#feedback-text {
+    margin-left: 10px;
+    margin-bottom: 0;
+}
+
+.user-dashboard-container #user-feedback .feedback-item p#feedback-timestamp {
+    margin-left: 10px;
+    margin-top: 0;
     margin-bottom: 20px;
 }
+
+.responsive-img {
+    max-width: 100%;
+    max-height: 100vh;
+    height: auto;
+    width: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1 1 calc(33.333% - 10px);
+    object-fit: contain;
+    margin: 0 auto;
+  }
