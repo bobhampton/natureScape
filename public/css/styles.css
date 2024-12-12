@@ -17,6 +17,7 @@
   --text-color: #ddf5de;
   --symbol-color: #FFF;
   --body-text-color: #1E5F22;
+  --body-login: #86c97e;
 }
 
 .darkmode {
@@ -25,6 +26,7 @@
   --text-color: #FFF;
   --body-text-color: #FFF;
   --symbol-color: #101425;
+  --body-login: #cdcecd;
 }
 
 .navbar{
@@ -55,6 +57,7 @@ li a{
 }
 button{
   background-color: var(--nav-color);
+  color: var(--text-color);
 }
 button a{
   color: var(--text-color); 

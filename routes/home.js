@@ -10,8 +10,9 @@ router.get('/', async (req, res) => {
 
     return res.status(200).render(view, {
       title: "NatureScape",
+      pagetitle: "Welcome to NatureScape",
       css: "public/css/home.css",
-      js: jsFile,
+      js: jsFile
     });
 
   } catch (error) {

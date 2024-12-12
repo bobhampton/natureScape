@@ -1,6 +1,6 @@
 @import url('https://fonts.cdnfonts.com/css/averia');
 
-:root {
+/* :root {
   --body-color: #ddf5de;
   --text-color: #1E5F22;
   --input-bg: #F2F2F2;
@@ -9,24 +9,24 @@
   --button-text: #FFF;
   --button-hover-bg: #145116;
   --button-hover-text: #FFF;
-}
+} */
 
 body {
   font-family: 'Averia', sans-serif;
   margin: 0;
   padding: 0;
-  display: flex;
+  /* display: flex; */
   height: 100vh;
   background-color: var(--body-color);
 }
 
 .landing-page {
-  margin-top: 70px;
-  display: flex;
+  /* margin-top: 70px; */
+  display: grid;
   flex: 1;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 70px);
+  /* height: calc(100vh - 70px); */
 }
 
 #login_form {
@@ -35,7 +35,7 @@ body {
   width: 100%;
   max-width: 400px;
   padding: 20px;
-  background-color: var(--text-color);
+  background-color: var(--body-login);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: var(--button-text);
@@ -46,6 +46,30 @@ body {
   flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
+}
+
+#loginContainer svg {
+  margin-top: 5px;
+}
+
+#loginContainer #rememberMe {
+  margin-left: 50px;
+}
+
+#loginContainer #rememberMe button {
+  margin-left: 10px;
+}
+
+#loginContainer #usernameField input#uname{
+  width: 350px;
+}
+
+#loginContainer #passwordField input#passwd{
+  width: 350px;
+}
+
+#feedbackContainer input#feedback {
+  width: 310px;
 }
 
 .loginContainer label {
@@ -84,4 +108,21 @@ body {
 .loginContainer button:hover {
   background-color: var(--button-hover-bg);
   color: var(--button-hover-text);
+}
+
+h1 {
+  margin-bottom: 0;
+  text-align: center;
+  color: var(--body-text-color);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-align: center;
+  color: var(--body-text-color);
+}
+
+#accountCreate {
+  margin: 10px;
 }
