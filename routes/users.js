@@ -234,7 +234,7 @@ router
       res.redirect(`/users/${userId}`);
     } catch (e) {
       console.error(e);
-      res.status(400).render('error', { error: e });
+      res.status(400).render('error', { error: e, css: '/public/css/error.css', title: "Error", message: "Message: Already submitted Feedback" });
     }
   })
   .delete(async (req, res) => {
