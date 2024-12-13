@@ -16,10 +16,14 @@ const router = express.Router()
 // Route to fetch all images
 router.get('/', async (req, res) => {
 
-  // let user = req.session.user;
-  // if (!user) {
-  //   return res.redirect('/login');
-  // }
+  let user = req.session.user;
+  if (!user) {
+    return res.redirect('/login');
+  }
+  
+  let loggedInUserId = user._id;
+  //loggedInUserId = new ObjectId(loggedInUserId);
+
   try {
     //Use query parameter
     const filter = req.query.filter;
@@ -32,21 +36,25 @@ router.get('/', async (req, res) => {
     }else{
       images = await imageCollection.find({}).toArray();
     }
-    const formattedImages = images.map(image => ({
+
+    let formattedImages = images.map(image => ({
       _id: image._id,
       photo_name: image.photo_name,
       photo_description: image.photo_description,
+      user_id: image.user_id.toString(),
       likes: image.likes,
       views: image.views,
       img: {
         data: image.img.data.toString('base64'),
         contentType: image.img.contentType
-      }
+      },
+      loggedInUserId
     }))
 
     res.render('images/index', {
       css: '/public/css/image_index.css',
-      images: formattedImages
+      images: formattedImages,
+      loggedInUserId
     })
   } catch (err) {
     console.log(err)
@@ -58,8 +66,6 @@ router.get('/', async (req, res) => {
 router.get('/photo/:id', async (req, res) => {
   const photoId = req.params.id
   let user = req.session.user
-
-  //console.log('user._id:', user._id)
 
   if (!user) {
     return res.redirect('/login')
@@ -85,9 +91,17 @@ router.get('/photo/:id', async (req, res) => {
     // Get all comments associated with the photo
     let formattedComments = await getCommentsByPhotoId(photoId)
 
+    // Get the username of the photo's owner
     let photoUsername = await getUsernameById(photoData.user_id)
 
-   //let userCollection = await users()
+    // See if the logged-in user is the one who uploaded the photo
+    let photoUserId = photoData.user_id
+
+    let isOwner = false
+    
+    if (photoUserId.toString() === user._id.toString()) {
+      isOwner = true
+    }
 
     res.render('images/image', {
       css: '/public/css/image.css',
@@ -108,8 +122,8 @@ router.get('/photo/:id', async (req, res) => {
         }
       },
       comments: formattedComments,
-      photoUsername
-      //loggedInUserId,
+      photoUsername,
+      isOwner
     })
   } catch (err) {
     console.error(err)
@@ -119,6 +133,12 @@ router.get('/photo/:id', async (req, res) => {
 
 // Route to upload an image
 router.post('/upload', async (req, res) => {
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
+
   const maxUploadSize = 16 * 1024 * 1024 // 16MB
 
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -128,11 +148,11 @@ router.post('/upload', async (req, res) => {
     return res.status(400).send(`Photo size must be less than ${maxUploadSize}`)
   }
 
-  const { name, desc, areaName } = req.body
+  const { name, desc } = req.body
   const imageFile = req.files.image
 
   try {
-    addImage(name, desc, imageFile)
+    addImage(name, desc, user._id, imageFile)
     res.status(200).redirect('/images')
   } catch (err) {
     console.error(err)
@@ -142,6 +162,11 @@ router.post('/upload', async (req, res) => {
 
 // Route to delete an image by ID
 router.delete('/:id', async (req, res) => {
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
   try {
     const imageCollection = await photos()
     const result = await imageCollection.deleteOne({
@@ -159,6 +184,11 @@ router.delete('/:id', async (req, res) => {
 
 // Route to like an image
 router.post('/like/:id', async (req, res) => {
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
   try {
     // Double check that image exists in DB
     const imageCollection = await photos()
@@ -235,36 +265,40 @@ router.get('/edit/:id', async (req, res) => {
   }
 });
 
-// Route to handle the form submission and update the photo information
 router.post('/edit/:id', async (req, res) => {
   const photoId = req.params.id;
   const { photo_name, photo_description } = req.body;
+  let user = req.session.user
 
+  if (!user) {
+    return res.redirect('/login')
+  }
   try {
     const imageCollection = await photos();
     const photoData = await imageCollection.findOne({ _id: new ObjectId(photoId) });
+
+    if (!photoData) {
+      return res.status(404).send('Photo not found');
+    }
+
+    // Check if the logged-in user is the owner of the photo
+    if (photoData.user_id.toString() !== user._id.toString()) {
+      return res.status(403).send('You are not authorized to edit this photo');
+    }
+
     const updateData = {
       photo_name,
       photo_description,
     };
 
-    // Set/add the area name
-    // let newLocation = null;
-
-    // if (!findLocationAreaByPhotoId(photoId)) {
-    //   newLocation = await latLonAddLocation(
-    //     photoData.location.latitude, 
-    //     photoData.location.longitude, 
-    //     areaName
-    //   );
-    // }
-
-
-
     const result = await imageCollection.updateOne(
       { _id: new ObjectId(photoId) },
       { $set: updateData }
     );
+
+    if (result.modifiedCount === 0) {
+      throw new Error('Failed to update photo');
+    }
 
     res.redirect(`/images/photo/${photoId}`);
   } catch (err) {
@@ -277,8 +311,11 @@ router.post('/edit/:id', async (req, res) => {
 router.post('/comment/:id', async (req, res) => {
   const photoId = req.params.id;
   const { comment_text } = req.body;
-  const user = req.session.user;
-  //console.log('photoId:', photoId);
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
 
   if (!comment_text) {
     return res.status(400).json({ error: 'Comment text is required' });

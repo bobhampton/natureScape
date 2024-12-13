@@ -1,3 +1,62 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  /* display: flex; */
+  height: 100vh;
+  background-color: var(--body-color);
+}
+
+#image-index-header {
+  color: var(--body-text-color);
+}
+
+#image-index-upload-form #image-upload-title {
+  color: var(--body-text-color);
+}
+
+#image-index-upload-form #image-upload-desc {
+  color: var(--body-text-color);
+}
+
+#gallery-filter-links {
+  text-align: center;
+  justify-content: center;
+}
+
+div a#gallery-all-images-link {
+  margin-left: 25px;
+  margin-right: 25px;
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+div a#gallery-all-images-link:hover {
+  color: var(--nav-color);
+}
+
+div a#gallery-most-liked {
+  margin-left: 25px;
+  margin-right: 25px;
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+div a#gallery-most-liked:hover {
+  color: var(--nav-color);
+}
+
+div a#gallery-most-viewed {
+  margin-left: 25px;
+  margin-right: 25px;
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+div a#gallery-most-viewed:hover {
+  color: var(--nav-color);
+}
+
 .responsive-img {
   max-width: 100%;
   max-height: 100vh;
@@ -71,8 +130,6 @@
 
 #image-index-header {
   text-align: center;
-  margin-top: 90px;
-  margin-bottom: 20px;
 }
 
 .image-upload {
@@ -111,7 +168,26 @@ input#name {
 }
 
 #image-index-file-upload-container {
-  display: flex;
+  display: grid;
   justify-content: center;
-  margin-top: 20px;
+}
+
+#image-index-file-upload-container input#image{
+  margin: 25px;
+}
+
+#image-index-file-upload-container button.submit-button {
+  margin-bottom: 25px;
+}
+
+#image-container .image-details #image-index-display-name {
+  color: var(--body-text-color);
+}
+
+#image-container .image-details #image-list-description {
+  color: var(--body-text-color);
+}
+
+#image-container .image-details #image-list-view {
+  color: var(--body-text-color);
 }

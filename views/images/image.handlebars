@@ -1,5 +1,9 @@
 <!-- Display single image from database -->
 
+{{#if (eq user._id photo.user_id)}}
+  <button onclick="editImageSingleView('{{photo._id}}')">Edit Photo</button>
+{{/if}}
+
 <div class="single-image-body">
   <div id="single-image">
     <h1>Photo name: {{photo.photo_name}}</h1>
@@ -43,15 +47,18 @@
         </ul>
       </div>
       <hr />
-      
+
       <p>Comments</p>
       <div class="photo-comments">
         <ul>
           {{#each comments}}
-          <li>
-            <p class="comment-text">{{this.comment_text}}</p>
-            <p class="comment-meta">USERNAME: {{this.username}} | On: {{this.creation_time}}</p>
-          </li>
+            <li>
+              <p class="comment-text">{{this.comment_text}}</p>
+              <p class="comment-meta">USERNAME:
+                {{this.username}}
+                | On:
+                {{this.creation_time}}</p>
+            </li>
           {{/each}}
         </ul>
       </div>
@@ -71,15 +78,17 @@
           <button type="submit">Add Comment</button>
         </form>
       </div>
+      {{#if isOwner}}
+        <button
+          id="single-image-delete"
+          onclick="deleteImageSingleView('{{photo._id}}')"
+        >Delete</button>
 
-      <button
-        id="single-image-delete"
-        onclick="deleteImageSingleView('{{photo._id}}')"
-      >Delete</button>
-      <button
-        id="single-image-edit"
-        onclick="editImageSingleView('{{photo._id}}')"
-      >Edit</button>
+        <button
+          id="single-image-edit"
+          onclick="editImageSingleView('{{photo._id}}')"
+        >Edit</button>
+      {{/if}}
       <button id="back-button" type="button" action="backToGallery">Back to main
         gallery</button>
 
