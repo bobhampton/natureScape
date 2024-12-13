@@ -16,13 +16,98 @@ app.use(
     secret: 'mySecretKey to sign cookie',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 600000 }
+    cookie: { maxAge: 60000000 }
   })
 );
 
 app.use((req, res, next) => {
   res.locals.session = req.session; // Attach session data to res.locals
   next();
+});
+
+app.use('/images', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  next()
+});
+
+app.use('/images/:id', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  next()
+});
+
+app.use('/images/upload', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  next()
+});
+
+app.use('/images/photo/:id', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  next()
+});
+
+app.use('/images/edit/:id', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  next()
+});
+
+app.use('/locationlist', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  next()
+});
+
+/*
+
+  ************************************************
+  using these will disable the create new user link
+  ************************************************
+
+*/
+// app.use('/users', (req, res, next) => {
+//   if (!req.session.user) {
+//     return res.redirect('/login')
+//   }
+//   next()
+// });
+
+// app.use('/users/:userId', (req, res, next) => {
+//   if (!req.session.user) {
+//     return res.redirect('/login')
+//   }
+//   next()
+// });
+// ************************************************
+
+app.use('/profile/:userId', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  next()
+});
+
+app.use('/profile/profile/:profileId', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  next()
+});
+
+app.use('/login', (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/profile/:userId')
+  }
+  next()
 });
 
 

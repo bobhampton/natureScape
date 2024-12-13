@@ -132,7 +132,20 @@ router.get('/photo/:id', async (req, res) => {
 })
 
 // Route to upload an image
-router.post('/upload', async (req, res) => {
+router.get('/upload', async (req, res) => {
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
+
+  res.render('images/uploadImage', {
+    css: '/public/css/image.css',
+  })
+})
+
+router
+.post('/upload', async (req, res) => {
   let user = req.session.user
 
   if (!user) {
@@ -220,7 +233,7 @@ router.post('/like/:id', async (req, res) => {
     console.log(err)
     res.status(500).send('Error liking image')
   }
-})
+});
 
 // Route to edit an image by ID
 router.get('/edit/:id', async (req, res) => {
@@ -290,6 +303,10 @@ router.post('/edit/:id', async (req, res) => {
       photo_name,
       photo_description,
     };
+
+    if (updateData.photo_name === photoData.photo_name && updateData.photo_description === photoData.photo_description) {
+      return res.redirect(`/images/photo/${photoId}`);
+    }
 
     const result = await imageCollection.updateOne(
       { _id: new ObjectId(photoId) },
