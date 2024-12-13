@@ -11,16 +11,12 @@ $(document).ready(function() {
       const timeline = $('#timeline');
       timeline.empty();
 
-      if (response.array.length === 0) {
-        timeline.append("<p>No images found for the selected date range.</p>");
-        return;
-      }
-
       const loader = $('<p>Loading...</p>');
+      timeline.append(loader);
 
       // Send an AJAX request to the server
       $.ajax({
-          url: `/${locationId}`, // Replace with your actual endpoint
+          url: `/locationlist/${locationId}/filterImages`, // Updated endpoint
           type: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({
@@ -28,49 +24,29 @@ $(document).ready(function() {
               endDate: endDate
           }),
           success: function(response) {
-            // Update the timeline with the filtered images
-            loader.remove();
-            if (response.array.length === 0) {
-              timeline.append('<p>No images found for the selected date range.</p>');
-            }
-            
-            response.array.forEach(image => {
-              timeline.append(`
-                <div class="timeline-container">
-                  <div class="timeline-text-box">
-                    <div class="image-item" id="image-${image._id}">
-                      <a href="/images/photo/${image._id}">
-                        <img
-                          class="responsive-img"
-                          src="data:image/${image.img.contentType};base64,${image.img.data}"
-                          alt="${image.photo_name}"
-                        />
-                      </a>
-                      <div class="image-details">
-                        <h4>${image.photo_date_time}</h4>
-                        <h5 id="image-index-display-name">${image.photo_name}</h5>
-                        <p>Views: <span id="views-${image._id}">${image.views}</span></p>
-                        <p>Likes: <span id="likes-${image._id}">${image.likes}</span></p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `);
-            });
+              loader.remove();
+              if (response.images.length === 0) {
+                  timeline.append("<p>No images found for the selected date range.</p>");
+                  return;
+              }
+              // Process the response and update the timeline
+              response.images.forEach(image => {
+                  const imageElement = `
+                      <div class="timeline-container" id="timeline-container-${image._id}">
+                          <div class="timeline-text-box">
+                              <h4>${image.photo_date_time}</h4>
+                              <h5>${image.photo_name}</h5>
+                              <p>${image.photo_description}</p>
+                              <img src="data:image/${image.img.contentType};base64,${image.img.data}" alt="${image.photo_name}" class="responsive-img">
+                          </div>
+                      </div>`;
+                  timeline.append(imageElement);
+              });
           },
           error: function() {
-            loader.remove();
-            // Handle errors, e.g., display an error message
-            alert(xhr.responseJSON?.message || 'An error occurred. Please try again.');
+              loader.remove();
+              timeline.append("<p>Error loading data.</p>");
           }
       });
-  });
-
-  // Reset filter button
-  $('#dateFilterResetButton').click(function() {
-      $('#filterDateStart').val('');
-      $('#filterDateEnd').val('');
-      // Trigger the filter again to show all images
-      $('#applyDateFilterButton').click();
   });
 });

@@ -98,6 +98,8 @@ router.route('/filterImages', async (req, res) => {
         ]
       }).toArray();
 
+      console.log('locPhotos', userPhotos);
+
     formattedPhotos = userPhotos.map(photo => ({
       _id: photo._id,
       photo_name: photo.photo_name,
@@ -116,81 +118,46 @@ router.route('/filterImages', async (req, res) => {
     res.status(500).json({error: error});
   }
 })
-router.post('/:locationId', async (req, res) => {
+router.post('/:locationId/filterImages', async (req, res) => {
   try {
-    //Get start and end dates
-    //Get location using locationId(req, res) => {
-    const locationCollection = await locations();
-    const locationFound = await locationCollection.findOne({
-      _id: new ObjectId(req.params.locationId)
-    });
+    const locationId = req.params.locationId;
+    const { startDate, endDate } = req.body;
 
-    if (!locationFound) {
-      return res.status(404).send('Location not found');
-    }
-
-    const location = {
-      _id: locationFound._id,
-      state: locationFound.state,
-      city: locationFound.city,
-      location_name: locationFound.area
-    };
-    
-    //Get the dates from the filter
-    let { startDate, endDate} = req.body;
     if (!startDate || !endDate) {
-      res.status(400).send('Start and end dates are required');
-      return;
+      return res.status(400).send('Start and end dates are required');
     }
 
-    startDate = new Date(startDate);
-    endDate = new Date(endDate);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    if (startDate > endDate) {
+    if (start > end) {
       return res.status(400).send('Start date cannot be after end date');
     }
 
-    let formattedPhotos;
-    const photoCollection = await photos()
-    const userPhotos = await photoCollection.find({ 
-      'location.location_id': new ObjectId(req.params.locationId),
+    const photoCollection = await photos();
+    const userPhotos = await photoCollection.find({
+      'location.location_id': new ObjectId(locationId),
       $or: [
-        {
-          date_time_taken: { $gte: startDate, $lte: endDate}
-        },
-        {
-          date_time_taken: null,
-          date_time_uploaded: { $gte: startDate, $lte: endDate}
-        }
+        { date_time_taken: { $gte: start, $lte: end } },
+        { date_time_taken: null, date_time_uploaded: { $gte: start, $lte: end } }
       ]
     }).toArray();
-    
-    formattedPhotos = userPhotos.map(photo => ({
+
+    const formattedPhotos = userPhotos.map(photo => ({
       _id: photo._id,
       photo_name: photo.photo_name,
       photo_description: photo.photo_description,
       photo_date_time: photo.date_time_taken ?? photo.date_time_uploaded,
-      likes: photo.likes,
-      views: photo.views,
       img: {
         data: photo.img.data.toString('base64'),
         contentType: photo.img.contentType
       }
-    }))
-    
-    formattedPhotos.sort((a, b) => new Date(b.photo_date_time) - new Date(a.photo_date_time));
+    })).sort((a, b) => new Date(b.photo_date_time) - new Date(a.photo_date_time));
 
-    //Render page using location data and photos
-    res.json({
-      locationName: location.location_name, 
-      city: location.city, 
-      state: location.state, 
-      images: formattedPhotos
-    });
-
+    res.json({ images: formattedPhotos });
   } catch (error) {
-    console.log(error);
-    res.status(500).send('Error retrieving images')
+    console.error(error);
+    res.status(500).send('Error retrieving images');
   }
 });
 
