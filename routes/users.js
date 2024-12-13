@@ -179,7 +179,8 @@ router
           }
         },
         images: formattedPhotos,
-        feedback: userFeedback
+        feedback: userFeedback,
+        //session: req.session
       })
     } catch (e) {
       return res.status(404).json({ error: 'User not found' })
@@ -192,7 +193,7 @@ router
 
       await createFeedback(feedbackInput, userId);
 
-      //THIS NEEDS TO BE DEBUGGED
+      
       res.redirect(`/users/${userId}`);
     } catch (e) {
       console.error(e);
