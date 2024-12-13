@@ -123,6 +123,9 @@ router
   .get(async (req, res) => {
     //code here for GET
     try {
+      if(!req.session.user){
+        return res.redirect('/login');
+      }
       req.params.userId = validation.checkId(
         req.params.userId,
         'Id of URL param'
