@@ -1,14 +1,14 @@
 <div class = "user-dashboard-container">
   <form action="/profilePage" method="POST">
-      <!--<label>
-        User Profile Page 
-      </label>
-      <header> -->
         <h1>Welcome to Your Dashboard, {{newUser.first_name}}!</h1>
       </header>
       <br>
       <br>
       <main>
+
+        <!--Link to images page-->
+        <a id="to-Images" href="/images">View NatureScape Images</a>
+
         <!-- User Details Part -->
         <section id="user-details">
           <h2>Profile Information:</h2>
@@ -60,13 +60,6 @@
           <!--<a href=""></
           a>-->
 
-        {{!-- <br>
-        <button type="button" onclick="alert('will be link for updating profile')">Update Profile</button> --}}
-
-
-        <!-- FIX ME <button type="submit" formaction="./users/">Delete profile</button> HOW DO YOU HAVE TWO 
-        BUTTONS WITH DIFFERENT VERBS? PATCH AND DELETE-->
-
         </section>
       </main>
   </form>
@@ -93,5 +86,6 @@
             <p>No feedback available.</p>
           {{/each}}
         </section>
+      <a id="to-Images" href="/images">View NatureScape Images</a>
 </div>
-  {{!-- <script src="/public/js/image_index.js"></script> --}}
+  
