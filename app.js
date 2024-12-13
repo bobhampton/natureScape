@@ -20,6 +20,13 @@ app.use(
   })
 );
 
+// Middleware to attach session data to res.locals
+app.use((req, res, next) => {
+  res.locals.session = req.session; // Attach session data to res.locals
+  res.locals.user = req.session.user; // Attach user data to res.locals
+  next();
+});
+
 app.use((req, res, next) => {
   res.locals.session = req.session; // Attach session data to res.locals
   next();
