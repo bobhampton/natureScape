@@ -32,6 +32,7 @@ const constructorMethod = app => {
   app.use('/users', userRoutes);//Get all users -- Will not be in final product
   app.use('/users/:userId', userRoutes);//Get user by Id --Will not be in final product
   app.use('/users/newUser', userRoutes);//Register a new user
+  app.use('/users/:userId/upload', userRoutes); //Upload photos through profile page
   app.use('/terms', termRoutes);
   app.use('*', (req, res) => {
     res.status(404).json({ error: 'Route Not found' })
