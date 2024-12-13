@@ -3,6 +3,7 @@ import distExiftool from 'dist-exiftool';
 import exiftool from 'node-exiftool';
 import { convert } from 'geo-coordinates-parser'
 import sharp from 'sharp'
+import exifReader from 'exif-reader'
 
 
 export const updateAndReadMetadata = async (imagePath, metadata) => {
@@ -81,7 +82,7 @@ const imageMeta = sharp(imagePath).withMetadata().toFormat('jpeg')
 let sharpMetadata = await imageMeta.metadata()
 //console.log('\nSHARPmetadata', sharpMetadata);  
 
-//sharpMetadata.exif = exifReader(sharpMetadata.exif)
+sharpMetadata.exif = exifReader(sharpMetadata.exif)
 //console.log('\nsharpMetadata.exif', sharpMetadata.exif)
     
     return returnMetaWrite

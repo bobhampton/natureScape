@@ -34,50 +34,7 @@
         
       ></textarea>
     </div>
-    <div>
-      <label id="image-upload-areaName" class="image-upload" for="areaName">Area Name</label>
-      <input
-        type="text"
-        id="areaName"
-        placeholder="Area Name"
-        value=""
-        name="areaName"
-        
-      />
-    </div>
-    <div> 
-    <label id="image-upload-lat" class="image-upload" for="lat">Latitude</label>
-    <input
-      type="text"
-      id="lat"
-      placeholder="Latitude"
-      value=""
-      name="lat"
-      
-    />
-    </div>
-    <div>
-      <label id="image-upload-lon" class="image-upload" for="lon">Longitude</label>
-      <input
-        type="text"
-        id="lon"
-        placeholder="Longitude"
-        value=""
-        name="lon"
-        
-      />
-    </div>
-    <div>
-      <label id="image-upload-state" class="image-upload" for="state">State</label>
-      <input
-        type="text"
-        id="state"
-        placeholder="State"
-        value=""
-        name="state"
-        
-      />
-    </div>
+    
     <div id="image-index-file-upload-container" class="file-upload-container">
       <!-- Add 'multiple' attribute to 'file' to allow multiple file uploads? -->
       <input
@@ -93,8 +50,8 @@
   </form>
 </div>
 <hr />
-  <div>
-      <a href="/images">All Images</a><a href="/images?filter=liked">Most Liked</a><a href="/images?filter=views">Most Viewed</a>
+  <div id="gallery-filter-links">
+      <a id="gallery-all-images-link" href="/images">All Images</a><a id="gallery-most-liked" href="/images?filter=liked">Most Liked</a><a id="gallery-most-viewed" href="/images?filter=views">Most Viewed</a>
   </div>
 <hr/>
 
@@ -113,10 +70,14 @@
         />
       </a>
       <div class="image-details">
-        <h5 id="image-index-display-name">{{this.photo_name}}</h5>
-        <p id="image-list-description">{{this.photo_description}}</p>
-        <p>Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
-        <button id="image-index-delete-button" onclick="deleteImageFromList('{{this._id}}')">Delete</button>
+
+        <h5 id="image-index-display-name">Photo Name: {{this.photo_name}}</h5>
+        <p id="image-list-description">Photo Description: {{this.photo_description}}</p>
+        <p id="image-list-view">Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
+        {{#if (eq loggedInUserId this.user_id)}}
+          <button id="image-index-delete-button" onclick="deleteImageFromList('{{this._id}}')">Delete</button>
+        {{/if}}
+
       </div>
     </div>
   {{/each}}

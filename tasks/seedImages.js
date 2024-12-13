@@ -174,20 +174,28 @@ export const seedImages = async () => {
   }
   }
 
-  console.log('*****')
-  console.log('Adding metadata to images. This takes a while...')
+  console.log('*****\n')
+  console.log('Adding metadata to images. This takes a while...\n')
 
+  let seedImagesCount = 1
+  let fileCount = 0
+  let removedCount = 0
   for (const file of imageFiles) {
     const filePath = path.join(imageFolder, file)
     const fileExtension = path.extname(file).toLowerCase()
-
-    // For addMetadata function (imagePath, area, latitude, longitude, createDate)
-    metaSeedIN.imagePath = filePath
+    fileCount = imageFiles.length
 
     // Filter out non-image files like .DS_Store >_<
     if (!['.jpg', '.jpeg', '.png', '.heic', '.heif'].includes(fileExtension)) {
+      removedCount++
+      console.log('NON-IMAGE FILE FOUND:', file)
       continue
     }
+
+    console.log(`Processing filename ${file}. Number ${seedImagesCount} of ${fileCount - removedCount}`)
+    
+    // For addMetadata function (imagePath, area, latitude, longitude, createDate)
+    metaSeedIN.imagePath = filePath
 
     const fileData = fs.readFileSync(filePath)
     const contentType = 'image/' + fileExtension.slice(1)
@@ -250,7 +258,7 @@ export const seedImages = async () => {
 
         /* 
           ************************************************************************
-          *********************** ADDING METADATA TO IMAGE ***********************
+          *********************** ADDING METADATA TO SEED_IMAGES *****************
           ************************************************************************
                                                                                  
           args:
@@ -299,7 +307,7 @@ export const seedImages = async () => {
             // Use reverse-geocode to get state, city, and area
             manualLatLon[fileName].state = reverseGeo.state_abbr
             manualLatLon[fileName].city = reverseGeo.city
-            manualLatLon[fileName].area = reverseGeo.city // Can change this to city if needed?
+            //manualLatLon[fileName].area = reverseGeo.city // Can change this to city if needed?
             //manualLatLon[fileName].area = reverseGeo.zipcode
 
             // Add location to database
@@ -354,8 +362,11 @@ export const seedImages = async () => {
     const userCollection = await users()
     const allUsers = await userCollection.find({}).toArray()
 
-    if (userNum >= allUsers.length) {
+    
+
+    if (userNum >= allUsers.length - 1) {
       userNum = 0
+      newPhoto.user_id = allUsers[userNum]._id
     } else {
       newPhoto.user_id = allUsers[userNum]._id
       userNum++
@@ -382,6 +393,8 @@ export const seedImages = async () => {
     } catch (e) {
       console.error(`Error saving image ${file}:`, e)
     }
+
+    seedImagesCount++
   }
 
   // Randomly choose 5 photos for extra likes/views
@@ -406,28 +419,42 @@ export const seedImages = async () => {
 
   }
 
-  console.log('******')
+  console.log('\n******')
   console.log('Metadata successfully added to images...')
 
+
+  /* 
+    ************************************************************************
+    *********************** ADDING METADATA TO TEST_IMAGES *****************
+    ************************************************************************
+  */
 
   // Add metadata to test photos from the 'test_images' folder without adding them to the database
   const testImageFolder = path.join(__dirname, '../test_images')
   const testImageFiles = fs.readdirSync(testImageFolder)
 
-  console.log('*******')
-  console.log('Adding metadata to test images. This takes a while...')
+  console.log('*******\n')
+  console.log('Adding metadata to test images. This takes a while...\n')
 
+  let testImagesCount = 1
+  let testFileCount = 0
+  let testRemovedCount = 0
   for (const file of testImageFiles) {
+    
+    
     const filePath = path.join(testImageFolder, file)
     const fileExtension = path.extname(file).toLowerCase()
-
-    // For addMetadata function (imagePath, area, latitude, longitude, createDate)
-    metaSeedIN.imagePath = filePath
+    testFileCount = testImageFiles.length
 
     // Filter out non-image files like .DS_Store >_<
     if (!['.jpg', '.jpeg', '.png', '.heic', '.heif'].includes(fileExtension)) {
+      testRemovedCount++
       continue
     }
+
+    console.log(`Processing filename ${file}. Number ${testImagesCount} of ${testFileCount - testRemovedCount}`)
+    // For addMetadata function (imagePath, area, latitude, longitude, createDate)
+    metaSeedIN.imagePath = filePath
 
     // Split file name to extract date taken
     fileNameInput = file.split('_')
@@ -458,8 +485,9 @@ export const seedImages = async () => {
 
       //console.log('\n\nMetadata added to test image:', metaSeedOUT)
     }
+    testImagesCount++
   }
-  console.log('********')
+  console.log('\n********')
   console.log('Metadata successfully added to test images...')
 
   console.log('*********')

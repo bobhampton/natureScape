@@ -16,7 +16,7 @@ app.use(
     secret: 'mySecretKey to sign cookie',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 600000 }
   })
 );
 
@@ -29,6 +29,9 @@ app.engine('handlebars', exphbs.engine({ defaultLayout: 'main',
     },
     checkNull: function(value) {
       return value === null ? 'null' : value;
+    },
+    eq: function (v1, v2){
+      return v1 == v2;
     }
   }
  }

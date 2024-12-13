@@ -1,12 +1,29 @@
+
+
 import { photos, locations, comments, users } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
 import express from 'express'
-import { addImage, getCommentsByPhotoId, getUsernameById } from '../data/photos.js'
+import { 
+  addImage, 
+  latLonAddLocation,
+  getCommentsByPhotoId, 
+  getUsernameById,
+  findLocationAreaByPhotoId 
+} from '../data/photos.js'
 
 const router = express.Router()
 
 // Route to fetch all images
 router.get('/', async (req, res) => {
+
+  let user = req.session.user;
+  if (!user) {
+    return res.redirect('/login');
+  }
+  
+  let loggedInUserId = user._id;
+  //loggedInUserId = new ObjectId(loggedInUserId);
+
   try {
     //Use query parameter
     const filter = req.query.filter;
@@ -19,21 +36,25 @@ router.get('/', async (req, res) => {
     }else{
       images = await imageCollection.find({}).toArray();
     }
-    const formattedImages = images.map(image => ({
+
+    let formattedImages = images.map(image => ({
       _id: image._id,
       photo_name: image.photo_name,
       photo_description: image.photo_description,
+      user_id: image.user_id.toString(),
       likes: image.likes,
       views: image.views,
       img: {
         data: image.img.data.toString('base64'),
         contentType: image.img.contentType
-      }
+      },
+      loggedInUserId
     }))
 
     res.render('images/index', {
       css: '/public/css/image_index.css',
-      images: formattedImages
+      images: formattedImages,
+      loggedInUserId
     })
   } catch (err) {
     console.log(err)
@@ -44,6 +65,11 @@ router.get('/', async (req, res) => {
 // Route to display a specific photo
 router.get('/photo/:id', async (req, res) => {
   const photoId = req.params.id
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
 
   try {
     const imageCollection = await photos()
@@ -65,17 +91,17 @@ router.get('/photo/:id', async (req, res) => {
     // Get all comments associated with the photo
     let formattedComments = await getCommentsByPhotoId(photoId)
 
-    /*
-    ********** TESTING ******************************
-    remove if block after testing
-    need this when uploading photo and not logged in
-    *************************************************
-    */
-   let photoUsername = null
-   if (photoData.user_id) {
-    // Find the username of the user who uploaded the photo
-    photoUsername = await getUsernameById(photoData.user_id)
-   }
+    // Get the username of the photo's owner
+    let photoUsername = await getUsernameById(photoData.user_id)
+
+    // See if the logged-in user is the one who uploaded the photo
+    let photoUserId = photoData.user_id
+
+    let isOwner = false
+    
+    if (photoUserId.toString() === user._id.toString()) {
+      isOwner = true
+    }
 
     res.render('images/image', {
       css: '/public/css/image.css',
@@ -93,11 +119,11 @@ router.get('/photo/:id', async (req, res) => {
         img: {
           contentType: photoData.img.contentType,
           data: photoData.img.data.toString('base64')
-        },
-        metadata: photoData.metadata,
-        username: photoUsername
+        }
       },
-      comments: formattedComments
+      comments: formattedComments,
+      photoUsername,
+      isOwner
     })
   } catch (err) {
     console.error(err)
@@ -107,6 +133,12 @@ router.get('/photo/:id', async (req, res) => {
 
 // Route to upload an image
 router.post('/upload', async (req, res) => {
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
+
   const maxUploadSize = 16 * 1024 * 1024 // 16MB
 
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -116,11 +148,11 @@ router.post('/upload', async (req, res) => {
     return res.status(400).send(`Photo size must be less than ${maxUploadSize}`)
   }
 
-  const { name, desc, lat, lon, state, city, areaName } = req.body
+  const { name, desc } = req.body
   const imageFile = req.files.image
 
   try {
-    addImage(name, desc, lat, lon, state, city, areaName, imageFile)
+    addImage(name, desc, user._id, imageFile)
     res.status(200).redirect('/images')
   } catch (err) {
     console.error(err)
@@ -130,6 +162,11 @@ router.post('/upload', async (req, res) => {
 
 // Route to delete an image by ID
 router.delete('/:id', async (req, res) => {
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
   try {
     const imageCollection = await photos()
     const result = await imageCollection.deleteOne({
@@ -147,6 +184,11 @@ router.delete('/:id', async (req, res) => {
 
 // Route to like an image
 router.post('/like/:id', async (req, res) => {
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
   try {
     // Double check that image exists in DB
     const imageCollection = await photos()
@@ -192,6 +234,11 @@ router.get('/edit/:id', async (req, res) => {
       return res.status(404).send('Photo not found');
     }
 
+    // Get the area name (if it exists)
+    let areaName = null;
+
+    areaName = await findLocationAreaByPhotoId(photoId);
+
     res.render('images/edit', {
       css: '/public/css/image.css',
       photo: {
@@ -209,6 +256,8 @@ router.get('/edit/:id', async (req, res) => {
           data: photoData.img.data.toString('base64')
         }
       },
+      areaName,
+      js: '/public/js/image.js'
     });
   } catch (err) {
     console.error(err);
@@ -216,23 +265,30 @@ router.get('/edit/:id', async (req, res) => {
   }
 });
 
-// Route to handle the form submission and update the photo information
 router.post('/edit/:id', async (req, res) => {
   const photoId = req.params.id;
-  const { photo_name, photo_description, lat, lon, state, city, areaName } = req.body;
+  const { photo_name, photo_description } = req.body;
+  let user = req.session.user
 
+  if (!user) {
+    return res.redirect('/login')
+  }
   try {
     const imageCollection = await photos();
     const photoData = await imageCollection.findOne({ _id: new ObjectId(photoId) });
+
+    if (!photoData) {
+      return res.status(404).send('Photo not found');
+    }
+
+    // Check if the logged-in user is the owner of the photo
+    if (photoData.user_id.toString() !== user._id.toString()) {
+      return res.status(403).send('You are not authorized to edit this photo');
+    }
+
     const updateData = {
       photo_name,
       photo_description,
-      location: {
-        latitude: lat,
-        longitude: lon,
-        heading: photoData.location.heading,
-        location_id: photoData.location.location_id
-      }
     };
 
     const result = await imageCollection.updateOne(
@@ -240,10 +296,58 @@ router.post('/edit/:id', async (req, res) => {
       { $set: updateData }
     );
 
+    if (result.modifiedCount === 0) {
+      throw new Error('Failed to update photo');
+    }
+
     res.redirect(`/images/photo/${photoId}`);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
+  }
+});
+
+// Route to handle comment submission
+router.post('/comment/:id', async (req, res) => {
+  const photoId = req.params.id;
+  const { comment_text } = req.body;
+  let user = req.session.user
+
+  if (!user) {
+    return res.redirect('/login')
+  }
+
+  if (!comment_text) {
+    return res.status(400).json({ error: 'Comment text is required' });
+  }
+
+  try {
+    const photoCollection = await photos();
+    const photo = await photoCollection.findOne({ _id: new ObjectId(photoId) });
+
+    if (!photo) {
+      return res.status(404).json({ error: 'Photo not found' });
+    }
+
+    const commentCollection = await comments();
+    const newComment = {
+      photo_Id: photo._id,
+      user_Id: user._id, 
+      comment_text: comment_text,
+      username: user.username,
+      creation_time: new Date()
+    };
+
+    const insertResult = await commentCollection.insertOne(newComment);
+
+    if (insertResult.insertedCount === 0) {
+      throw new Error('Failed to add comment');
+    }
+
+    res.status(200).json(newComment);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
