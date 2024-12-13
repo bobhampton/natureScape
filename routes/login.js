@@ -11,14 +11,15 @@ router
     try {
       if (req.session.user) {
         return res.status(200).render('home/home', { 
-          title: "NatureScape" , 
+          title: "NatureScape",
           css: "/public/css/home.css", 
           js: "/public/js/home.js"
         });
       } else {
         req.method = 'POST'
         return res.status(200).render('home/login', { 
-          title: "NatureScape" , 
+          title: "NatureScape",
+          pagetitle: "Welcome to NatureScape", 
           css: "/public/css/home.css", 
           js: "/public/js/login.js"
         });
