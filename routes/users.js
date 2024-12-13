@@ -200,57 +200,57 @@ router
       res.status(400).render('error', { error: e, css: '/public/css/error.css', title: "Error", message: "Message: Already submitted Feedback" });
     }
   })
-  .delete(async (req, res) => {
-    //code here for DELETE
-    try {
-      req.params.userId = validation.checkId(req.params.userId)
-    } catch (e) {
-      return res.status(400).json({ error: e })
-    }
+  // .delete(async (req, res) => {
+  //   //code here for DELETE
+  //   try {
+  //     req.params.userId = validation.checkId(req.params.userId)
+  //   } catch (e) {
+  //     return res.status(400).json({ error: e })
+  //   }
 
-    try {
-      let deletedUser = await userData.removeUser(req.params.teamId)
+  //   try {
+  //     let deletedUser = await userData.removeUser(req.params.teamId)
 
-      return res.status(200).json({ _id: req.params.userId, deleted: true })
-    } catch (e) {
-      //JSON always returns a string
-      return res.status(404).json({ error: e })
-    }
-  })
-  .put(async (req, res) => {
-    //console.log("made it here")
-    const userinfo = req.body
-    //code here for PUT
-    if (!userinfo || Object.keys(userinfo).length === 0) {
-      return res
-        .status(400)
-        .json({ error: 'There are no fields in the request body' })
-    }
+  //     return res.status(200).json({ _id: req.params.userId, deleted: true })
+  //   } catch (e) {
+  //     //JSON always returns a string
+  //     return res.status(404).json({ error: e })
+  //   }
+  // })
+  // .put(async (req, res) => {
+  //   //console.log("made it here")
+  //   const userinfo = req.body
+  //   //code here for PUT
+  //   if (!userinfo || Object.keys(userinfo).length === 0) {
+  //     return res
+  //       .status(400)
+  //       .json({ error: 'There are no fields in the request body' })
+  //   }
 
-    try {
-      //console.log("made it here")
-      req.params.userId = validation.checkId(req.params.userId)
-      validation.checkUser(firstname, lastname, email, username, password_hash)
-    } catch {
-      return res.status(400).json({ error: e })
-    }
+  //   try {
+  //     //console.log("made it here")
+  //     req.params.userId = validation.checkId(req.params.userId)
+  //     validation.checkUser(firstname, lastname, email, username, password_hash)
+  //   } catch {
+  //     return res.status(400).json({ error: e })
+  //   }
 
-    try {
-      let updateduser = await userData.updateUser(
-        req.params.userId,
-        userinfo.firstname,
-        userinfo.lastname,
-        userinfo.email,
-        userinfo.username,
-        userinfo.password_hash
-      )
+  //   try {
+  //     let updateduser = await userData.updateUser(
+  //       req.params.userId,
+  //       userinfo.firstname,
+  //       userinfo.lastname,
+  //       userinfo.email,
+  //       userinfo.username,
+  //       userinfo.password_hash
+  //     )
 
-      //Explicit display of 200 status.
-      //console.log("made it here4")
-      return res.status(200).json(updateduser)
-    } catch (e) {
-      return res.status(404).json({ error: e })
-    }  
-  })
+  //     //Explicit display of 200 status.
+  //     //console.log("made it here4")
+  //     return res.status(200).json(updateduser)
+  //   } catch (e) {
+  //     return res.status(404).json({ error: e })
+  //   }  
+  // })
 
 export default router
