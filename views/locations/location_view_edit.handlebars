@@ -5,10 +5,10 @@
         <h4>{{city}} {{state}}</h4>
     </div>
     <form id="dateFilter">
-      <label for="filterDateStart" id="filterDateStart">From date:
+      <label for="filterDateStart" id="DateStart">From date:
         <input type="date" id="filterDateStart" name="filterDateStart" min="1826-01-01">
       </label>
-      <label for="filterDateEnd" id="filterDateEnd">To date:
+      <label for="filterDateEnd" id="DateEnd">To date:
         <input type="date" id="filterDateEnd" name="filterDateEnd">
       </label>
       <button type="submit" id="applyDateFilterButton">Filter</button>
@@ -18,7 +18,7 @@
     </form>
     <div class="timeline" id="timeline">
       {{#each images}}
-      <div class="timeline-container">
+      <div class="timeline-container" id="timeline-container-{{this._id}}">
         <div class="timeline-text-box">
           <div class="image-item" id="image-{{this._id}}">
             <a href="/images/photo/{{this._id}}">

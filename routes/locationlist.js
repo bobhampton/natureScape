@@ -20,6 +20,7 @@ router.get('/test', async (req, res) => {
 
 router.get('/:locationId', async (req, res) => {
   try {
+    
     //Get location using locationId(req, res) => {
     const locationCollection = await locations();
     const locationFound = await locationCollection.findOne({
@@ -64,11 +65,133 @@ router.get('/:locationId', async (req, res) => {
     console.log(error);
     res.status(500).send('Error retrieving images')
   }
-  
-
-  
 
 })
-//.post()
+
+router.route('/filterImages', async (req, res) => {
+  let startDate = req.body.startDate;
+  let endDate = req.body.endDate;
+
+  if (!endDate) {
+    endDate = new Date();
+  } else if (!endDate && !startDate) {
+    res.status(400).send("Start and end dates are required")
+  }
+
+  startDate = new Date(startDate);
+  endDate = new Date(endDate);
+
+  try {
+
+    let formattedPhotos;
+    const photoCollection = await photos()
+    const userPhotos = await photoCollection.find(
+      { 'location.location_id': new ObjectId(req.params.locationId),
+        $or: [
+          {
+            date_time_taken: {gte: startDate, $lte: endDate}
+          },
+          {
+            date_time_taken: null,
+            date_time_uploaded: { $gte: startDate, $lte: endDate }
+          }
+        ]
+      }).toArray();
+
+    formattedPhotos = userPhotos.map(photo => ({
+      _id: photo._id,
+      photo_name: photo.photo_name,
+      photo_description: photo.photo_description,
+      photo_date_time: photo.date_time_taken ?? photo.date_time_uploaded,
+      likes: photo.likes,
+      views: photo.views,
+      img: {
+        data: photo.img.data.toString('base64'),
+        contentType: photo.img.contentType
+      }
+    })).sort((a, b) => new Date(b.photo_date_time) - new Date(a.photo_date_time));
+
+    res.json({ images: formattedPhotos })
+  } catch (error) {
+    res.status(500).json({error: error});
+  }
+})
+router.post('/:locationId', async (req, res) => {
+  try {
+    //Get start and end dates
+    //Get location using locationId(req, res) => {
+    const locationCollection = await locations();
+    const locationFound = await locationCollection.findOne({
+      _id: new ObjectId(req.params.locationId)
+    });
+
+    if (!locationFound) {
+      return res.status(404).send('Location not found');
+    }
+
+    const location = {
+      _id: locationFound._id,
+      state: locationFound.state,
+      city: locationFound.city,
+      location_name: locationFound.area
+    };
+    
+    //Get the dates from the filter
+    let { startDate, endDate} = req.body;
+    if (!startDate || !endDate) {
+      res.status(400).send('Start and end dates are required');
+      return;
+    }
+
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+
+    if (startDate > endDate) {
+      return res.status(400).send('Start date cannot be after end date');
+    }
+
+    let formattedPhotos;
+    const photoCollection = await photos()
+    const userPhotos = await photoCollection.find({ 
+      'location.location_id': new ObjectId(req.params.locationId),
+      $or: [
+        {
+          date_time_taken: { $gte: startDate, $lte: endDate}
+        },
+        {
+          date_time_taken: null,
+          date_time_uploaded: { $gte: startDate, $lte: endDate}
+        }
+      ]
+    }).toArray();
+    
+    formattedPhotos = userPhotos.map(photo => ({
+      _id: photo._id,
+      photo_name: photo.photo_name,
+      photo_description: photo.photo_description,
+      photo_date_time: photo.date_time_taken ?? photo.date_time_uploaded,
+      likes: photo.likes,
+      views: photo.views,
+      img: {
+        data: photo.img.data.toString('base64'),
+        contentType: photo.img.contentType
+      }
+    }))
+    
+    formattedPhotos.sort((a, b) => new Date(b.photo_date_time) - new Date(a.photo_date_time));
+
+    //Render page using location data and photos
+    res.json({
+      locationName: location.location_name, 
+      city: location.city, 
+      state: location.state, 
+      images: formattedPhotos
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Error retrieving images')
+  }
+});
 
 export default router
