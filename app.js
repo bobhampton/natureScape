@@ -20,6 +20,12 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.locals.session = req.session; // Attach session data to res.locals
+  next();
+});
+
+
 // Set up default layout and view engine for handlebars
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main',
   // Define custom helpers for handlebars
