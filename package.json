@@ -26,7 +26,6 @@
     "express-fileupload": "^1.5.1",
     "express-handlebars": "^8.0.1",
     "express-session": "^1.18.1",
-    "express-xss-sanitizer": "^1.2.1",
     "fs": "^0.0.1-security",
     "geo-coordinates-parser": "^1.7.4",
     "geojson-places": "^1.0.8",
