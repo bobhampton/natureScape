@@ -1,29 +1,102 @@
 /* Single image page */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: var(--body-color);
+}
+
 #single-image {
-  text-align: center;
-  margin-top: 90px;
   margin-bottom: 20px;
 }
 
-#single-image-delete {
+#single-image h1{
+  margin-bottom: 0;
+  text-align: center;
+  color: var(--body-text-color);
+}
+
+#single-image .single-photo-description {
+  text-align: center;
+  color: var(--body-text-color);
+}
+
+#single-image .single-photo-description p#photo-description-title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#single-image .all-image-details p#image-details-title {
+  font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  color: var(--body-text-color);
+}
+
+#single-image p#comment-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--body-text-color);
+}
+
+#single-image .photo-comments ul {
+  display: grid;
+  justify-content: center;
+  color: var(--body-text-color);
+}
+
+#single-image .photo-comments ul li {
+  border: groove;
+  margin-bottom: 15px;
+  border-color: var(--body-text-color);
+}
+
+/* #single-image-delete {
   margin-bottom: 20px;
+} */
+
+#single-image button#single-image-delete, 
+#single-image button#single-image-edit, 
+#single-image button#back-button {
+  display: grid;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#single-image button#single-image-delete {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#single-image button#single-image-edit {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#single-image button#back-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .all-image-details {
-  display: flex;
-  flex-wrap: wrap;
   gap: 15px;
-  justify-content: left;
   margin-bottom: 20px;
   margin-left: 20px;
-  text-align: left;
+}
+
+.all-image-details ul {
+  display: grid;
+  justify-content: center;
+  color: var(--body-text-color);
 }
 
 .single-photo-description {
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 20px;
-  text-align: left;
 }
 
 .responsive-img {
@@ -38,7 +111,7 @@
   object-fit: contain;
   margin: 0 auto;
 }
-
+/* ------------------------------------------------------- */
 /* .photo-comments {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -91,20 +164,25 @@
     font-size: 12px;
     color: #777;
   } */
-
+/* --------------------------------------------- */
   .add-comment-form {
     margin-top: 20px;
   }
 
   .add-comment-form textarea {
-    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
     height: 100px;
     margin-bottom: 10px;
   }
 
   .add-comment-form button {
     display: block;
-    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
   } */
 
 
