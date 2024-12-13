@@ -16,28 +16,29 @@
       />
       <hr />
       <div class="single-photo-description">
-        <p>Photo description: </p>
+        <p id="photo-description-title">Photo description: </p>
         <p>{{photo.photo_description}}</p>
       </div>
       <hr />
 
       <div class="all-image-details">
+        <p id="image-details-title">Image Details: </p>
         <ul>
           {{!-- <li>Uploaded by (user_id):
             {{#checkNull photo.user_id}}{{/checkNull}}
           </li> --}}
-          <li>Uploaded by (username)
+          <li>Uploaded by: 
             {{#checkNull photoUsername}}{{/checkNull}}
           </li>
-          <li>Taken on (date_time_taken):
+          <li>Taken on: 
             {{#checkNull photo.date_time_taken}}{{/checkNull}}
           </li>
-          <li>Uploaded on (date_time_uploaded):
+          <li>Uploaded on: 
             {{#checkNull photo.date_time_uploaded}}{{/checkNull}}
           </li>
-          <li>Likes (likes): {{photo.likes}}</li>
-          <li>Views (views): {{photo.views}}</li>
-          <li>Verification rating (verification_rating):
+          <li>Likes: {{photo.likes}}</li>
+          <li>Views: {{photo.views}}</li>
+          <li>Verification rating: 
             {{photo.verification_rating}}</li>
           {{!-- <li>Location (location):
             <pre>{{#printObj photo.location}}{{/printObj}}
@@ -48,7 +49,7 @@
       </div>
       <hr />
 
-      <p>Comments</p>
+      <p id="comment-title">Comments:</p>
       <div class="photo-comments">
         <ul>
           {{#each comments}}
