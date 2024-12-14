@@ -126,7 +126,7 @@ router
   .route('/upload')
   .get(checkAuth, (req, res) => {
     res.render('images/uploadImage', {
-      css: '/public/css/image.css',
+      css: '/public/css/upload.css',
       title: 'Upload Image',
     });
   })

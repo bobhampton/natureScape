@@ -44,9 +44,9 @@ $(document).ready(function() {
                   const imageElement = `
                       <div class="timeline-container" id="timeline-container-${image._id}">
                           <div class="timeline-text-box">
-                              <h4>${image.photo_date_time}</h4>
-                              <h5>${image.photo_name}</h5>
-                              <p>${image.photo_description}</p>
+                              <h5>Photo Name: ${image.photo_name}</h5>
+                              <h4 id="photoDate-Info">Date/Title Uploaded: ${image.photo_date_time}</h4>
+                              <p>Photo Description: ${image.photo_description}</p>
                               <img src="data:image/${image.img.contentType};base64,${image.img.data}" alt="${image.photo_name}" class="responsive-img">
                           </div>
                       </div>`;

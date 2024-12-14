@@ -4,29 +4,31 @@
     <div id="location-details-container">
         <h4>{{city}} {{state}}</h4>
     </div>
-    <form id="dateFilter">
-      <label for="filterDateStart" id="DateStart">From date:
-        <input type="date" id="filterDateStart" name="filterDateStart" min="1826-01-01">
-      </label>
-      <label for="filterDateEnd" id="DateEnd">To date:
-        <input type="date" id="filterDateEnd" name="filterDateEnd">
-      </label>
-      <button type="submit" id="applyDateFilterButton">Filter</button>
-    </form>
-    <form id="resetFilter">
-      <button type="button" id="dateFilterResetButton">Reset</button>
-    </form>
+    <div id="filter-controls">
+      <form id="dateFilter">
+        <label for="filterDateStart" id="DateStart">From date:
+          <input type="date" id="filterDateStart" name="filterDateStart" min="1826-01-01">
+        </label>
+        <label for="filterDateEnd" id="DateEnd">To date:
+          <input type="date" id="filterDateEnd" name="filterDateEnd">
+        </label>
+        <button type="submit" id="applyDateFilterButton">Filter</button>
+      </form>
+      <form id="resetFilter">
+        <button type="button" id="dateFilterResetButton">Reset</button>
+      </form>
+    </div>
     <div class="timeline" id="timeline">
       {{#each images}}
       <div class="timeline-container" id="timeline-container-{{this._id}}">
         <div class="timeline-text-box">
-          <h4>{{this.photo_date_time}}</h4>
-          <h5>{{this.photo_name}}</h5>
-          <p>{{this.photo_description}}</p>
+          <h5>Photo Name: {{this.photo_name}}</h5>
+          <h4 id="photoDate-Info">Date/Time Uploaded: {{this.photo_date_time}}</h4>
+          <p>Photo Description: {{this.photo_description}}</p>
           <img src="data:image/{{this.img.contentType}};base64,{{this.img.data}}" alt="{{this.photo_name}}" class="responsive-img">
         </div>
       </div>
       {{/each}}
     </div>
-  </div>
+  </div><br>
 </div>
