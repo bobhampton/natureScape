@@ -48,6 +48,7 @@ export const checkXss = (req, res, next) => {
     } catch (err) {
       res.status(400).render('error', {
         css: '/public/css/error.css',
+        js: '/public/js/image_edit.js',
         title: 'Input Error',
         error: err
       });
@@ -71,6 +72,7 @@ export const checkXss = (req, res, next) => {
     } catch (err) {
       res.status(400).render('error', {
         css: '/public/css/error.css',
+        js: '/public/js/image_edit.js',
         title: 'Input Error',
         error: err
       });

@@ -1,11 +1,11 @@
-<hr />
+<hr>
   <div id="gallery-filter-links">
       <a id="gallery-all-images-link" href="/images">All Images</a>
       <a id="gallery-most-liked" href="/images?filter=liked">Most Liked</a>
       <a id="gallery-most-viewed" href="/images?filter=views">Most Viewed</a>
       <a id="upload-image-link" href="/images/upload">Upload Image</a>
   </div>
-<hr/>
+<hr>
 
 <div id="image-container" class="image-container">
   {{#each images}}
@@ -17,9 +17,9 @@
       <a href="/images/photo/{{this._id}}">
         <img
           class="responsive-img"
-          src="data:image/{{this.img.contentType}};base64,{{this.img.data}}"
+          src="data:{{this.img.contentType}};base64,{{{this.img.data}}}"
           alt="{{this.photo_name}}"
-        />
+        >
       </a>
       <div class="image-details">
 
@@ -34,4 +34,3 @@
     </div>
   {{/each}}
 </div>
-<script src="/public/js/image_index.js"></script>
