@@ -57,6 +57,7 @@ router.get('/', checkAuth, async (req, res) => {
     res.render('images/index', {
       css: '/public/css/image_index.css',
       title: 'Gallery',
+      js: '/public/js/image_index.js',
       images: formattedImages,
       loggedInUserId
     });
@@ -65,6 +66,7 @@ router.get('/', checkAuth, async (req, res) => {
     res.status(500).render('error', {
       css: '/public/css/error.css',
       title: 'Fetch Images Error',
+      js: '/public/js/image_edit.js',
       message: 'Error retrieving images.',
       error: err
     });
@@ -115,6 +117,7 @@ router.get('/photo/:id', checkAuth, async (req, res) => {
     res.status(500).render('error', {
       css: '/public/css/error.css',
       title: 'Display Photo Error',
+      js: '/public/js/image_edit.js',
       message: 'Error displaying photo.',
       error: err
     });
@@ -147,6 +150,7 @@ router
       res.status(400).render('error', {
         css: '/public/css/error.css',
         title: 'Add Image Error',
+        js: '/public/js/image_edit.js',
         message: 'Error uploading image.',
         error: err
       });
@@ -168,6 +172,7 @@ router.delete('/:id', checkAuth, async (req, res) => {
     console.error(err);
     res.status(500).render('error', {
       css: '/public/css/error.css',
+      js: '/public/js/image_edit.js',
       title: 'Delete Image Error',
       message: 'Error deleting image.',
       error: err
@@ -197,6 +202,7 @@ router.post('/like/:id', checkAuth, async (req, res) => {
     console.error(err);
     res.status(500).render('error', {
       css: '/public/css/error.css',
+      js: '/public/js/image_edit.js',
       title: 'Like Image Error',
       message:'Error liking image.',
       error: err
@@ -236,6 +242,7 @@ router
       console.error(err);
       res.status(500).render('error', {
         css: '/public/css/error.css',
+        js: '/public/js/image_edit.js',
         title: 'Edit Image Error',
         message:'Error editing image.',
         error: err
@@ -269,6 +276,7 @@ router
       console.error(err);
       res.status(500).render('error', {
         css: '/public/css/error.css',
+        js: '/public/js/image_edit.js',
         title: 'Update Image Error',
         message:'Error updating image.',
         error: err
@@ -313,6 +321,7 @@ router.post('/comment/:id', checkAuth, checkXss, async (req, res) => {
     console.error(err);
     res.status(500).render('error', {
       css: '/public/css/error.css',
+      js: '/public/js/image_edit.js',
       title: 'Add Comment Error',
       message:'Error adding comment.',
       error: err
