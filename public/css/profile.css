@@ -71,6 +71,11 @@ body {
     margin-left: 40px;
 }
 
+.user-dashboard-container p#upload-image-link {
+    text-align: center;
+    color: var(--body-text-color);
+}
+
 .user-dashboard-container #user-feedback h2 {
     padding-left: 40px;
     color: var(--body-text-color);

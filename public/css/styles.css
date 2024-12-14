@@ -18,6 +18,7 @@
   --symbol-color: #FFF;
   --body-text-color: #1E5F22;
   --body-login: #86c97e;
+  --body-timeline-background: #edf1cf;
 }
 
 .darkmode {
@@ -27,7 +28,10 @@
   --body-text-color: #FFF;
   --symbol-color: #101425;
   --body-login: #cdcecd;
+  --body-timeline-background: #42447b;
 }
+
+/* #272c64 */
 
 .navbar{
   background: var(--nav-color); 
