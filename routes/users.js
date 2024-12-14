@@ -7,19 +7,26 @@ import {checkInputUsername, checkInputEmail, checkDuplicateId} from './helpers.j
 import { createFeedback, getAllFeedback } from '../data/feedback.js'
 import { authorizeRole } from '../middleware.js'
 
+
 const router = Router();
 
-// router
-//   .route('/') //Localhost:3000/users/   --Gets all users--
-//   .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
-//     //No inputs to validate
-//     try {
-//       let userList = await userData.getAllUsers()
-//       return res.json(userList)
-//     } catch (e) {
-//       return res.sendStatus(404).send(e)
-//     }
-//   })
+
+
+router
+  .route('/') //Localhost:3000/users/   --Gets all users--
+  .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
+    //No inputs to validate
+    try {
+      let userList = await userData.getAllUsers()
+      // .find({})
+      // .project({_id: 1, name: 1,})
+      // .toArray();
+      return res.json(userList)
+    } catch (e) {
+      return res.sendStatus(404).send(e)
+    }
+  })
+
 
 router
   .route('/newUser')
@@ -193,14 +200,18 @@ router
       const feedbackInput = validation.checkString(req.body.feedback, 'Feedback');
 
       await createFeedback(feedbackInput, userId);
-
       
       res.redirect(`/users/${userId}`);
-    } catch (e) {
+      } catch (e) {
       console.error(e);
       res.status(400).render('error', { error: e, css: '/public/css/error.css', title: "Error", message: "Message: Already submitted Feedback" });
-    }
-  })
+  }});
+
+
+
+
+
+
   // .delete(async (req, res) => {
   //   //code here for DELETE
   //   try {
