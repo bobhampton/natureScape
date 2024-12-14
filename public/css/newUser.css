@@ -18,6 +18,16 @@ body {
     color: var(--body-text-color);
 }
 
+#newUser-role {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-role select {
+    width: 180px;
+    margin-left: 48px;
+}
+
 #newUser-firstName {
     margin: 5px;
     color: var(--body-text-color);
