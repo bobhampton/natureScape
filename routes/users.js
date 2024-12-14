@@ -5,7 +5,7 @@ import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername, checkInputEmail, checkDuplicateId} from './helpers.js'
 import { createFeedback, getAllFeedback } from '../data/feedback.js'
-import { authorizeRole, checkXss, checkXss } from '../middleware.js'
+import { authorizeRole, checkXss} from '../middleware.js'
 
 
 
@@ -44,7 +44,7 @@ router
   })
 
   //When they submit the form
-  .post(checkXss, checkXss, async (req, res)=>{
+  .post(checkXss, async (req, res)=>{
     try {
       const isChecked = req.body.tterms === "on"; //Meaning true
       const password = validation.checkString(req.body.tpassword)
@@ -195,7 +195,7 @@ router
       return res.status(404).json({ error: 'User not found' })
     }
   })
-  .post(checkXss, checkXss, async (req, res) => {
+  .post(checkXss, async (req, res) => {
     try {
       const userId = validation.checkId(req.params.userId, 'User ID');
       const feedbackInput = validation.checkString(req.body.feedback, 'Feedback');
