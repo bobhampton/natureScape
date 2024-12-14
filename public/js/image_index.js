@@ -54,7 +54,7 @@ async function deleteImageFromList (id) {
 // }
 
 async function likeImage (id) {
-  console.log(`Attempting to like image with id: ${id}`); // Debugging
+  //console.log(`Attempting to like image with id: ${id}`); // Debugging
   const likeButton = document.getElementById(`like-button-${id}`);
   
   // Check if user has already liked the image
