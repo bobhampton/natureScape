@@ -34,14 +34,12 @@
 			<div class="logo"><a href="#">NatureScape</a> </div>
 			<ul>
 				<li><a href="/">Home</a></li>
-				<li><a href="/locationlist">Locations</a></li>
-				<li><a href="/images">Gallery</a></li>
-                {{#if session.user}}
-                    <li><a href="/users/{{session.user._id}}">Profile</a></li>
-                {{else}}
-                    <li><a href="/login">Profile</a></li>
+                {{#if user}}
+                    <li><a href="/locationlist">Locations</a></li>
+                    <li><a href="/images">Gallery</a></li>
+                    <li><a href="/users/{{user._id}}">Profile</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 {{/if}}
-                <li><a href="/logout">Logout</a></li>
 				{{!-- <button><a href="#">SignIn</a></button> --}}
 				{{!-- <button><a href="#">SignUp</a></button> --}}
                 <button id="theme-switch">
