@@ -25,7 +25,9 @@
           <h5>Photo Name: {{this.photo_name}}</h5>
           <h4 id="photoDate-Info">Date/Time Uploaded: {{this.photo_date_time}}</h4>
           <p>Photo Description: {{this.photo_description}}</p>
-          <img src="data:image/{{this.img.contentType}};base64,{{this.img.data}}" alt="{{this.photo_name}}" class="responsive-img">
+          <a href="/images/photo/{{this._id}}">
+          <img src="data:{{this.img.contentType}};base64,{{{this.img.data}}}" alt="{{this.photo_name}}" class="responsive-img">
+          </a>
         </div>
       </div>
       {{/each}}
