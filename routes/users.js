@@ -161,6 +161,7 @@ router
         //name on left is whatever I want.  Variables on right
         //come from the database in line 154
         css: '/public/css/profile.css',
+        title: 'Profile',
         newUser: {
           _id: user._id,
           first_name: user.first_name,
