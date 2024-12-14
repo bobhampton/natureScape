@@ -1,4 +1,5 @@
 <div class = "user-dashboard-container">
+
   <form action="/profilePage" method="POST">
         <h1>Welcome to Your Dashboard, {{newUser.first_name}}!</h1>
       </header>
@@ -26,6 +27,8 @@
           </ul>
         </section>
 
+
+
         <!-- Photos Part -->
         <section id="user-photos">
           <h2>Your Photos</h2>
@@ -45,7 +48,7 @@
                   <h5 id="image-index-display-name">Photo Name: {{this.photo_name}}</h5>
                   <p id="image-list-description">Photo Description: {{this.photo_description}}</p>
                   <p id="image-view-count">Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
-
+                  <p id="image-view-count">Views: <span id="views-{{this._id}}">{{this.likes}}</span></p>
                   {{!-- <button id="image-index-delete-button" onclick="deleteImageFromList('{{this._id}}')">Delete</button> --}}
                 </div>
               </div>
@@ -56,31 +59,17 @@
         <br>
         <br>
         {{!-- <button type="button" onclick="alert('will be link for updating profile')">Update Profile</button> --}}
-
-        <!-- Add Photos & Location Link -->
-        <section id="add-photos">
-          <!--<a href=""></
-          a>-->
-
-
-        {{!-- <br>
-        <button type="button" onclick="alert('will be link for updating profile')">Update Profile</button> --}}
-
-
-     
-
+        <!-- Upload Image Form -->
         </section>
       </main>
   </form>
 
-     <!-- Add Photos & Location Link -->
-        <section id="add-photos">
-          
-        </section>
+    
           
 
 
-
+    <!--Link to images page-->
+    <a id="to-Images" href="/images/upload">Upload Images</a>
 
     <!-- Submit Feedback Form -->
         <section id="submit-feedback">
@@ -105,6 +94,8 @@
             <p id="no-feedback">No feedback available.</p>
           {{/each}}
         </section>
+
       <p id="gallery-link">To navigate to the gallery, click the following link: <a id="to-Images" href="/images">View NatureScape Image Gallery</a></p><br>
+
 </div>
   

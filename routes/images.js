@@ -177,7 +177,6 @@ router.delete('/:id', checkAuth, async (req, res) => {
 
 // Like an image
 router.post('/like/:id', checkAuth, async (req, res) => {
-  console.log('req.params.id', req.params.id);
   try {
     const imageCollection = await photos();
     const imageId = new ObjectId(req.params.id);
