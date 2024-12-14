@@ -38,7 +38,8 @@ router
   try {
     return res.render('users/user',{
       title: "Create New User",
-      css: '/public/css/newUser.css'
+      css: '/public/css/newUser.css',
+      js: '/public/js/image_edit.js'
     });
   } catch (e) {
     return res.status(400).render({error: e, title: "New User",

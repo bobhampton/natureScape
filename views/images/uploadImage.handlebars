@@ -1,7 +1,7 @@
 <div id="image-index-header" class="header-container">
   <h1>{{title}}</h1>
 </div>
-<hr />
+<hr>
 
 <div id="image-index-upload-form" class="image-upload-form">
   <form
@@ -11,25 +11,22 @@
     enctype="multipart/form-data"
   >
     <div id="image-title-container">
-      <label id="image-upload-title" class="image-upload" for="name">Image Title: </label>
+      <label id="image-upload-title" class="image-upload" for="name">Image Title:</label>
       <input
         type="text"
         id="name"
         placeholder="Name"
         value=""
         name="name"
-        
-      />
+      >
     </div>
     <div id="image-desc-container">
-      <label id="image-upload-desc" class="image-upload" for="desc">Image Description: </label>
+      <label id="image-upload-desc" class="image-upload" for="desc">Image Description:</label>
       <textarea
         id="desc"
         name="desc"
-        value=""
         rows="1"
         placeholder="Description"
-        
       ></textarea>
     </div>
     
@@ -40,9 +37,8 @@
         id="image"
         name="image"
         accept="image/*"
-        value=""
         required
-      />
+      >
       <button type="submit" class="submit-button">Submit</button><br>
     </div>
   </form>

@@ -145,6 +145,7 @@ app.use((err, req, res, next) => {
   if (err.type === 'entity.too.large') {
     return res.status(413).render('error', {
       title: 'Error',
+      js: '/public/js/image_edit.js',
       css: '/public/css/error.css',
       error: 'Request entity too large. Please reduce the size of your input.'
     });
