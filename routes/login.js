@@ -30,7 +30,7 @@ router
   })
 
 //POST for login logic
-  .post(async (req, res) => {
+  .post(checkXss, async (req, res) => {
     //Get username and password from req.body
     //const {username, password} = req.body;
     try {

@@ -5,7 +5,7 @@ import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername, checkInputEmail, checkDuplicateId} from './helpers.js'
 import { createFeedback, getAllFeedback } from '../data/feedback.js'
-import { authorizeRole, checkXss } from '../middleware.js'
+import { authorizeRole, checkXss} from '../middleware.js'
 
 
 
