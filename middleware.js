@@ -42,6 +42,9 @@ export const checkXss = (req, res, next) => {
     // Check for empty input
     try {
       input = validation.checkString(input, varName);
+      if (input.length > 1000) {
+        throw 'Input too long';
+      }
     } catch (err) {
       res.status(400).render('error', {
         css: '/public/css/error.css',
