@@ -35,7 +35,12 @@ const constructorMethod = app => {
   app.use('/users/:userId/upload', userRoutes); //Upload photos through profile page
   app.use('/terms', termRoutes);
   app.use('*', (req, res) => {
-    res.status(404).json({ error: 'Route Not found' })
+    res.status(404).render('error', {
+      css: '/public/css/error.css',
+      title: '404 Not Found',
+      message: 'The page you are looking for does not exist.',
+      error: '404 Not Found'
+    });
   });
 }
 
