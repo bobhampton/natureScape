@@ -13,6 +13,7 @@ router
       if (req.session.user) {
         return res.status(200).render('home/home', { 
           title: "NatureScape",
+          pagetitle: "Welcome to NatureScape",
           css: "/public/css/home.css", 
           js: "/public/js/home.js"
         });
@@ -46,7 +47,8 @@ router
         res.redirect(`users/${user._id}`);
       } else {
         res.render('home/login', {
-          title: "NatureScape", 
+          title: "NatureScape",
+          pagetitle: "Welcome to NatureScape", 
           css: "/public/css/home.css", 
           js: "/public/js/login.js", 
           loginMessage: "Incorrect credentials" });
@@ -80,7 +82,7 @@ router
 //Route for client side js to fetch for authentication
 router
   .route('/checkUser')
-  .post(async (req, res) => {
+  .post(checkXss, async (req, res) => {
     try {
       const { username } = req.body;
       await checkUser(username);
@@ -91,7 +93,7 @@ router
   })
 
 router
-  .route('/checkPassword', async (req, res) => {
+  .route('/checkPassword', checkXss, async (req, res) => {
     try {
       const { username, password } = req.body;
       const isValid = await checkPassword(username, password);
