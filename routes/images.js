@@ -222,6 +222,7 @@ router
       res.render('images/edit', {
         css: '/public/css/image_edit.css',
         title: 'Edit Image',
+        js: '/public/js/image_edit.js',
         photo: {
           ...photoData,
           img: {
