@@ -220,7 +220,7 @@ router
       const areaName = await findLocationAreaByPhotoId(photoId);
 
       res.render('images/edit', {
-        css: '/public/css/image.css',
+        css: '/public/css/image_edit.css',
         title: 'Edit Image',
         photo: {
           ...photoData,

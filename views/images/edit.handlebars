@@ -1,19 +1,19 @@
 <div class="edit-image-body">
-<div id="edit-image">
+  <div id="edit-image">
 
-<h1 id="edit-image-h1">Edit Photo</h1>
-  <form id="edit-image" class="edit-form" action="/images/edit/{{photo._id}}" method="POST">
-    <div>
-      <label for="photo_name">Photo Name:</label>
-      <input type="text" id="photo_name" name="photo_name" value="{{#checkNull photo.photo_name}}{{/checkNull}}" required>
-    </div>
-    <div>
-      <label for="photo_description">Photo Description:</label>
-      <textarea id="photo_description" name="photo_description" required>{{#checkNull photo.photo_description}}{{/checkNull}}</textarea>
-    </div>
-    <button id="edit-image-submit-button" type="submit">Save Changes</button>
-    <button id="cancel-button" type="button" onclick="cancelEdit('{{photo._id}}')">Cancel</button>
-  </form>
+    <h1 id="edit-image-h1">Edit Photo</h1>
+    <form id="edit-image" class="edit-form" action="/images/edit/{{photo._id}}" method="POST">
+      <div>
+        <label for="photo_name">Photo Name:</label>
+        <input type="text" id="photo_name" name="photo_name" value="{{#checkNull photo.photo_name}}{{/checkNull}}" required>
+      </div>
+      <div>
+        <label for="photo_description">Photo Description:</label>
+        <textarea id="photo_description" name="photo_description" required>{{#checkNull photo.photo_description}}{{/checkNull}}</textarea>
+      </div>
+      <button id="edit-image-submit-button" type="submit">Save Changes</button>
+      <button id="cancel-button" type="button" onclick="cancelEdit('{{photo._id}}')">Cancel</button>
+    </form>
   </div>
 </div>
 
