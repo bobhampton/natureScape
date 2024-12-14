@@ -15,9 +15,6 @@ router
     //No inputs to validate
     try {
       let userList = await userData.getAllUsers()
-      // .find({})
-      // .project({_id: 1, name: 1,})
-      // .toArray();
       return res.json(userList)
     } catch (e) {
       return res.sendStatus(404).send(e)
