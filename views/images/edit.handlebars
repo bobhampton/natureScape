@@ -2,7 +2,7 @@
   <div id="edit-image">
 
     <h1 id="edit-image-h1">Edit Photo</h1>
-    <form id="edit-image" class="edit-form" action="/images/edit/{{photo._id}}" method="POST">
+    <form id="edit-image-form" class="edit-form" action="/images/edit/{{photo._id}}" method="POST">
       <div>
         <label for="photo_name">Photo Name:</label>
         <input type="text" id="photo_name" name="photo_name" value="{{#checkNull photo.photo_name}}{{/checkNull}}" required>
@@ -16,5 +16,3 @@
     </form>
   </div>
 </div>
-
-<script src="/public/js/image_edit.js"></script>

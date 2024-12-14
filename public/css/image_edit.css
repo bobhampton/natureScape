@@ -15,20 +15,20 @@ body {
     text-align: center;
 }
 
-#edit-image form#edit-image div {
+#edit-image form#edit-image-form div {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-#edit-image form#edit-image div label {
+#edit-image form#edit-image-form div label {
     color: var(--body-text-color);
 }
 
-#edit-image form#edit-image div textarea#photo_description {
+#edit-image form#edit-image-form div textarea#photo_description {
     height: 150px;
     width: 400px;
 }
 
-#edit-image form#edit-image button#edit-image-submit-button {
+#edit-image form#edit-image-form button#edit-image-submit-button {
     margin-left: 190px;
 }
