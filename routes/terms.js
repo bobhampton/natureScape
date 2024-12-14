@@ -10,6 +10,7 @@ router
     try {
         //Path to the template
       return res.render('users/terms', {
+        title: "Terms & Agreements",
         css: '/public/css/terms.css'
       })
     } catch (e) {
