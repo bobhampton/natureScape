@@ -10,12 +10,13 @@
 
     <form action="/users/newUser" method="POST">
         <!-- Role Selection -->
-        <label for="role"><b>Role</b></label>
-        <select id="role" name="trole" required>
-            <option value="user" {{#if (eq userInput.trole 'user')}}selected{{/if}}>User</option>
-            <option value="admin" {{#if (eq userInput.trole 'admin')}}selected{{/if}}>Admin</option>
-        </select>
-        <br>
+        <div id="newUser-role">
+            <label for="role"><b>Role: </b></label>
+            <select id="role" name="trole" required size="2">
+                <option value="user" {{#if (eq userInput.trole 'user')}}selected{{/if}}>User</option>
+                <option value="admin" {{#if (eq userInput.trole 'admin')}}selected{{/if}}>Admin</option>
+            </select>
+        </div>
 
         <!-- First Name -->
         <div id="newUser-firstName">
