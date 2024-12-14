@@ -5,7 +5,8 @@ import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername, checkInputEmail, checkDuplicateId} from './helpers.js'
 import { createFeedback, getAllFeedback } from '../data/feedback.js'
-import { authorizeRole, checkXss } from '../middleware.js'
+import { authorizeRole, checkXss, checkXss } from '../middleware.js'
+
 
 
 const router = Router();
@@ -34,7 +35,7 @@ router
   .get(async(req, res)=>{
   try {
     return res.render('users/user',{
-      title: "Create a New User",
+      title: "Create New User",
       css: '/public/css/newUser.css'
     });
   } catch (e) {
@@ -43,7 +44,7 @@ router
   })
 
   //When they submit the form
-  .post(checkXss, async (req, res)=>{
+  .post(checkXss, checkXss, async (req, res)=>{
     try {
       const isChecked = req.body.tterms === "on"; //Meaning true
       const password = validation.checkString(req.body.tpassword)
@@ -194,7 +195,7 @@ router
       return res.status(404).json({ error: 'User not found' })
     }
   })
-  .post(checkXss, async (req, res) => {
+  .post(checkXss, checkXss, async (req, res) => {
     try {
       const userId = validation.checkId(req.params.userId, 'User ID');
       const feedbackInput = validation.checkString(req.body.feedback, 'Feedback');
@@ -206,63 +207,5 @@ router
       console.error(e);
       res.status(400).render('error', { error: e, css: '/public/css/error.css', title: "Error", message: "Message: Already submitted Feedback" });
   }});
-
-
-
-
-
-
-  // .delete(async (req, res) => {
-  //   //code here for DELETE
-  //   try {
-  //     req.params.userId = validation.checkId(req.params.userId)
-  //   } catch (e) {
-  //     return res.status(400).json({ error: e })
-  //   }
-
-  //   try {
-  //     let deletedUser = await userData.removeUser(req.params.teamId)
-
-  //     return res.status(200).json({ _id: req.params.userId, deleted: true })
-  //   } catch (e) {
-  //     //JSON always returns a string
-  //     return res.status(404).json({ error: e })
-  //   }
-  // })
-  // .put(async (req, res) => {
-  //   //console.log("made it here")
-  //   const userinfo = req.body
-  //   //code here for PUT
-  //   if (!userinfo || Object.keys(userinfo).length === 0) {
-  //     return res
-  //       .status(400)
-  //       .json({ error: 'There are no fields in the request body' })
-  //   }
-
-  //   try {
-  //     //console.log("made it here")
-  //     req.params.userId = validation.checkId(req.params.userId)
-  //     validation.checkUser(firstname, lastname, email, username, password_hash)
-  //   } catch {
-  //     return res.status(400).json({ error: e })
-  //   }
-
-  //   try {
-  //     let updateduser = await userData.updateUser(
-  //       req.params.userId,
-  //       userinfo.firstname,
-  //       userinfo.lastname,
-  //       userinfo.email,
-  //       userinfo.username,
-  //       userinfo.password_hash
-  //     )
-
-  //     //Explicit display of 200 status.
-  //     //console.log("made it here4")
-  //     return res.status(200).json(updateduser)
-  //   } catch (e) {
-  //     return res.status(404).json({ error: e })
-  //   }  
-  // })
 
 export default router
