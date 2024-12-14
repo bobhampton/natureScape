@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
     console.log(error);
     res.status(500).render('error', {
       css: '/public/css/error.css',
+      js: '/public/js/locationlist.js',
       title: 'Retrieving Location Information Error',
       message: 'Unable to retrieve location information from Database.',
       error: error
@@ -72,6 +73,7 @@ router.get('/:locationId', checkXss, async (req, res) => {
     console.log(error);
     res.status(500).render('error', {
       css: '/public/css/error.css',
+      js: 'public/js/location_view_edit.js',
       title: 'Retrieving Location Information Error',
       message: 'Error retrieving images',
       error: error
@@ -120,6 +122,7 @@ router.post('/:locationId/filterImages', checkXss, async (req, res) => {
     console.error(error);
     res.status(500).render('error', {
       css: '/public/css/error.css',
+      js: 'public/js/location_view_edit.js',
       title: 'Retrieving Filtered Images Error',
       message: 'Error retrieving images',
       error: error
