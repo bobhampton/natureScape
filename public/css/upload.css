@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: var(--body-color);
+}
+
+#image-index-header {
+    text-align: center;
+    color: var(--body-text-color);
+}
+
+#image-index-upload-form {
+    margin: 50px;
+    justify-items: center;
+    color: var(--body-text-color);
+}
+
+#image-index-upload-form #image-title-container {
+    margin: 20px;
+}
+
+#image-index-upload-form #image-title-container input {
+    margin-left: 10px;
+}
+
+#image-index-upload-form #image-desc-container {
+    margin: 20px;
+}
+
+#image-index-upload-form #image-index-file-upload-container {
+    display: grid;
+}
+
+#image-index-upload-form #image-index-file-upload-container input {
+    margin: 20px;
+}

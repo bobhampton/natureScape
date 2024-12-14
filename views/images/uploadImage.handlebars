@@ -10,8 +10,8 @@
     method="POST"
     enctype="multipart/form-data"
   >
-    <div>
-      <label id="image-upload-title" class="image-upload" for="name">Image Title</label>
+    <div id="image-title-container">
+      <label id="image-upload-title" class="image-upload" for="name">Image Title: </label>
       <input
         type="text"
         id="name"
@@ -21,8 +21,8 @@
         
       />
     </div>
-    <div>
-      <label id="image-upload-desc" class="image-upload" for="desc">Image Description</label>
+    <div id="image-desc-container">
+      <label id="image-upload-desc" class="image-upload" for="desc">Image Description: </label>
       <textarea
         id="desc"
         name="desc"
@@ -43,7 +43,7 @@
         value=""
         required
       />
-      <button type="submit" class="submit-button">Submit</button>
+      <button type="submit" class="submit-button">Submit</button><br>
     </div>
   </form>
 </div>

@@ -126,7 +126,7 @@ router
   .route('/upload')
   .get(checkAuth, (req, res) => {
     res.render('images/uploadImage', {
-      css: '/public/css/image.css',
+      css: '/public/css/upload.css',
       title: 'Upload Image',
     });
   })
@@ -220,7 +220,7 @@ router
       const areaName = await findLocationAreaByPhotoId(photoId);
 
       res.render('images/edit', {
-        css: '/public/css/image.css',
+        css: '/public/css/image_edit.css',
         title: 'Edit Image',
         photo: {
           ...photoData,
