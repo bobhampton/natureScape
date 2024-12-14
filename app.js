@@ -140,6 +140,18 @@ app.set('view engine', 'handlebars')
 // Set up routes
 configRoutes(app)
 
+// Protect against overflow attacks
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.too.large') {
+    return res.status(413).render('error', {
+      title: 'Error',
+      css: '/public/css/error.css',
+      error: 'Request entity too large. Please reduce the size of your input.'
+    });
+  }
+  next(err);
+});
+
 app.listen(port, async () => {
   console.log("We've now got a server!")
   console.log('Your routes will be running on http://localhost:3000')
