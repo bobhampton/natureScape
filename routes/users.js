@@ -11,6 +11,7 @@ import { authorizeRole } from '../middleware.js'
 const router = Router();
 
 
+
 router
   .route('/') //Localhost:3000/users/   --Gets all users--
   .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
@@ -25,6 +26,7 @@ router
       return res.sendStatus(404).send(e)
     }
   })
+
 
 router
   .route('/newUser')
@@ -166,6 +168,7 @@ router
         //name on left is whatever I want.  Variables on right
         //come from the database in line 154
         css: '/public/css/profile.css',
+        title: 'Profile',
         newUser: {
           _id: user._id,
           first_name: user.first_name,
