@@ -8,7 +8,7 @@ document
     if (fileInput.files.length > 0) {
       const file = fileInput.files[0]
       if (file.size > maxUploadSize) {
-        console.log('File size is too big')
+        console.log('File size must be less than 16MB')
         event.preventDefault() // Prevent form submission and keep any data entered
         alert('Photo size must be less than 16MB')
         return
