@@ -5,6 +5,16 @@ $(document).ready(function() {
       // Get the selected dates
       const startDate = document.getElementById("filterDateStart").value;
       const endDate = document.getElementById("filterDateEnd").value;
+
+      if (!startDate || !endDate) {
+        alert('Please select both start and end dates.');
+        return;
+      }
+      if (new Date(startDate) > new Date(endDate)) {
+        alert('Start date cannot be after end date.');
+        return;
+      }
+
       const url = window.location.pathname;
       const locationId = url.match(/\/([a-f0-9]{24})$/)[1];
       
@@ -48,5 +58,8 @@ $(document).ready(function() {
               timeline.append("<p>Error loading data.</p>");
           }
       });
+  });
+  $('#dateFilterResetButton').click(function() {
+    location.reload();
   });
 });

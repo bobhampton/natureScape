@@ -52,7 +52,7 @@ router.get('/:locationId', async (req, res) => {
     })).sort((a, b) => b.photo_date_time - a.photo_date_time);
 
     //Render page using location data and photos
-    res.render('locations/location_view_edit', {
+    return res.render('locations/location_view_edit', {
       locationName: location.location_name, 
       city: location.city, 
       state: location.state, 
@@ -65,59 +65,8 @@ router.get('/:locationId', async (req, res) => {
     console.log(error);
     res.status(500).send('Error retrieving images')
   }
+});
 
-})
-
-router.route('/filterImages', async (req, res) => {
-  let startDate = req.body.startDate;
-  let endDate = req.body.endDate;
-
-  if (!endDate) {
-    endDate = new Date();
-  } else if (!endDate && !startDate) {
-    res.status(400).send("Start and end dates are required")
-  }
-
-  startDate = new Date(startDate);
-  endDate = new Date(endDate);
-
-  try {
-
-    let formattedPhotos;
-    const photoCollection = await photos()
-    const userPhotos = await photoCollection.find(
-      { 'location.location_id': new ObjectId(req.params.locationId),
-        $or: [
-          {
-            date_time_taken: {gte: startDate, $lte: endDate}
-          },
-          {
-            date_time_taken: null,
-            date_time_uploaded: { $gte: startDate, $lte: endDate }
-          }
-        ]
-      }).toArray();
-
-      console.log('locPhotos', userPhotos);
-
-    formattedPhotos = userPhotos.map(photo => ({
-      _id: photo._id,
-      photo_name: photo.photo_name,
-      photo_description: photo.photo_description,
-      photo_date_time: photo.date_time_taken ?? photo.date_time_uploaded,
-      likes: photo.likes,
-      views: photo.views,
-      img: {
-        data: photo.img.data.toString('base64'),
-        contentType: photo.img.contentType
-      }
-    })).sort((a, b) => new Date(b.photo_date_time) - new Date(a.photo_date_time));
-
-    res.json({ images: formattedPhotos })
-  } catch (error) {
-    res.status(500).json({error: error});
-  }
-})
 router.post('/:locationId/filterImages', async (req, res) => {
   try {
     const locationId = req.params.locationId;
@@ -154,7 +103,7 @@ router.post('/:locationId/filterImages', async (req, res) => {
       }
     })).sort((a, b) => new Date(b.photo_date_time) - new Date(a.photo_date_time));
 
-    res.json({ images: formattedPhotos });
+    return res.json({ images: formattedPhotos });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error retrieving images');
