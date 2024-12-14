@@ -9,17 +9,17 @@ import { authorizeRole } from '../middleware.js'
 
 const router = Router();
 
-router
-  .route('/') //Localhost:3000/users/   --Gets all users--
-  .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
-    //No inputs to validate
-    try {
-      let userList = await userData.getAllUsers()
-      return res.json(userList)
-    } catch (e) {
-      return res.sendStatus(404).send(e)
-    }
-  })
+// router
+//   .route('/') //Localhost:3000/users/   --Gets all users--
+//   .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
+//     //No inputs to validate
+//     try {
+//       let userList = await userData.getAllUsers()
+//       return res.json(userList)
+//     } catch (e) {
+//       return res.sendStatus(404).send(e)
+//     }
+//   })
 
 router
   .route('/newUser')
