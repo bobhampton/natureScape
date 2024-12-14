@@ -45,7 +45,7 @@ export const checkXss = (req, res, next) => {
     } catch (err) {
       res.status(400).render('error', {
         css: '/public/css/error.css',
-        title: '2Input Error',
+        title: 'Input Error',
         error: err
       });
       return null;

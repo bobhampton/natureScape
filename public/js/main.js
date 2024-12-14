@@ -17,3 +17,12 @@ themeSwitch.addEventListener('click', () => {
   darkmode = localStorage.getItem('darkmode');
   darkmode !== 'active' ? enableDarkmode() : disableDarkmode();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const logoutLink = document.getElementById('logout-link');
+  if (logoutLink) {
+    logoutLink.addEventListener('click', () => {
+      localStorage.removeItem('likedImages');
+    });
+  }
+});

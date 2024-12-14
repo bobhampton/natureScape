@@ -12,7 +12,7 @@
 <div id="image-container" class="image-container">
   {{#each images}}
     <div class="image-item" id="image-{{this._id}}">
-      <div class="like-heart" onclick="likeImage('{{this._id}}')">
+      <div class="like-heart" onclick="likeImage('{{this._id}}', '{{this.user_id}}')">
         <span class="heart-icon">❤️</span>
         <span class="like-count" id="likes-{{this._id}}">{{this.likes}}</span>
       </div>
@@ -37,3 +37,6 @@
   {{/each}}
 </div>
 <script src="/public/js/image_index.js"></script>
+<script>
+  const loggedInUserId = {{loggedInUserId}}>
+</script>

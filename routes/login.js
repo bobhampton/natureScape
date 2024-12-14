@@ -1,5 +1,6 @@
 import { checkUser, checkPassword } from "../data/login.js"
 import express from "express"
+import { checkXss } from "../middleware.js"
 
 const router = express.Router();
 
