@@ -13,20 +13,22 @@ const router = Router();
 
 
 
-router
-  .route('/') //Localhost:3000/users/   --Gets all users--
-  .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
-    //No inputs to validate
-    try {
-      let userList = await userData.getAllUsers()
-      // .find({})
-      // .project({_id: 1, name: 1,})
-      // .toArray();
-      return res.json(userList)
-    } catch (e) {
-      return res.sendStatus(404).send(e)
-    }
-  })
+// router
+//   .route('/') //Localhost:3000/users/   --Gets all users--
+//   .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
+//     //No inputs to validate
+//     try {
+//       let userList = await userData.getAllUsers()
+//       // .find({})
+//       // .project({_id: 1, name: 1,})
+//       // .toArray();
+//       return res.json(userList)
+//     } catch (e) {
+//       return res.status(404).render("error", {error: e, 
+//         title: ""
+//       })
+//     }
+//   })
 
 
 router
@@ -39,8 +41,8 @@ router
       css: '/public/css/newUser.css'
     });
   } catch (e) {
-    return res.sendStatus(400).json({error: e});
-  }
+    return res.status(400).render({error: e, title: "New User",
+       css: '/public/css/newUser.css'});  }
   })
 
   //When they submit the form
@@ -134,7 +136,9 @@ router
         'Id of URL param'
       )
     } catch (e) {
-      return res.status(400).json({ error: e })
+      return res.status(400).render("error",{ title: "User Profile", 
+        css: "/public/css/newUser.css",
+        error: e })
     }
 
     try {
@@ -192,7 +196,9 @@ router
         //session: req.session
       })
     } catch (e) {
-      return res.status(404).json({ error: 'User not found' })
+      return res.status(404).render("error",{ title: "New User",
+        css: "/public/css/newUser.css",
+        error: 'User not found' })
     }
   })
   .post(checkXss, async (req, res) => {
