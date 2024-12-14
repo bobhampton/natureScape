@@ -61,7 +61,8 @@ router.get('/:locationId', async (req, res) => {
       locationName: location.location_name, 
       city: location.city, 
       state: location.state, 
-      images: formattedPhotos, 
+      images: formattedPhotos,
+      title: `${location.location_name}`, 
       css: '/public/css/location_view_edit.css', 
       js: '/public/js/location_view_edit.js'
     });
