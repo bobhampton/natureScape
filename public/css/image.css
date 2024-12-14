@@ -54,10 +54,6 @@ body {
   border-color: var(--body-text-color);
 }
 
-/* #single-image-delete {
-  margin-bottom: 20px;
-} */
-
 #single-image button#single-image-delete, 
 #single-image button#single-image-edit, 
 #single-image button#back-button {
@@ -111,79 +107,26 @@ body {
   object-fit: contain;
   margin: 0 auto;
 }
-/* ------------------------------------------------------- */
-/* .photo-comments {
+
+.add-comment-form {
   margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  text-align: left;
 }
 
-.photo-comments li {
-  margin-bottom: 10px;
-}
-
-
-  .photo-comments {
-    margin-top: 20px;
-  }
-
-  .photo-comments p {
-    font-weight: bold;
-  }
-
-  .photo-comments ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  .photo-comments li {
-    border-bottom: 1px solid #ccc;
-    padding: 10px 10px;
-    background-color: aqua;
-    justify-content: space-between; 
-    max-width: 100%;
-  max-height: 100vh;
-  height: auto;
-  width: auto;
+.add-comment-form textarea {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  flex: 1 1 calc(33.333% - 10px);
-  object-fit: contain;
-  margin: 0 auto;
-  text-align: left;
-  }
+  width: 50%;
+  height: 100px;
+  margin-bottom: 10px;
+}
 
-  .photo-comments .comment-text {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-
-  .photo-comments .comment-meta {
-    font-size: 12px;
-    color: #777;
-  } */
-/* --------------------------------------------- */
-  .add-comment-form {
-    margin-top: 20px;
-  }
-
-  .add-comment-form textarea {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    height: 100px;
-    margin-bottom: 10px;
-  }
-
-  .add-comment-form button {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 25px;
-  } */
+.add-comment-form button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 25px;
+} */
 
 
 /* Edit image page */

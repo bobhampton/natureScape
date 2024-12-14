@@ -9,14 +9,19 @@ import { ObjectId } from 'mongodb';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+  try {
     const locations = await locationMethods.getAllPhotos();
     res.render('locations/locationlist', {css:"/public/css/locationlist.css", token: mapboxApiKey, js:"/public/js/locationlist.js", locations: JSON.stringify(locations)});
+  } catch (error) {
+    console.log(error);
+    res.status(500).render('error', {
+      css: '/public/css/error.css',
+      title: 'Retrieving Location Information Error',
+      message: 'Unable to retrieve location information from Database.',
+      error: error
+    });
+  }
 })
-
-router.get('/test', async (req, res) => {
-  const photos = await locationMethods.getAllPhotos();
-  res.json(photos);
-});
 
 router.get('/:locationId', async (req, res) => {
   try {
@@ -64,9 +69,6 @@ router.get('/:locationId', async (req, res) => {
     console.log(error);
     res.status(500).send('Error retrieving images')
   }
-  
-
-  
 
 })
 //.post()
