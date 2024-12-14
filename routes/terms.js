@@ -11,7 +11,8 @@ router
         //Path to the template
       return res.render('users/terms', {
         title: "Terms & Agreements",
-        css: '/public/css/terms.css'
+        css: '/public/css/terms.css',
+        js: '/public/js/image_edit.js'
       })
     } catch (e) {
       return res.status(400).json({ error: e })
