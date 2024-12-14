@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const locations = await locationMethods.getAllPhotos();
-    res.render('locations/locationlist', {css:"/public/css/locationlist.css", token: mapboxApiKey, js:"/public/js/locationlist.js", locations: JSON.stringify(locations)});
+    res.render('locations/locationlist', {css:"/public/css/locationlist.css", title: "Locations", token: mapboxApiKey, js:"/public/js/locationlist.js", locations: JSON.stringify(locations)});
   } catch (error) {
     console.log(error);
     res.status(500).render('error', {
