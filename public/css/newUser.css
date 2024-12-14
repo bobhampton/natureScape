@@ -2,13 +2,11 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    /* display: flex; */
     height: 100vh;
     background-color: var(--body-color);
 }
 
 .user-form-container{
-    /* margin-top: 75px; */
     display: grid;
     flex: 1;
     justify-content: center;
@@ -93,11 +91,3 @@ body {
     margin: 5px;
     color: var(--body-text-color);
 }
-
-/* #profile-photo {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    background-color: #f1f1f1;
-} */
