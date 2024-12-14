@@ -1,32 +1,18 @@
 @import url('https://fonts.cdnfonts.com/css/averia');
 
-/* :root {
-  --body-color: #ddf5de;
-  --text-color: #1E5F22;
-  --input-bg: #F2F2F2;
-  --input-border: #ccc;
-  --button-bg: #1E5F22;
-  --button-text: #FFF;
-  --button-hover-bg: #145116;
-  --button-hover-text: #FFF;
-} */
-
 body {
   font-family: 'Averia', sans-serif;
   margin: 0;
   padding: 0;
-  /* display: flex; */
   height: 100vh;
   background-color: var(--body-color);
 }
 
 .landing-page {
-  /* margin-top: 70px; */
   display: grid;
   flex: 1;
   justify-content: center;
   align-items: center;
-  /* height: calc(100vh - 70px); */
 }
 
 #login_form {
@@ -125,4 +111,8 @@ p {
 
 #accountCreate {
   margin: 10px;
+}
+
+#accountCreate #accountCreateLink {
+  color: var(--body-text-color);
 }

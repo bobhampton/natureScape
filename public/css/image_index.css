@@ -2,7 +2,6 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  /* display: flex; */
   height: 100vh;
   background-color: var(--body-color);
 }
@@ -54,6 +53,17 @@ div a#gallery-most-viewed {
 }
 
 div a#gallery-most-viewed:hover {
+  color: var(--nav-color);
+}
+
+div a#upload-image-link {
+  margin-left: 25px;
+  margin-right: 25px;
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+div a#upload-image-link:hover {
   color: var(--nav-color);
 }
 

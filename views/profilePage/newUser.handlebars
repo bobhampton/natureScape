@@ -8,7 +8,7 @@
       <main>
 
         <!--Link to images page-->
-        <a id="to-Images" href="/images">View NatureScape Images</a>
+        {{!-- <a id="to-Images" href="/images">View NatureScape Images</a> --}}
 
         <!-- User Details Part -->
         <section id="user-details">
@@ -91,9 +91,11 @@
               <hr>
             </div>
           {{else}}
-            <p>No feedback available.</p>
+            <p id="no-feedback">No feedback available.</p>
           {{/each}}
         </section>
-      {{!-- <a id="to-Images" href="/images">View NatureScape Images</a> --}}
+
+      <p id="gallery-link">To navigate to the gallery, click the following link: <a id="to-Images" href="/images">View NatureScape Image Gallery</a></p><br>
+
 </div>
   
