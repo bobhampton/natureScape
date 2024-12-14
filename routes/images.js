@@ -56,6 +56,7 @@ router.get('/', checkAuth, async (req, res) => {
 
     res.render('images/index', {
       css: '/public/css/image_index.css',
+      title: 'Gallery',
       images: formattedImages,
       loggedInUserId
     });
@@ -97,6 +98,7 @@ router.get('/photo/:id', checkAuth, async (req, res) => {
 
     res.render('images/image', {
       css: '/public/css/image.css',
+      title: 'Photo',
       photo: {
         ...photoData,
         img: {
@@ -125,6 +127,7 @@ router
   .get(checkAuth, (req, res) => {
     res.render('images/uploadImage', {
       css: '/public/css/image.css',
+      title: 'Upload Image',
     });
   })
   .post(checkAuth, checkXss, async (req, res) => {
@@ -174,6 +177,7 @@ router.delete('/:id', checkAuth, async (req, res) => {
 
 // Like an image
 router.post('/like/:id', checkAuth, async (req, res) => {
+  console.log('req.params.id', req.params.id);
   try {
     const imageCollection = await photos();
     const imageId = new ObjectId(req.params.id);
@@ -189,7 +193,7 @@ router.post('/like/:id', checkAuth, async (req, res) => {
       { returnDocument: 'after' }
     );
 
-    res.json({ likes: result.value.likes });
+    res.status(200).json({ likes: result.likes });
   } catch (err) {
     console.error(err);
     res.status(500).render('error', {
@@ -218,6 +222,7 @@ router
 
       res.render('images/edit', {
         css: '/public/css/image.css',
+        title: 'Edit Image',
         photo: {
           ...photoData,
           img: {
