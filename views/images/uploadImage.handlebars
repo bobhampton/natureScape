@@ -1,5 +1,5 @@
 <div id="image-index-header" class="header-container">
-  <h1>Upload image to mongoDB</h1>
+  <h1>{{title}}</h1>
 </div>
 <hr />
 
@@ -9,7 +9,6 @@
     action="/images/upload"
     method="POST"
     enctype="multipart/form-data"
-    onsubmit="return checkFileSize(event);"
   >
     <div>
       <label id="image-upload-title" class="image-upload" for="name">Image Title</label>

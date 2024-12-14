@@ -33,22 +33,32 @@ router
   .post(async (req, res) => {
     //Get username and password from req.body
     //const {username, password} = req.body;
-    const username = req.body.uname;
-    const password = req.body.passwd;
-    const user = await checkUser(username);
-    const match = await checkPassword(user.username, password);
-    
-    if (match) {
-      req.session.isAuth = true;
-      req.session.user = user;
-      res.redirect(`users/${user._id}`);
-    } else {
-      res.render('home/login', {
-        title: "NatureScape", 
-        css: "/public/css/home.css", 
-        js: "/public/js/login.js", 
-        loginMessage: "Incorrect credentials" });
+    try {
+      const username = req.body.uname;
+      const password = req.body.passwd;
+      const user = await checkUser(username);
+      const match = await checkPassword(user.username, password);
+      
+      if (match) {
+        req.session.isAuth = true;
+        req.session.user = user;
+        res.redirect(`users/${user._id}`);
+      } else {
+        res.render('home/login', {
+          title: "NatureScape", 
+          css: "/public/css/home.css", 
+          js: "/public/js/login.js", 
+          loginMessage: "Incorrect credentials" });
+      }
+    } catch (error) {
+      res.status(400).render('home/login', {
+        title: "NatureScape",
+        css: "/public/css/home.css",
+        js: "/public/js/login.js",
+        loginMessage: "Inorrect credentials"
+      })
     }
+    
   }); 
 
 //GET for logout

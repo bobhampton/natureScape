@@ -53,6 +53,7 @@ document.getElementById('add-comment-form').addEventListener('submit', async fun
     commentList.appendChild(newCommentElement);
     document.getElementById('comment_text').value = ''; 
   } else {
-    console.error('Failed to add comment');
+    // console.error('Failed to add comment');
+    alert('Failed to add comment');
   }
 });

@@ -1,9 +1,4 @@
 <!-- Display single image from database -->
-
-{{#if (eq user._id photo.user_id)}}
-  <button onclick="editImageSingleView('{{photo._id}}')">Edit Photo</button>
-{{/if}}
-
 <div class="single-image-body">
   <div id="single-image">
     <h1>Photo name: {{photo.photo_name}}</h1>
@@ -83,12 +78,12 @@
         <button
           id="single-image-delete"
           onclick="deleteImageSingleView('{{photo._id}}')"
-        >Delete</button>
+        >Delete Photo</button>
 
         <button
           id="single-image-edit"
           onclick="editImageSingleView('{{photo._id}}')"
-        >Edit</button>
+        >Edit Photo</button>
       {{/if}}
       <button id="back-button" type="button" action="backToGallery">Back to main
         gallery</button>

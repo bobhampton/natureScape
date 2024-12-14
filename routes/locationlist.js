@@ -25,6 +25,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:locationId', async (req, res) => {
   try {
+    
     //Get location using locationId(req, res) => {
     const locationCollection = await locations();
     const locationFound = await locationCollection.findOne({
@@ -56,7 +57,7 @@ router.get('/:locationId', async (req, res) => {
     })).sort((a, b) => b.photo_date_time - a.photo_date_time);
 
     //Render page using location data and photos
-    res.render('locations/location_view_edit', {
+    return res.render('locations/location_view_edit', {
       locationName: location.location_name, 
       city: location.city, 
       state: location.state, 
@@ -69,8 +70,49 @@ router.get('/:locationId', async (req, res) => {
     console.log(error);
     res.status(500).send('Error retrieving images')
   }
+});
 
-})
-//.post()
+router.post('/:locationId/filterImages', async (req, res) => {
+  try {
+    const locationId = req.params.locationId;
+    const { startDate, endDate } = req.body;
+
+    if (!startDate || !endDate) {
+      return res.status(400).send('Start and end dates are required');
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (start > end) {
+      return res.status(400).send('Start date cannot be after end date');
+    }
+
+    const photoCollection = await photos();
+    const userPhotos = await photoCollection.find({
+      'location.location_id': new ObjectId(locationId),
+      $or: [
+        { date_time_taken: { $gte: start, $lte: end } },
+        { date_time_taken: null, date_time_uploaded: { $gte: start, $lte: end } }
+      ]
+    }).toArray();
+
+    const formattedPhotos = userPhotos.map(photo => ({
+      _id: photo._id,
+      photo_name: photo.photo_name,
+      photo_description: photo.photo_description,
+      photo_date_time: photo.date_time_taken ?? photo.date_time_uploaded,
+      img: {
+        data: photo.img.data.toString('base64'),
+        contentType: photo.img.contentType
+      }
+    })).sort((a, b) => new Date(b.photo_date_time) - new Date(a.photo_date_time));
+
+    return res.json({ images: formattedPhotos });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving images');
+  }
+});
 
 export default router
