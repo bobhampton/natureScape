@@ -5,6 +5,7 @@ const mapboxApiKey = process.env.MAPBOX_API_KEY;
 import * as locationMethods from '../data/locations.js';
 import { photos, locations } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
+import { checkXss } from '../middleware.js'
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:locationId', async (req, res) => {
+router.get('/:locationId', checkXss, async (req, res) => {
   try {
     
     //Get location using locationId(req, res) => {
@@ -61,18 +62,24 @@ router.get('/:locationId', async (req, res) => {
       locationName: location.location_name, 
       city: location.city, 
       state: location.state, 
-      images: formattedPhotos, 
+      images: formattedPhotos,
+      title: `${location.location_name}`, 
       css: '/public/css/location_view_edit.css', 
       js: '/public/js/location_view_edit.js'
     });
 
   } catch (error) {
     console.log(error);
-    res.status(500).send('Error retrieving images')
+    res.status(500).render('error', {
+      css: '/public/css/error.css',
+      title: 'Retrieving Location Information Error',
+      message: 'Error retrieving images',
+      error: error
+    });
   }
 });
 
-router.post('/:locationId/filterImages', async (req, res) => {
+router.post('/:locationId/filterImages', checkXss, async (req, res) => {
   try {
     const locationId = req.params.locationId;
     const { startDate, endDate } = req.body;
@@ -111,7 +118,12 @@ router.post('/:locationId/filterImages', async (req, res) => {
     return res.json({ images: formattedPhotos });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error retrieving images');
+    res.status(500).render('error', {
+      css: '/public/css/error.css',
+      title: 'Retrieving Filtered Images Error',
+      message: 'Error retrieving images',
+      error: error
+    });
   }
 });
 

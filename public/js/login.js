@@ -20,13 +20,6 @@ const checkLoginInfo = async (usernameInput, passwordInput) => {
       errors.push("Please enter a valid username");
     }
     //Authenticate user if inputs provided
-    // let user = await checkUser(usernameInput)
-    // if (!user) {
-    //   errors.push(`User ${usernameInput} does not exist`);
-    // } 
-    // else if (!(await checkPassword(usernameInput, passwordInput))) {
-    //   errors.push("Incorrect username or password");
-    // }
     const userResponse = await fetch("/login/checkUser", {
       method:'POST',
       headers: {'Content-Type': 'application/json'},

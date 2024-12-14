@@ -5,27 +5,30 @@ import { users, photos } from '../config/mongoCollections.js'
 import bcrypt from 'bcryptjs'
 import {checkInputUsername, checkInputEmail, checkDuplicateId} from './helpers.js'
 import { createFeedback, getAllFeedback } from '../data/feedback.js'
-import { authorizeRole } from '../middleware.js'
+import { authorizeRole, checkXss} from '../middleware.js'
+
 
 
 const router = Router();
 
 
 
-router
-  .route('/') //Localhost:3000/users/   --Gets all users--
-  .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
-    //No inputs to validate
-    try {
-      let userList = await userData.getAllUsers()
-      // .find({})
-      // .project({_id: 1, name: 1,})
-      // .toArray();
-      return res.json(userList)
-    } catch (e) {
-      return res.sendStatus(404).send(e)
-    }
-  })
+// router
+//   .route('/') //Localhost:3000/users/   --Gets all users--
+//   .get(authorizeRole('admin'), async (req, res) => {// Protect this route with admin role
+//     //No inputs to validate
+//     try {
+//       let userList = await userData.getAllUsers()
+//       // .find({})
+//       // .project({_id: 1, name: 1,})
+//       // .toArray();
+//       return res.json(userList)
+//     } catch (e) {
+//       return res.status(404).render("error", {error: e, 
+//         title: ""
+//       })
+//     }
+//   })
 
 
 router
@@ -34,16 +37,16 @@ router
   .get(async(req, res)=>{
   try {
     return res.render('users/user',{
-      title: "Create a New User",
+      title: "Create New User",
       css: '/public/css/newUser.css'
     });
   } catch (e) {
-    return res.sendStatus(400).json({error: e});
-  }
+    return res.status(400).render({error: e, title: "New User",
+       css: '/public/css/newUser.css'});  }
   })
 
   //When they submit the form
-  .post(async (req, res)=>{
+  .post(checkXss, async (req, res)=>{
     try {
       const isChecked = req.body.tterms === "on"; //Meaning true
       const password = validation.checkString(req.body.tpassword)
@@ -133,7 +136,9 @@ router
         'Id of URL param'
       )
     } catch (e) {
-      return res.status(400).json({ error: e })
+      return res.status(400).render("error",{ title: "User Profile", 
+        css: "/public/css/newUser.css",
+        error: e })
     }
 
     try {
@@ -191,10 +196,12 @@ router
         //session: req.session
       })
     } catch (e) {
-      return res.status(404).json({ error: 'User not found' })
+      return res.status(404).render("error",{ title: "New User",
+        css: "/public/css/newUser.css",
+        error: 'User not found' })
     }
   })
-  .post(async (req, res) => {
+  .post(checkXss, async (req, res) => {
     try {
       const userId = validation.checkId(req.params.userId, 'User ID');
       const feedbackInput = validation.checkString(req.body.feedback, 'Feedback');
@@ -206,63 +213,5 @@ router
       console.error(e);
       res.status(400).render('error', { error: e, css: '/public/css/error.css', title: "Error", message: "Message: Already submitted Feedback" });
   }});
-
-
-
-
-
-
-  // .delete(async (req, res) => {
-  //   //code here for DELETE
-  //   try {
-  //     req.params.userId = validation.checkId(req.params.userId)
-  //   } catch (e) {
-  //     return res.status(400).json({ error: e })
-  //   }
-
-  //   try {
-  //     let deletedUser = await userData.removeUser(req.params.teamId)
-
-  //     return res.status(200).json({ _id: req.params.userId, deleted: true })
-  //   } catch (e) {
-  //     //JSON always returns a string
-  //     return res.status(404).json({ error: e })
-  //   }
-  // })
-  // .put(async (req, res) => {
-  //   //console.log("made it here")
-  //   const userinfo = req.body
-  //   //code here for PUT
-  //   if (!userinfo || Object.keys(userinfo).length === 0) {
-  //     return res
-  //       .status(400)
-  //       .json({ error: 'There are no fields in the request body' })
-  //   }
-
-  //   try {
-  //     //console.log("made it here")
-  //     req.params.userId = validation.checkId(req.params.userId)
-  //     validation.checkUser(firstname, lastname, email, username, password_hash)
-  //   } catch {
-  //     return res.status(400).json({ error: e })
-  //   }
-
-  //   try {
-  //     let updateduser = await userData.updateUser(
-  //       req.params.userId,
-  //       userinfo.firstname,
-  //       userinfo.lastname,
-  //       userinfo.email,
-  //       userinfo.username,
-  //       userinfo.password_hash
-  //     )
-
-  //     //Explicit display of 200 status.
-  //     //console.log("made it here4")
-  //     return res.status(200).json(updateduser)
-  //   } catch (e) {
-  //     return res.status(404).json({ error: e })
-  //   }  
-  // })
 
 export default router

@@ -18,9 +18,9 @@ async function deleteImageFromList (id) {
   }
 }
 
-// Function to like an image
+// WORKING
 // async function likeImage (id) {
-//   console.log(`Attempting to like image with id: ${id}`); // Debugging
+//   //console.log(`Attempting to like image with id: ${id}`); // Debugging
 //   const likeButton = document.getElementById(`like-button-${id}`);
   
 //   // Check if user has already liked the image
@@ -30,9 +30,10 @@ async function deleteImageFromList (id) {
 //     return;
 //   }
 //   const response = await fetch(`/images/like/${id}`, {
-//     method: 'POST'
-//   })
-//   console.log('response', response);
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//   });
+  
 //   if (response.ok) {
 //     const data = await response.json()
 //     //console.log('Image liked successfully'); // Debugging
@@ -53,37 +54,25 @@ async function deleteImageFromList (id) {
 //   }
 // }
 
-async function likeImage (id) {
-  //console.log(`Attempting to like image with id: ${id}`); // Debugging
+async function likeImage(id, userId) {
   const likeButton = document.getElementById(`like-button-${id}`);
   
-  // Check if user has already liked the image
-  const likedImages = JSON.parse(localStorage.getItem('likedImages')) || {};
-  if (likedImages[id]) {
-    alert('You have already liked this image');
-    return;
-  }
   const response = await fetch(`/images/like/${id}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId }) // Send the user ID
   });
   
   if (response.ok) {
-    const data = await response.json()
-    //console.log('Image liked successfully'); // Debugging
+    const data = await response.json();
 
     // Update the number of likes in the DOM
-    const likesElement = document.getElementById(`likes-${id}`)
+    const likesElement = document.getElementById(`likes-${id}`);
     if (likesElement) {
-      likesElement.textContent = data.likes
+      likesElement.textContent = data.likes;
     }
-
-    // Set a flag in local storage for when a user likes an image
-    likedImages[id] = true;
-    localStorage.setItem('likedImages', JSON.stringify(likedImages));
-
   } else {
-    console.error('Error liking image:', response.statusText)
-    alert('Error liking image')
+    console.error('Error liking image:', response.statusText);
+    alert('Error liking image');
   }
 }
