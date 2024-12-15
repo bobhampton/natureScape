@@ -2,26 +2,22 @@
 <div class="single-image-body">
   <div id="single-image">
     <h1>Photo name: {{photo.photo_name}}</h1>
-    <hr />
+    <hr>
     <div id="single-image-container">
       <img
         class="responsive-img"
-        src="data:image/{{photo.img.contentType}};base64,{{photo.img.data}}"
+        src="data:{{photo.img.contentType}};base64,{{{photo.img.data}}}"
         alt="{{photo.photo_name}}"
-      />
-      <hr />
+      >
+      <hr>
       <div class="single-photo-description">
         <p id="photo-description-title">Photo description: </p>
         <p>{{photo.photo_description}}</p>
       </div>
-      <hr />
-
+      <hr>
       <div class="all-image-details">
         <p id="image-details-title">Image Details: </p>
         <ul>
-          {{!-- <li>Uploaded by (user_id):
-            {{#checkNull photo.user_id}}{{/checkNull}}
-          </li> --}}
           <li>Uploaded by: 
             {{#checkNull photoUsername}}{{/checkNull}}
           </li>
@@ -33,17 +29,9 @@
           </li>
           <li>Likes: {{photo.likes}}</li>
           <li>Views: {{photo.views}}</li>
-          <li>Verification rating: 
-            {{photo.verification_rating}}</li>
-          {{!-- <li>Location (location):
-            <pre>{{#printObj photo.location}}{{/printObj}}
-            </pre>
-          </li>
-          <li>Content type (img.contentType): {{photo.img.contentType}}</li> --}}
         </ul>
       </div>
-      <hr />
-
+      <hr>
       <p id="comment-title">Comments:</p>
       <div class="photo-comments">
         <ul>
@@ -58,7 +46,6 @@
           {{/each}}
         </ul>
       </div>
-
       <div class="add-comment-form">
         <form
           id="add-comment-form"
@@ -79,15 +66,14 @@
           id="single-image-delete"
           onclick="deleteImageSingleView('{{photo._id}}')"
         >Delete Photo</button>
-
         <button
           id="single-image-edit"
           onclick="editImageSingleView('{{photo._id}}')"
         >Edit Photo</button>
       {{/if}}
-      <button id="back-button" type="button" action="backToGallery">Back to main
+      <button id="back-button" type="button">Back to main
         gallery</button>
-
+      <br>
     </div>
   </div>
 </div>

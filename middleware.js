@@ -42,10 +42,14 @@ export const checkXss = (req, res, next) => {
     // Check for empty input
     try {
       input = validation.checkString(input, varName);
+      if (input.length > 1000) {
+        throw 'Input too long';
+      }
     } catch (err) {
       res.status(400).render('error', {
         css: '/public/css/error.css',
-        title: '2Input Error',
+        js: '/public/js/image_edit.js',
+        title: 'Input Error',
         error: err
       });
       return null;
@@ -59,15 +63,28 @@ export const checkXss = (req, res, next) => {
         stripIgnoreTagBody: ['script']
       });
 
+      let responseArr = [
+        'XSS attack detected. Nice try though!',
+        'XSS attack detected. Close, but no cigar!',
+        'XSS attack detected. Better luck next time!',
+        'XSS attack detected. You almost got me!',
+        'XSS attack detected. You are so close! Keep trying bud!',
+        'XSS attack detected. Super close! Keep trying!',
+        'XSS attack detected. You are doing something very naughty, does your mother know???',
+      ]
+
+      const randomResponse = responseArr[Math.floor(Math.random() * responseArr.length)];
+
       // Check if input is empty after sanitizing
       input = input.trim()
       if (input.length === 0) {
-        throw new Error('XSS attack detected. Nice try though!');
+        throw new Error(randomResponse);
       }
       return input;
     } catch (err) {
       res.status(400).render('error', {
         css: '/public/css/error.css',
+        js: '/public/js/image_edit.js',
         title: 'Input Error',
         error: err
       });

@@ -1,32 +1,25 @@
 @import url('https://fonts.cdnfonts.com/css/averia');
 
-/* :root {
-  --body-color: #ddf5de;
-  --text-color: #1E5F22;
-  --input-bg: #F2F2F2;
-  --input-border: #ccc;
-  --button-bg: #1E5F22;
-  --button-text: #FFF;
-  --button-hover-bg: #145116;
-  --button-hover-text: #FFF;
-} */
-
 body {
   font-family: 'Averia', sans-serif;
   margin: 0;
   padding: 0;
-  /* display: flex; */
   height: 100vh;
   background-color: var(--body-color);
 }
 
 .landing-page {
-  /* margin-top: 70px; */
-  display: grid;
-  flex: 1;
+  background-image: url('/public/images/pexels-quang-nguyen-vinh.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh; /* Ensure the div covers the full viewport height */
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* height: calc(100vh - 70px); */
+  text-align: center;
+  color: black;
 }
 
 #login_form {
@@ -113,16 +106,20 @@ body {
 h1 {
   margin-bottom: 0;
   text-align: center;
-  color: var(--body-text-color);
+  color: #FFF;
 }
 
 p {
   margin-top: 0;
   margin-bottom: 25px;
   text-align: center;
-  color: var(--body-text-color);
+  color: #FFF;
 }
 
 #accountCreate {
   margin: 10px;
+}
+
+#accountCreate #accountCreateLink {
+  color: #FFF;
 }
