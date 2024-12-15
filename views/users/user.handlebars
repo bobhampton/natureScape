@@ -22,7 +22,7 @@
         <div id="newUser-firstName">
             <label for="firstname"><b>First Name: </b></label>
             <input type="text" id="firstname" name="tfirstname" placeholder="Enter your first name" 
-                value="{{userInput.tfirstname}}" required>
+                value="{{userInput.tfirstname}}" maxlength="50" required>
             <br>
         </div>
 
@@ -30,7 +30,7 @@
         <div id="newUser-lastName">
             <label for="lastname"><b>Last Name: </b></label>
             <input type="text" id="lastname" name="tlastname" placeholder="Enter your last name"
-                value="{{userInput.tlastname}}" required>
+                value="{{userInput.tlastname}}" maxlength="50" required>
             <br>
         </div>
 
@@ -46,14 +46,15 @@
         <div id="newUser-userName">
             <label for="username"><b>Username: </b></label>
             <input type="text" id="username" name="tusername" placeholder="Enter a username"
-                value="{{userInput.tusername}}" required>
+                value="{{userInput.tusername}}" maxlength="50" required>
             <br>
         </div>
 
         <!-- Password -->
         <div id="newUser-passWord">
             <label for="password"><b>Password: </b></label>
-            <input type="password" id="password" name="tpassword" placeholder="Enter your password" required>
+            <input type="password" id="password" name="tpassword" placeholder="Enter your password" 
+            maxlength="30" required>
             <br>
         </div>
 
@@ -72,7 +73,7 @@
         <div id="newUser-biography">
             <label for="bio"><b>Biography: </b></label>
             <input type="text" id="bio" name="tbio" placeholder="Enter a biography" 
-                value="{{userInput.tbio}}" required>
+                value="{{userInput.tbio}}" maxlength="500" required>
             <br>
         </div>
 
