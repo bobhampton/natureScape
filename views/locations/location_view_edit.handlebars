@@ -23,9 +23,11 @@
       <div class="timeline-container" id="timeline-container-{{this._id}}">
         <div class="timeline-text-box">
           <h5>Photo Name: {{this.photo_name}}</h5>
-          <h4 id="photoDate-Info">Date/Time Uploaded: {{this.photo_date_time}}</h4>
+          <h4 id="photoDate-Info-{{this._id}}">Date/Time Uploaded: {{this.photo_date_time}}</h4>
           <p>Photo Description: {{this.photo_description}}</p>
-          <img src="data:image/{{this.img.contentType}};base64,{{this.img.data}}" alt="{{this.photo_name}}" class="responsive-img">
+          <a href="/images/photo/{{this._id}}">View photo page</a>
+          <br>
+          <img src="data:{{this.img.contentType}};base64,{{{this.img.data}}}" alt="{{this.photo_name}}" class="responsive-img">
         </div>
       </div>
       {{/each}}
