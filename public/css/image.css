@@ -1,0 +1,171 @@
+/* Single image page */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: var(--body-color);
+}
+
+#single-image {
+  margin-bottom: 20px;
+}
+
+#single-image h1{
+  margin-bottom: 0;
+  text-align: center;
+  color: var(--body-text-color);
+}
+
+#single-image .single-photo-description {
+  text-align: center;
+  color: var(--body-text-color);
+}
+
+#single-image .single-photo-description p#photo-description-title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#single-image .all-image-details p#image-details-title {
+  font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  color: var(--body-text-color);
+}
+
+#single-image p#comment-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--body-text-color);
+}
+
+#single-image .photo-comments ul {
+  display: grid;
+  justify-content: center;
+  color: var(--body-text-color);
+}
+
+#single-image .photo-comments ul li {
+  border: groove;
+  margin-bottom: 15px;
+  border-color: var(--body-text-color);
+}
+
+#single-image button#single-image-delete, 
+#single-image button#single-image-edit, 
+#single-image button#back-button {
+  display: grid;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#single-image button#single-image-delete {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#single-image button#single-image-edit {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#single-image button#back-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.all-image-details {
+  gap: 15px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.all-image-details ul {
+  display: grid;
+  justify-content: center;
+  color: var(--body-text-color);
+}
+
+.single-photo-description {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.responsive-img {
+  max-width: 100%;
+  max-height: 100vh;
+  height: auto;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1 1 calc(33.333% - 10px);
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.add-comment-form {
+  margin-top: 20px;
+}
+
+.add-comment-form textarea {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.add-comment-form button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 25px;
+} */
+
+
+/* Edit image page */
+#edit-image {
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#edit-image h1 {
+  margin-bottom: 20px;
+  margin-top: 90px;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.edit-form input,
+.edit-form textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+#edit-image-submit-button {
+  width: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}

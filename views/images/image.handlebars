@@ -1,0 +1,81 @@
+<!-- Display single image from database -->
+<div class="single-image-body">
+  <div id="single-image">
+    <h1>Photo name: {{photo.photo_name}}</h1>
+    <hr>
+    <div id="single-image-container">
+      <img
+        class="responsive-img"
+        src="data:{{photo.img.contentType}};base64,{{{photo.img.data}}}"
+        alt="{{photo.photo_name}}"
+      >
+      <hr>
+      <div class="single-photo-description">
+        <p id="photo-description-title">Photo description: </p>
+        <p>{{photo.photo_description}}</p>
+      </div>
+      <hr>
+      <div class="all-image-details">
+        <p id="image-details-title">Image Details: </p>
+        <ul>
+          <li>Uploaded by: 
+            {{#checkNull photoUsername}}{{/checkNull}}
+          </li>
+          <li>Taken on: 
+            {{#checkNull photo.date_time_taken}}{{/checkNull}}
+          </li>
+          <li>Uploaded on: 
+            {{#checkNull photo.date_time_uploaded}}{{/checkNull}}
+          </li>
+          <li>Likes: {{photo.likes}}</li>
+          <li>Views: {{photo.views}}</li>
+        </ul>
+      </div>
+      <hr>
+      <p id="comment-title">Comments:</p>
+      <div class="photo-comments">
+        <ul>
+          {{#each comments}}
+            <li>
+              <p class="comment-text">{{this.comment_text}}</p>
+              <p class="comment-meta">USERNAME:
+                {{this.username}}
+                | On:
+                {{this.creation_time}}</p>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class="add-comment-form">
+        <form
+          id="add-comment-form"
+          action="/images/comment/{{photo._id}}"
+          method="POST"
+        >
+          <textarea
+            id="comment_text"
+            name="comment_text"
+            placeholder="Add your comment here..."
+            required
+          ></textarea>
+          <button type="submit">Add Comment</button>
+        </form>
+      </div>
+      {{#if isOwner}}
+        <button
+          id="single-image-delete"
+          onclick="deleteImageSingleView('{{photo._id}}')"
+        >Delete Photo</button>
+        <button
+          id="single-image-edit"
+          onclick="editImageSingleView('{{photo._id}}')"
+        >Edit Photo</button>
+      {{/if}}
+      <button id="back-button" type="button">Back to main
+        gallery</button>
+      <br>
+    </div>
+  </div>
+</div>
+
+<script src="/public/js/image.js"></script>

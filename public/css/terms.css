@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: var(--body-color);
+  }
+
+.terms-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: var(--body-timeline-background);
+    line-height: 1.6;
+    color: var(--body-text-color);
+    margin-top: 40px;
+}
+.terms-container h1 {
+    text-align: center;
+}
+.terms-container .checkbox-container {
+    margin: 20px 0;
+}
+button#termButton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: var(--nav-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}

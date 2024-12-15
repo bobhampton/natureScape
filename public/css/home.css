@@ -1,0 +1,125 @@
+@import url('https://fonts.cdnfonts.com/css/averia');
+
+body {
+  font-family: 'Averia', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: var(--body-color);
+}
+
+.landing-page {
+  background-image: url('/public/images/pexels-quang-nguyen-vinh.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh; /* Ensure the div covers the full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: black;
+}
+
+#login_form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: var(--body-login);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--button-text);
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+#loginContainer svg {
+  margin-top: 5px;
+}
+
+#loginContainer #rememberMe {
+  margin-left: 50px;
+}
+
+#loginContainer #rememberMe button {
+  margin-left: 10px;
+}
+
+#loginContainer #usernameField input#uname{
+  width: 350px;
+}
+
+#loginContainer #passwordField input#passwd{
+  width: 350px;
+}
+
+#feedbackContainer input#feedback {
+  width: 310px;
+}
+
+.loginContainer label {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--button-text);
+}
+
+.loginContainer input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.loginContainer input:focus {
+  border-color: var(--text-color);
+  outline: none;
+}
+
+.loginContainer button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.loginContainer button:hover {
+  background-color: var(--button-hover-bg);
+  color: var(--button-hover-text);
+}
+
+h1 {
+  margin-bottom: 0;
+  text-align: center;
+  color: #FFF;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-align: center;
+  color: #FFF;
+}
+
+#accountCreate {
+  margin: 10px;
+}
+
+#accountCreate #accountCreateLink {
+  color: #FFF;
+}

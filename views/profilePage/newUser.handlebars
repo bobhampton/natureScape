@@ -1,0 +1,92 @@
+<div class = "user-dashboard-container">
+
+  <form action="/profilePage" method="POST">
+        <h1>Welcome to Your Dashboard, {{newUser.first_name}}!</h1>
+      <br>
+      <br>
+      <main>
+
+        <!--Link to images page-->
+        {{!-- <a id="to-Images" href="/images">View NatureScape Images</a> --}}
+
+        <!-- User Details Part -->
+        <section id="user-details">
+          <h2>Profile Information:</h2>
+          <br>
+          <ul>
+            <!--keys of the route-->
+            <li><img src="data:image/{{newUser.profile.profile_picture.contentType}};base64,{{newUser.profile.profile_picture.data}}" alt="Profile Pic"></li>
+            <li><strong>First Name:</strong> {{newUser.first_name}}</li>
+            <li><strong>Last Name:</strong> {{newUser.last_name}}</li>
+            <li><strong>Email:</strong> {{newUser.email}}</li>
+            <li><strong>Username:</strong> {{newUser.username}}</li>
+            <li><strong>Creation_time:</strong> {{newUser.creation_time}}</li>
+            <li><strong>Agreement:</strong> {{newUser.agreement}}</li>
+            <li><strong>Profile bio:</strong> {{newUser.profile.bio}}</li>
+          </ul>
+        </section>
+
+
+
+        <!-- Photos Part -->
+        <section id="user-photos">
+          <h2>Your Photos</h2>
+
+          <div id="image-container" class="image-container">
+            {{#each images}}
+              <div class="image-item" id="image-{{this._id}}">
+                <a href="/images/photo/{{this._id}}">
+                  <img
+                    class="responsive-img"
+                    src="data:image/{{this.img.contentType}};base64,{{this.img.data}}"
+                    alt="{{this.photo_name}}"
+                  >
+                </a>
+                <div class="image-details">
+
+                  <h5 id="image-index-display-name">Photo Name: {{this.photo_name}}</h5>
+                  <p id="image-list-description">Photo Description: {{this.photo_description}}</p>
+                  <p id="image-view-count">Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
+                  {{!-- <button id="image-index-delete-button" onclick="deleteImageFromList('{{this._id}}')">Delete</button> --}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        {{!-- <button type="button" onclick="alert('will be link for updating profile')">Update Profile</button> --}}
+        <!-- Upload Image Form -->
+        </section>
+      </main>
+  </form>
+  
+  
+    <!--Link to images page-->
+    <p id="upload-image-link">To navigate to the upload image page, click the following link: <a id="to-Upload-Images" href="/images/upload">Upload Images</a></p>
+
+    <!-- Submit Feedback Form -->
+        <section id="submit-feedback">
+          <h2>Submit Feedback:</h2>
+          <form action="/users/{{newUser._id}}" method="POST">
+            <textarea name="feedback" placeholder="Write your feedback here (optional)"></textarea><br>
+            <button type="submit">Submit Feedback</button>
+          </form>
+        </section>
+
+
+        <!-- Feedback Section -->
+        <section id="user-feedback">
+          <h2>Your Feedback Log:</h2>
+          {{#each feedback}}
+            <div class="feedback-item">
+              <p id="feedback-text">{{this.feedback}}</p>
+              <p id="feedback-timestamp"><em>Submitted on: {{this.timestamp}}</em></p>
+              <hr>
+            </div>
+          {{else}}
+            <p id="no-feedback">No feedback available.</p>
+          {{/each}}
+        </section>
+
+      <p id="gallery-link">To navigate to the gallery, click the following link: <a id="to-Images" href="/images">View NatureScape Image Gallery</a></p><br>
+
+</div>
+  

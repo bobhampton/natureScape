@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: var(--body-color);
+}
+
+.user-form-container{
+    display: grid;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-form-container h1 {
+    margin-top: 125px;
+    color: var(--body-text-color);
+}
+
+#newUser-role {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-role select {
+    width: 180px;
+    margin-left: 48px;
+}
+
+#newUser-firstName {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-firstName input {
+    width: 180px;
+}
+
+#newUser-lastName {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-lastName input {
+    margin-left: 3px;
+    width: 180px;
+}
+
+#newUser-email {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-email input {
+    margin-left: 39px;
+    width: 180px;
+}
+
+#newUser-userName {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-userName input {
+    margin-left: 7.5px;
+    width: 180px;
+}
+
+#newUser-passWord {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-passWord input {
+    margin-left: 11px;
+    width: 180px;
+}
+
+.terms-container {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-biography {
+    margin: 5px;
+    color: var(--body-text-color);
+}
+
+#newUser-biography input {
+    margin-left: 5.5px;
+    width: 180px;
+}
+
+#newUser-submitButton button {
+    margin: 5px;
+    transform: translate(90%);
+}
+
+.login-link p{
+    margin: 5px;
+    color: var(--body-text-color);
+}

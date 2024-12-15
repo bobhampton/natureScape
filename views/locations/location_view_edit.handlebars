@@ -1,0 +1,36 @@
+<div class="location-viewer-body">
+  <div id="location-page">
+    <h3>{{locationName}}</h3>
+    <div id="location-details-container">
+        <h4>{{city}} {{state}}</h4>
+    </div>
+    <div id="filter-controls">
+      <form id="dateFilter">
+        <label for="filterDateStart" id="DateStart">From date:
+          <input type="date" id="filterDateStart" name="filterDateStart" min="1826-01-01">
+        </label>
+        <label for="filterDateEnd" id="DateEnd">To date:
+          <input type="date" id="filterDateEnd" name="filterDateEnd">
+        </label>
+        <button type="submit" id="applyDateFilterButton">Filter</button>
+      </form>
+      <form id="resetFilter">
+        <button type="button" id="dateFilterResetButton">Reset</button>
+      </form>
+    </div>
+    <div class="timeline" id="timeline">
+      {{#each images}}
+      <div class="timeline-container" id="timeline-container-{{this._id}}">
+        <div class="timeline-text-box">
+          <h5>Photo Name: {{this.photo_name}}</h5>
+          <h4 id="photoDate-Info-{{this._id}}">Date/Time Uploaded: {{this.photo_date_time}}</h4>
+          <p>Photo Description: {{this.photo_description}}</p>
+          <a href="/images/photo/{{this._id}}">View photo page</a>
+          <br>
+          <img src="data:{{this.img.contentType}};base64,{{{this.img.data}}}" alt="{{this.photo_name}}" class="responsive-img">
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div><br>
+</div>

@@ -1,0 +1,43 @@
+<div id="image-index-header" class="header-container">
+  <h1>{{title}}</h1>
+</div>
+<hr>
+<div id="image-index-upload-form" class="image-upload-form">
+  <form
+    id="uploadForm"
+    action="/images/upload"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    <div id="image-title-container">
+      <label id="image-upload-title" class="image-upload" for="name">Image Title:</label>
+      <input
+        type="text"
+        id="name"
+        placeholder="Name"
+        value=""
+        name="name"
+      >
+    </div>
+    <div id="image-desc-container">
+      <label id="image-upload-desc" class="image-upload" for="desc">Image Description:</label>
+      <textarea
+        id="desc"
+        name="desc"
+        rows="1"
+        placeholder="Description"
+      ></textarea>
+    </div>
+    <div id="image-index-file-upload-container" class="file-upload-container">
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept="image/*"
+        required
+      >
+      <button type="submit" class="submit-button">Submit</button><br>
+    </div>
+  </form>
+</div>
+<script src="/public/js/upload.js"></script>

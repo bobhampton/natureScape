@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: var(--body-color);
+}
+
+#error-page h1 {
+    padding-left: 40px;
+    color: var(--body-text-color);
+}
+
+#error-page p#error-message {
+    padding-left: 40px;
+    margin-bottom: 0;
+    color: var(--body-text-color);
+}
+
+#error-page p#error-error {
+    padding-left: 40px;
+    margin-top: 0;
+    color: var(--body-text-color);
+}
+
+#error-page a {
+    padding-left: 40px;
+}
