@@ -39,7 +39,7 @@ router
     return res.render('users/user',{
       title: "Create New User",
       css: '/public/css/newUser.css',
-      js: '/public/js/image_edit.js'
+      js: '/public/js/user.js'
     });
   } catch (e) {
     return res.status(400).render({error: e, title: "New User",
@@ -129,14 +129,6 @@ router
           userInput: req.body // Send filled-out form data back
           });
         } 
-      //   else {
-      //     res.status(400).render('users/user',{
-      //     title: "Input is too long",
-      //     css: "/public/css/newUser.css",
-      //     error: e,
-      //     userInput: req.body // Send filled-out form data back
-      //   })
-      // }
 
         res.status(400).render('users/user',{
           title: "New User Entry",

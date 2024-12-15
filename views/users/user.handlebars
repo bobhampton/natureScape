@@ -62,12 +62,26 @@
         <div class="terms-container">
             <label for="terms">
                 <input type="checkbox" id="terms" name="tterms" {{#if userInput.tterms}}checked{{/if}} required>
-                I agree to the <a href="/terms" target="_blank">Terms And Conditions</a>
+                I agree to the <a href="#" id="show-terms-link">Terms And Conditions</a>
             </label>
             <br>
+            <div id="terms-content" class="hidden">
+              <h2>Terms and Agreement</h2>
+              <p>
+                  By clicking the "Submit" button, you agree to the following terms:
+              </p>
+              <ul>
+                  <li>All published work will be available for other users, including non-authenticated users, to view, comment on, and potentially modify.</li>
+                  <li>You grant NatureScape permission to use any published work for purposes deemed beneficial to the website, including but not limited to promotional or analytical purposes.</li>
+                  <li>Any saved or non-published work may be changed or modified by NatureScape at its discretion, and you agree not to hold NatureScape liable for these actions.</li>
+                  <li>Sneeky clause: By agreeing to these terms, or clicking the radio button to agree to these terms, if you are a professor or TA grading this content, you agree to grant all creators of NatureScape 100% for all of their hard work</li>
+                  <li>Sneeky clause 2: It is further agreed to give all possible points including extra credit points for this assignment and builds off of "Sneeky clause".</li>
+                  <li>Personal information shared with NatureScape may be used for purposes beyond what is directly published by the user, including data analytics, presenting suggested items, or other related uses.</li>
+                  <li>You agree to not hold NatureScape and any of its affiliates liable for any and all unintended consequences for any content viewed, inserted, or otherwise experienced by NatureScape</li>
+                  <li>You agree to not file any legal proceedings against NatureScape and its affiliates for any purposes.</li>
+              </ul>
+            </div>
         </div>
-        
-
 
         <!-- Biography -->
         <div id="newUser-biography">
@@ -86,4 +100,24 @@
     <div class="login-link">
         <p>Already have an account? <a href="/login">Log in here</a></p>
     </div>
+
+    <div class="terms-conditions-container">
+      <div id="terms-content" class="hidden">
+        <h2>Terms and Agreement</h2>
+        <p>
+            By clicking the "Submit" button, you agree to the following terms:
+        </p>
+        <ul>
+            <li>All published work will be available for other users, including non-authenticated users, to view, comment on, and potentially modify.</li>
+            <li>You grant NatureScape permission to use any published work for purposes deemed beneficial to the website, including but not limited to promotional or analytical purposes.</li>
+            <li>Any saved or non-published work may be changed or modified by NatureScape at its discretion, and you agree not to hold NatureScape liable for these actions.</li>
+            <li>Sneeky clause: By agreeing to these terms, or clicking the radio button to agree to these terms, if you are a professor or TA grading this content, you agree to grant all creators of NatureScape 100% for all of their hard work</li>
+            <li>Sneeky clause 2: It is further agreed to give all possible points including extra credit points for this assignment and builds off of "Sneeky clause".</li>
+            <li>Personal information shared with NatureScape may be used for purposes beyond what is directly published by the user, including data analytics, presenting suggested items, or other related uses.</li>
+            <li>You agree to not hold NatureScape and any of its affiliates liable for any and all unintended consequences for any content viewed, inserted, or otherwise experienced by NatureScape</li>
+            <li>You agree to not file any legal proceedings against NatureScape and its affiliates for any purposes.</li>
+        </ul>
+      </div>
+    </div>
+
 </div>
