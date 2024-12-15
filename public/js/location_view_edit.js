@@ -48,11 +48,13 @@ $(document).ready(function() {
                   const imageElement = `
                       <div class="timeline-container" id="timeline-container-${image._id}">
                           <div class="timeline-text-box">
+
                               <h5>Photo Name: ${image.photo_name}</h5>
                               <h4 id="photoDate-Info-${image._id}">Date/Title Uploaded: ${image.photo_date_time}</h4>
                               <p>Photo Description: ${image.photo_description}</p>
                               <a href="/images/photo/${image._id}">View photo page</a>
                               <img src="data:image/${image.img.contentType};base64,${image.img.data}" alt="${image.photo_name}" class="responsive-img">
+
                           </div>
                       </div>`;
                   timeline.append(imageElement);
