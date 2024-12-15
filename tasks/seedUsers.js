@@ -1,4 +1,3 @@
-//import usersData from '../data/users.js'
 import bcrypt from 'bcryptjs'
 import usersData from '../data/users.js'
 
