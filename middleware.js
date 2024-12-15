@@ -71,6 +71,9 @@ export const checkXss = (req, res, next) => {
         'XSS attack detected. You are so close! Keep trying bud!',
         'XSS attack detected. Super close! Keep trying!',
         'XSS attack detected. You are doing something very naughty, does your mother know???',
+        'XSS attack detected. You are no hacker hahahahahaha',
+        'XSS attack detected. You think you can hack me?',
+        'XSS attack detected. YOU!!! Shall not HACK!',
       ]
 
       const randomResponse = responseArr[Math.floor(Math.random() * responseArr.length)];
