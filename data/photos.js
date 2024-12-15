@@ -6,28 +6,11 @@ import {
 } from '../config/mongoCollections.js'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
-// import { findKeys, latLonToDecimal } from '../routes/helpers.js'
 import validation from './helpers.js'
 import { ObjectId } from 'mongodb'
-// import exiftool from 'node-exiftool'
-// import distExiftool from 'dist-exiftool'
 import { convert } from 'geo-coordinates-parser'
 import reverse from 'reverse-geocode'
 import { lookUpRaw, lookUp, lookUpGeoJSON } from 'geojson-places'
-
-// export const findLocationId = async (area) => {
-//   const locationsCollection = await locations()
-//   const location = await locationsCollection.findOne({
-//     area
-//   })
-
-//   if (!location) {
-//     //console.log(`Location ${area}, ${state} not found`)
-//     return null
-//   }
-
-//   return location._id
-// }
 
 export const findLocationAreaByPhotoId = async photoId => {
   const photoCollection = await photos()
@@ -111,7 +94,6 @@ export const addImage = async (name, desc, user_id, imageFile) => {
     date_time_taken: null,
     date_time_uploaded: null,
     likes: 0,
-    verification_rating: 0,
     location: {
       latitude: null,
       longitude: null,

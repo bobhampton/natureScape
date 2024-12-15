@@ -74,28 +74,6 @@ app.use('/locationlist', (req, res, next) => {
   next()
 });
 
-/*
-
-  ************************************************
-  using these will disable the create new user link
-  ************************************************
-
-*/
-// app.use('/users', (req, res, next) => {
-//   if (!req.session.user) {
-//     return res.redirect('/login')
-//   }
-//   next()
-// });
-
-// app.use('/users/:userId', (req, res, next) => {
-//   if (!req.session.user) {
-//     return res.redirect('/login')
-//   }
-//   next()
-// });
-// ************************************************
-
 app.use('/profile/:userId', (req, res, next) => {
   if (!req.session.user) {
     return res.redirect('/login')
@@ -116,7 +94,6 @@ app.use('/login', (req, res, next) => {
   }
   next()
 });
-
 
 // Set up default layout and view engine for handlebars
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main',

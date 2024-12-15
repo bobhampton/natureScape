@@ -19,7 +19,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: white; /* Adjust text color for better contrast */
+  color: black;
 }
 
 #login_form {
@@ -106,14 +106,14 @@ body {
 h1 {
   margin-bottom: 0;
   text-align: center;
-  color: var(--body-text-color);
+  color: #FFF;
 }
 
 p {
   margin-top: 0;
   margin-bottom: 25px;
   text-align: center;
-  color: var(--body-text-color);
+  color: #FFF;
 }
 
 #accountCreate {
@@ -121,5 +121,5 @@ p {
 }
 
 #accountCreate #accountCreateLink {
-  color: var(--body-text-color);
+  color: #FFF;
 }

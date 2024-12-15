@@ -25,6 +25,8 @@ NatureScape allows users to create an account, upload their nature photographs, 
 - MongoDB
 - Git
 
+**Note: Please use images from the `test_images` folder when uploading photos.**
+
 ### Installing
 
 #### Install Git
@@ -151,7 +153,7 @@ Contributions are welcome! Please fork the repository and create a pull request 
 This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
-For any questions or suggestions, please contact the project maintainers at [natureScape@example.com](mailto:natureScape@example.com).
+For any questions or suggestions, please contact the project maintainers at [natureScape@example.com](mailto:natureScape@gmail.com).
 
 ## GitHub Link
 - https://github.com/BobbyBoy101/NatureScape

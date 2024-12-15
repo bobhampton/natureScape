@@ -96,13 +96,7 @@ router
       if (!checkInputUsername || !checkInputEmail) {
         throw 'checkUsername or checkEmail'
       }
-     // try{
-      //await checkInputUsername(userInput.username);
-      //await checkDuplicateId(userInput.username);
-      //await checkInputEmail(userInput.email);
-      //}catch(e){
-        //res.status(400).redirect('/newUser', {error: e})
-      //}
+     
       //Add new user to the database
       let returnCreate = await userData.createUser(
         //Making sure all values input from this route is going to the createUser function
@@ -116,8 +110,6 @@ router
         userInput.role 
       );
 
-      //data/users.createUser never returns and object
-      //const newUser = await userData.createUser(userInput);
 
       //Redirect to the login page to go to the login page route
       res.redirect('/login'); 
@@ -224,7 +216,6 @@ router
         },
         images: formattedPhotos,
         feedback: userFeedback,
-        //session: req.session
       })
     } catch (e) {
       return res.status(404).render("error",{ title: "New User",
