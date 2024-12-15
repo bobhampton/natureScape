@@ -6,7 +6,6 @@
       <a id="upload-image-link" href="/images/upload">Upload Image</a>
   </div>
 <hr>
-
 <div id="image-container" class="image-container">
   {{#each images}}
     <div class="image-item" id="image-{{this._id}}">
@@ -22,14 +21,12 @@
         >
       </a>
       <div class="image-details">
-
         <h5 id="image-index-display-name">Photo Name: {{this.photo_name}}</h5>
         <p id="image-list-description">Photo Description: {{this.photo_description}}</p>
         <p id="image-list-view">Views: <span id="views-{{this._id}}">{{this.views}}</span></p>
         {{#if (eq loggedInUserId this.user_id)}}
           <button id="image-index-delete-button" onclick="deleteImageFromList('{{this._id}}')">Delete</button>
         {{/if}}
-
       </div>
     </div>
   {{/each}}

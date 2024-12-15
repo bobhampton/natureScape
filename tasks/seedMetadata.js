@@ -5,7 +5,6 @@ import { convert } from 'geo-coordinates-parser'
 import sharp from 'sharp'
 import exifReader from 'exif-reader'
 
-
 export const updateAndReadMetadata = async (imagePath, metadata) => {
 
     const ep = new exiftool.ExiftoolProcess(distExiftool);
@@ -62,28 +61,22 @@ const metadata = {
     GPSLongitudeRef: longitude,
     CreateDate: createDate,
     ImageDescription: area
-    //DocumentName
 }
 
 let returnMetaWrite = await updateAndReadMetadata(imagePath, metadata)
-//console.log('returnObj', returnObj)
-
 let converted
 
 try {
     converted = convert(returnMetaWrite.gpsPosition)
-    //console.log('converted', converted);
 } catch (error) {
     console.error(error);
 }
 
 // Extract metadata from the image using sharp
 const imageMeta = sharp(imagePath).withMetadata().toFormat('jpeg')
-let sharpMetadata = await imageMeta.metadata()
-//console.log('\nSHARPmetadata', sharpMetadata);  
+let sharpMetadata = await imageMeta.metadata() 
 
 sharpMetadata.exif = exifReader(sharpMetadata.exif)
-//console.log('\nsharpMetadata.exif', sharpMetadata.exif)
     
     return returnMetaWrite
 }
