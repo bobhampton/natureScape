@@ -128,14 +128,15 @@ router
           error: e,
           userInput: req.body // Send filled-out form data back
           });
-        } else {
-          res.status(400).render('users/user',{
-          title: "Input is too long",
-          css: "/public/css/newUser.css",
-          error: e,
-          userInput: req.body // Send filled-out form data back
-        })
-      }
+        } 
+      //   else {
+      //     res.status(400).render('users/user',{
+      //     title: "Input is too long",
+      //     css: "/public/css/newUser.css",
+      //     error: e,
+      //     userInput: req.body // Send filled-out form data back
+      //   })
+      // }
 
         res.status(400).render('users/user',{
           title: "New User Entry",
