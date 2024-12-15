@@ -118,8 +118,20 @@ MAPBOX_API_KEY=<your_mapbox_api_key>
     ```bash
     npm run seed
     ```
+    Note:
+   Windows users may run into an issue when seeding based on computer preferences connecting using IPv6.
+    To resolve this issue, modify the settings.js file in the config folder as follows:
 
-3. **Start the server**:
+   Change
+   ```
+   serverUrl: 'mongodb://localhost:27017/',
+   ```
+   to
+   ```
+   serverUrl: 'mongodb://127.0.0.1:27017/',
+   ```
+
+4. **Start the server**:
 
     ```bash
     npm start
