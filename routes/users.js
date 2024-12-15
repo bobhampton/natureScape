@@ -50,17 +50,43 @@ router
   .post(checkXss, async (req, res)=>{
     try {
       const isChecked = req.body.tterms === "on"; //Meaning true
+      //if (!isChecked) throw 'You must agree to the Terms and Conditions.';
+
       const password = validation.checkString(req.body.tpassword)
       const userInput = {
         firstname: validation.checkString(req.body.tfirstname,"First Name"),
         lastname: validation.checkString(req.body.tlastname, "Last Name"),
         email: validation.validateEmail(req.body.temail),
         username: validation.checkString(req.body.tusername, "Username"),
-        passwordhash: await bcrypt.hash(password, 16), //Encrypts the incoming password
+        password: validation.checkString(req.body.tpassword, "Password"),
         terms: isChecked,
         bio: validation.checkString(req.body.tbio, "Biography"),
         role: validation.checkString(req.body.trole, "Role") //Add role
       }
+
+      // Enforce maximum lengths
+      const maxLengths = {
+        firstname: 50,
+        lastname: 50,
+        username: 50,
+        bio: 500,
+        password: 30,
+      };
+
+      if (userInput.firstname.length > maxLengths.firstname)
+        throw `First Name exceeds maximum length of ${maxLengths.firstname} characters.`;
+      if (userInput.lastname.length > maxLengths.lastname)
+        throw `Last Name exceeds maximum length of ${maxLengths.lastname} characters.`;
+      if (userInput.username.length > maxLengths.username)
+        throw `Username exceeds maximum length of ${maxLengths.username} characters.`;
+      if (userInput.bio.length > maxLengths.bio)
+        throw `Biography exceeds maximum length of ${maxLengths.bio} characters.`;
+      if (userInput.password.length > maxLengths.password)
+        throw `Password exceeds maximum length of ${maxLengths.password} characters.`;
+
+      // Hash the password
+      userInput.passwordhash = await bcrypt.hash(password, 16), //Encrypts the incoming password
+      
 
       //Storing the username in the db as a lowercase value
       userInput.username = userInput.username.toLowerCase()
@@ -111,9 +137,13 @@ router
           userInput: req.body // Send filled-out form data back
           });
         } else {
-          console.log(e);
-          console.log(e.message);
-        }
+          res.status(400).render('users/user',{
+          title: "Input is too long",
+          css: "/public/css/newUser.css",
+          error: e,
+          userInput: req.body // Send filled-out form data back
+        })
+      }
 
         res.status(400).render('users/user',{
           title: "New User Entry",
@@ -206,6 +236,10 @@ router
     try {
       const userId = validation.checkId(req.params.userId, 'User ID');
       const feedbackInput = validation.checkString(req.body.feedback, 'Feedback');
+      
+      if (feedbackInput.length > 500) {
+        throw 'Feedback exceeds the maximum allowed length of 500 characters.'
+      }
 
       await createFeedback(feedbackInput, userId);
       
