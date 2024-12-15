@@ -9,10 +9,17 @@ body {
 }
 
 .landing-page {
-  display: grid;
-  flex: 1;
+  background-image: url('/public/images/pexels-quang-nguyen-vinh.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh; /* Ensure the div covers the full viewport height */
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  color: white; /* Adjust text color for better contrast */
 }
 
 #login_form {
