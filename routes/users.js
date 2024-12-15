@@ -141,7 +141,7 @@ router
           title: "Input is too long",
           css: "/public/css/newUser.css",
           error: e,
-          userInput: req.body // Send filled-out form data back)
+          userInput: req.body // Send filled-out form data back
         })
       }
 
