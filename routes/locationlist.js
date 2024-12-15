@@ -92,6 +92,7 @@ router.post('/:locationId/filterImages', checkXss, async (req, res) => {
 
     const start = new Date(startDate);
     const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
 
     if (start > end) {
       return res.status(400).send('Start date cannot be after end date');

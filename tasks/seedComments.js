@@ -102,8 +102,6 @@ export const seedComments = async () => {
         userNum = 0
       }
 
-      
-
       // Randomly select between 0-5 comments to add to the photo
       const randomNumComments = Math.floor(Math.random() * 5)
 
