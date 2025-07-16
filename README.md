@@ -4,6 +4,10 @@
 
 NatureScape is a web application designed to provide users with a platform to share and explore nature photography. Users can create profiles, upload images, provide feedback, and interact with other users' content.
 
+<img width="437" height="400" alt="loginpage" src="https://github.com/user-attachments/assets/93ce9e8b-1bb7-42a0-97f1-ef0e448e7ec2" />
+
+
+
 ## Description
 
 NatureScape allows users to create an account, upload their nature photographs, and share them with the community. Users can also view, like, and comment on other users' photos. The application includes features such as dark mode, user feedback, and profile management.
